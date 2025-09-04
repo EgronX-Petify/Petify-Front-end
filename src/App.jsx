@@ -2,17 +2,26 @@ import "./App.css";
 import { Link, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
     <>
       <Navbar />
-      <nav>
+      <Signup />
+      <Footer />
+    </>
+  );
+}
+
+export default App;
+
+/*      <nav>
         <Link to="/">Home</Link> | <Link to="/about">About</Link>
       </nav>
       <Routes>
         <Route>
-          {/* just testing routes and tailwind */}
+           just testing routes and tailwind 
           <Route
             path="/"
             element={
@@ -23,10 +32,4 @@ function App() {
           />
           <Route path="/about" element={<h1>About Page</h1>} />
         </Route>
-      </Routes>
-      <Footer />
-    </>
-  );
-}
-
-export default App;
+      </Routes> */
