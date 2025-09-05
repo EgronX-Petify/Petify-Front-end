@@ -1,7 +1,10 @@
 import React from "react";
+import SignNavbar from "../components/SignNavbar";
 
 const LoginForm = () => {
   return (
+    <>
+    <SignNavbar />
     <div className="my-[30px] flex justify-evenly items-center min-h-[600px] px-[30px]">
       <div className="flex flex-grow items-center justify-start h-full bg-gray-50 shadow-lg p-2 rounded-lg">
         <div className="flex flex-col justify-center w-full p-8 max-w-md min-h-[600px]">
@@ -58,6 +61,7 @@ const LoginForm = () => {
         />
       </div>
     </div>
+    </>
   );
 };
 
