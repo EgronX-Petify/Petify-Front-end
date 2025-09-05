@@ -1,25 +1,19 @@
 import React from "react";
-import style from "../css-modules/Navbar.module.css";
-import { NavLink } from "react-router-dom";
+import style from "../css-modules/SignNavbar.module.css";
+import { Link } from "react-router-dom";
 
-const Navbar = () => {
+const SignNavbar = () => {
   return (
-
     <div className={style.navbar}>
-      <div className="w-[70px] h-[70px] overflow-hidden flex items-center">
-        <img src="src/public/logo55.png" alt="" className="w-[60px] h-[60px]" />
+      <div className="w-[60px] h-[60px] overflow-hidden flex items-center">
+        <img src="src/public/logo55.png" alt="" className="w-[50px] h-[50px]" />
       </div>
 
       <div className="flex justify-between w-[500px] font-semibold">
-        <NavLink
-          to="/"
-          className={({ isActive }) => (isActive ? `px-1.5 text-[#FD7E14] border-b-2 border-b-[#FD7E14] border-b-solid` : `px-1.5`)}
-        >
-          Home
-        </NavLink>
-        <NavLink to="/vets" className={({ isActive }) => (isActive ? `px-1.5 text-[#FD7E14] border-b-2 border-b-[#FD7E14] border-b-solid` : `px-1.5`)}>Vets</NavLink>
-        <NavLink to="/grooming" className={({ isActive }) => (isActive ? `px-1.5 text-[#FD7E14] border-b-2 border-b-[#FD7E14] border-b-solid` : `px-1.5`)}>Grooming</NavLink>
-        <NavLink to="/beginner-guide" className={({ isActive }) => (isActive ? `px-1.5 text-[#FD7E14] border-b-2 border-b-[#FD7E14] border-b-solid` : `px-1.5`)}>Beginner Guide</NavLink>
+        <Link to="/">Home</Link>
+        <Link to="/vets">Vets</Link>
+        <Link to="/grooming">Grooming</Link>
+        <Link to="/beginner-guide">Beginner Guide</Link>
       </div>
 
       {/* cart  */}
@@ -33,7 +27,8 @@ const Navbar = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-              >{" "}
+              >
+                {" "}
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -47,7 +42,6 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        
         {/* profile */}
         {/* <div className="dropdown dropdown-end">
           <div
@@ -84,4 +78,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SignNavbar;

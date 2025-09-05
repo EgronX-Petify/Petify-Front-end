@@ -1,14 +1,12 @@
 import "./App.css";
 import { Link, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
-import LoginForm from "./components/Login";
+import Signin from "./pages/Signin";
 
 function App() {
   return (
     <div>
-      <Navbar />
-      <LoginForm/>
+      <Signin/>
       <Footer />
     </div>
   );
