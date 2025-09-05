@@ -1,11 +1,17 @@
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
+}
+:root{
+  --primary: #2f4156;
+  --warm: #FD7E14;
+  --lin: linear-gradient(17deg, #8195a1 10%, #9ba6b0a1 100%);
+  --text: #F5EFED;
 }
 
 html,
 body {
+  padding: 0;
+  margin: 0;
   height: 100%;
   font-family:
     system-ui,
@@ -22,14 +28,6 @@ body {
 
 a {
   text-decoration: none;
-  color: inherit;
-}
-
-button {
-  font: inherit;
-  cursor: pointer;
-  border: none;
-  background: none;
 }
 
 ul,
