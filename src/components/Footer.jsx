@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="fixed bottom-0 w-full py-[20px] flex flex-col gap-[30px] bg-linear-[17deg,#8195a1_10%,#9ba6b0a1_100%] text-[#2f4156]">
+    <footer className="relative bottom-0 w-full py-[20px] flex flex-col gap-[30px] bg-linear-[17deg,#8195a1_10%,#9ba6b0a1_100%] text-[#2f4156]">
       <svg
       className="absolute inset-0 w-[759px] h-[160px] z-10 top-7"
         width="759"

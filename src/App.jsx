@@ -2,14 +2,15 @@ import "./App.css";
 import { Link, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import LoginForm from "./components/Login";
 
 function App() {
   return (
-    <>
+    <div>
       <Navbar />
-      main
+      <LoginForm/>
       <Footer />
-    </>
+    </div>
   );
 }
 
