@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import react from '@vitejs/plugin-react';
 
 export default {
   content: [
@@ -9,13 +8,16 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Poppins', 'system-ui', 'sans-serif'],
+        pet: ['Poppins', 'system-ui', 'sans-serif'],
       },
       colors: {
         primary: '#2F4156',
+        lightPrimary:'#2f415677',
         warm: '#FD7E14',
+        font: '#F5EFED',
+        back: '#F8F9FA'
       },
     },
   },
-  plugins: [react()],
+  plugins: [],
 }
