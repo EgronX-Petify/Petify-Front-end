@@ -12,7 +12,11 @@ export default {
       },
       colors: {
         primary: '#2F4156',
+        lightPrimary:'#2f415677',
         warm: '#FD7E14',
+        font: '#F5EFED',
+        back: '#F8F9FA',
+        back2:'#417481'
       },
     },
   },
