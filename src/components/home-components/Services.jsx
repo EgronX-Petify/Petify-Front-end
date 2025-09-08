@@ -24,12 +24,13 @@ const Services = () => {
       photo: "src/public/home-media/pexels-goochie-poochie-19145890.jpg",
     },
   ];
+
   return (
-    <div className="flex flex-col justify-center items-center gap-10 py-10">
-      <div className="capitalize text-3xl font-semibold text-[#2F4156]">
+    <div className="flex flex-col justify-center items-center gap-10 py-10 px-5">
+      <div className="capitalize text-2xl md:text-3xl font-semibold text-[#2F4156] text-center">
         our service
       </div>
-      <div className="flex flex-wrap content-center items-center gap-7">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
         {services.map((service, index) => (
           <Service service={service} key={index} />
         ))}

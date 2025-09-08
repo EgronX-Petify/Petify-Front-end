@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../public/logo55.png"
+import logo from "../public/logo55.png";
 
 const Footer = () => {
   return (
     <footer className="font-[Poppins] relative bottom-0 w-full py-[20px] flex flex-col gap-[30px] bg-linear-[17deg,#8195a1_10%,#9ba6b0a1_100%] text-[#2f4156]">
       <svg
-      className="hidden md:block absolute inset-0 w-[759px] h-[160px] z-10 top-7"
+        className="hidden md:block absolute inset-0 w-[759px] h-[160px] z-10 top-7"
         width="759"
         height="160"
         viewBox="0 0 759 260"
@@ -316,11 +316,7 @@ const Footer = () => {
       </svg>
       <div className="relative z-20 flex  flex-wrap justify-evenly text-center items-center">
         <div className="w-[150px] h-[150px] overflow-hidden flex items-center">
-          <img
-            src={logo}
-            alt=""
-            className="w-[150px] h-[150px]"
-          />
+          <img src={logo} alt="" className="w-[150px] h-[150px]" />
         </div>
         <nav className="flex flex-col">
           <h6 className="font-bold pb-2">Company</h6>
@@ -348,10 +344,8 @@ const Footer = () => {
       <aside className="flex justify-center py-[20px]">
         <p>Copyright ©2025 - All right reserved by Petify</p>
       </aside>
-    
     </footer>
   );
-
 };
 
 export default Footer;
