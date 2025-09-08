@@ -15,7 +15,8 @@ export default {
         lightPrimary:'#2f415677',
         warm: '#FD7E14',
         font: '#F5EFED',
-        back: '#F8F9FA'
+        back: '#F8F9FA',
+        back2:'#417481'
       },
     },
   },
