@@ -10,7 +10,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`${style.navbar} px-4 py-3 flex items-center justify-between`}
+      className={`${style.navbar} sticky top-0 z-50 px-4 py-3 flex items-center justify-between`}
     >
       {/* Logo */}
       <div className="w-[70px] h-[70px] flex items-center">
@@ -141,7 +141,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="absolute top-[60px] right-0 w-[50%]  px-3  bg-white shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
+        <div className="absolute top-[59px] right-0 w-[50%]  px-3  bg-white shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
           <NavLink
             to="/"
             onClick={() => setIsOpen(false)}
