@@ -31,14 +31,13 @@ const TimeSelect = ({ onChange }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-[50%] h-fit max-w-md p-4  rounded-lg shadow-sm bg-[#F8F9FA]">
+    <div className="flex flex-col gap-4 w-full md:w-[50%] h-fit max-w-md p-4 rounded-lg shadow-sm bg-[#F8F9FA]">
       <label className="text-sm font-medium text-gray-700">Select Time</label>
 
-      {/* Horizontal Options */}
-      <div className="flex justify-center gap-4">
+      <div className="flex w-fit justify-center gap-2 md:gap-4 ">
         <button
           type="button"
-          className={`px-2 py-1 rounded-lg  border cursor-pointer ${
+          className={`px-3 py-1 rounded-lg border cursor-pointer ${
             option === "allDay"
               ? "bg-[#417481] text-white border-[#417481]"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -50,7 +49,7 @@ const TimeSelect = ({ onChange }) => {
 
         <button
           type="button"
-          className={`px-2 py-1 rounded-lg border cursor-pointer  ${
+          className={`px-3 py-1 rounded-lg border cursor-pointer ${
             option === "certain"
               ? "bg-[#417481] text-white border-[#417481]"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -62,7 +61,7 @@ const TimeSelect = ({ onChange }) => {
 
         <button
           type="button"
-          className={`px-2 py-1  rounded-lg border ${
+          className={`px-3 py-1 rounded-lg border cursor-pointer ${
             option === "range"
               ? "bg-[#417481] text-white border-[#417481]"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -73,29 +72,28 @@ const TimeSelect = ({ onChange }) => {
         </button>
       </div>
 
-      {/* Conditional Inputs */}
       {option === "certain" && (
         <input
           type="time"
           value={certainTime}
           onChange={handleCertainChange}
-          className="px-3 py-2 border rounded-lg text-[#2f415677]  focus:ring-2 focus:ring-[#417481]"
+          className="px-3 py-2 border rounded-lg text-[#2f415677] focus:ring-2 focus:ring-[#417481]"
         />
       )}
 
       {option === "range" && (
-        <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row gap-2">
           <input
             type="time"
             value={timeRange.from}
             onChange={(e) => handleRangeChange("from", e.target.value)}
-            className="px-3 py-2  text-[#2f415677] border rounded-lg focus:ring-2 focus:ring-[#417481] w-full"
+            className="px-3 py-2 text-[#2f415677] border rounded-lg focus:ring-2 focus:ring-[#417481] w-full"
           />
           <input
             type="time"
             value={timeRange.to}
             onChange={(e) => handleRangeChange("to", e.target.value)}
-            className="px-3 py-2 text-[#2f415677]  border rounded-lg focus:ring-2 focus:ring-[#417481] w-full"
+            className="px-3 py-2 text-[#2f415677] border rounded-lg focus:ring-2 focus:ring-[#417481] w-full"
           />
         </div>
       )}

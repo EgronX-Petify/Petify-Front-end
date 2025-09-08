@@ -51,12 +51,12 @@ const AllPetServices = () => {
 
   return (
     <>
-    <div className="flex justify-evenly flex-wrap gap-4 bg-white w-[80%] m-auto p-7 rounded-xl my-7">
-      {petServices.map((service, id) => (
-        <PetService service={service} key={id} />
-      ))}
-    </div>
-    <ServiceBook />
+      <div className="flex justify-evenly flex-wrap gap-4 bg-white w-[80%] m-auto p-7 rounded-xl my-7">
+        {petServices.map((service, id) => (
+          <PetService service={service} key={id} />
+        ))}
+      </div>
+      <ServiceBook />
     </>
   );
 };
