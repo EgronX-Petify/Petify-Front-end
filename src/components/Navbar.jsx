@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "../css-modules/Navbar.module.css";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineCancel } from "react-icons/md";
 import logo from "../public/logo55.png";
@@ -71,31 +71,37 @@ const Navbar = () => {
 
       <div className="hidden md:flex gap-4 items-center">
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-            <div className="indicator">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 
+          <Link to="/shop/cart">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle"
+            >
+              <div className="indicator">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  {" "}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 
                   2.293c-.63.63-.184 1.707.707 1.707H17m0 
                   0a2 2 0 100 4 2 2 0 000-4zm-8 
                   2a2 2 0 11-4 0 2 2 0 014 0z"
-                />{" "}
-              </svg>
-              <span className="badge badge-xs indicator-item bg-[#FD7E14] text-white">
-                0
-              </span>
+                  />{" "}
+                </svg>
+                <span className="badge badge-xs indicator-item bg-[#FD7E14] text-white">
+                  0
+                </span>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
 
         {/* profile */}
@@ -127,17 +133,48 @@ const Navbar = () => {
           </ul>
         </div> */}
 
-        <button className={style.btn}>Login</button>
+        <Link to="/login">
+          <button className={style.btn}>Login</button>
+        </Link>
       </div>
 
-      <div className="md:hidden flex items-center">
-        <button onClick={() => setIsOpen(!isOpen)} className="text-[#2F4156]">
-          {isOpen ? (
-            <MdOutlineCancel size={28} />
-          ) : (
-            <RxHamburgerMenu size={28} />
-          )}
-        </button>
+      <div className="flex md:hidden gap-5">
+        <Link to="/shop/cart">
+          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+            <div className="indicator">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                {" "}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 
+                  2.293c-.63.63-.184 1.707.707 1.707H17m0 
+                  0a2 2 0 100 4 2 2 0 000-4zm-8 
+                  2a2 2 0 11-4 0 2 2 0 014 0z"
+                />{" "}
+              </svg>
+              <span className="badge badge-xs indicator-item bg-[#FD7E14] text-white">
+                0
+              </span>
+            </div>
+          </div>
+        </Link>
+        <div className="md:hidden flex items-center">
+          <button onClick={() => setIsOpen(!isOpen)} className="text-[#2F4156]">
+            {isOpen ? (
+              <MdOutlineCancel size={28} />
+            ) : (
+              <RxHamburgerMenu size={28} />
+            )}
+          </button>
+        </div>
       </div>
 
       {isOpen && (
@@ -169,6 +206,15 @@ const Navbar = () => {
           >
             Pet Services
           </NavLink>
+          <NavLink
+            to="/beginner-guide"
+            onClick={() => setIsOpen(false)}
+            className={({ isActive }) =>
+              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+            }
+          >
+            Beginner Guide
+          </NavLink>
 
           <NavLink
             to="/profile/appointments"
@@ -179,14 +225,15 @@ const Navbar = () => {
           >
             Appointments
           </NavLink>
+
           <NavLink
-            to="/beginner-guide"
+            to="/profile/orders"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
               isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
             }
           >
-            Beginner Guide
+            Orders
           </NavLink>
           <NavLink
             to="/profile/info"
@@ -195,15 +242,6 @@ const Navbar = () => {
               isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
             }
           >
-            <NavLink
-              to="/profile/orders"
-              onClick={() => setIsOpen(false)}
-              className={({ isActive }) =>
-                isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-              }
-            >
-              Orders
-            </NavLink>
             Profile
           </NavLink>
           <NavLink
@@ -213,8 +251,10 @@ const Navbar = () => {
           >
             Signout
           </NavLink>
-
-          <button className={`${style.btn} md:hidden`}>Login</button>
+          <Link to="/login">
+            {" "}
+            <button className={`${style.btn} md:hidden`}>Login</button>
+          </Link>
         </div>
       )}
     </nav>

@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: var(--primary);
   height: 60px;
   width: 100%;
@@ -23,4 +23,5 @@
   background-color: var(--primary);
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
