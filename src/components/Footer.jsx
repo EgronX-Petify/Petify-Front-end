@@ -314,7 +314,7 @@ const Footer = () => {
           fill="#F8F9FA"
         />
       </svg>
-      <div className="relative z-20 flex  flex-wrap justify-evenly text-center items-center">
+      <div className="relative z-20 flex  flex-wrap justify-evenly text-center items-start md:pt-10">
         <div className="w-[150px] h-[150px] overflow-hidden flex items-center">
           <img src={logo} alt="" className="w-[150px] h-[150px]" />
         </div>
