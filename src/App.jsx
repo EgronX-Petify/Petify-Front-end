@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Vets from "./pages/Vets";
+import Grooming from "./pages/PetServices";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Home />
       <Shop />
       <Vets />
+      <Grooming />
       <Footer />
     </div>
   );
