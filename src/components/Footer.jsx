@@ -314,25 +314,25 @@ const Footer = () => {
           fill="#F8F9FA"
         />
       </svg>
-      <div className="relative z-20 flex  flex-wrap justify-evenly text-center items-center">
+      <div className="relative z-20 flex  flex-wrap justify-evenly text-center items-start md:pt-10">
         <div className="w-[150px] h-[150px] overflow-hidden flex items-center">
           <img src={logo} alt="" className="w-[150px] h-[150px]" />
         </div>
         <nav className="flex flex-col">
           <h6 className="font-bold pb-2">Company</h6>
           <Link to="/">Home</Link>
-          <a className="">About Us</a>
+          <Link to="/beginner-guide">About Us</Link>
         </nav>
         <nav className="flex flex-col h-full">
           <h6 className="font-bold pb-2">Useful Links</h6>
-          <a className="">New Products</a>
-          <a className="">Best Sellers</a>
-          <a className="">Discount</a>
+          <Link to="/shop">Products</Link>
+          <Link to="/nearby-places">Nearby Places</Link>
+          <Link to="/vets">Vets</Link>
         </nav>
         <nav className="flex flex-col">
           <h6 className="font-bold pb-2">Customer Services</h6>
-          <a className="">Shipping</a>
-          <a className="">Order Tracking</a>
+          <Link to="/profile/orders">Order Tracking</Link>
+          <Link to="/profile/appointments">Appointments</Link>
         </nav>
         <nav className="flex flex-col">
           <h6 className="font-bold pb-2">Contact</h6>

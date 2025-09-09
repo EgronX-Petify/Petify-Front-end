@@ -16,7 +16,6 @@ const Navbar = () => {
         <img src={logo} alt="Logo" className="w-[60px] h-[60px]" />
       </div>
 
-      {/* Desktop Links */}
       <div className="hidden md:flex justify-between w-[500px] font-semibold">
         <NavLink
           to="/"
@@ -27,6 +26,16 @@ const Navbar = () => {
           }
         >
           Home
+        </NavLink>
+        <NavLink
+          to="/shop"
+          className={({ isActive }) =>
+            isActive
+              ? "px-1.5 text-[#FD7E14] border-b-2 border-b-[#FD7E14]"
+              : "px-1.5"
+          }
+        >
+          Shop
         </NavLink>
         <NavLink
           to="/vets"
@@ -61,7 +70,6 @@ const Navbar = () => {
       </div>
 
       <div className="hidden md:flex gap-4 items-center">
-        {/* cart */}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <div className="indicator">
@@ -122,7 +130,6 @@ const Navbar = () => {
         <button className={style.btn}>Login</button>
       </div>
 
-      {/* mobile icon */}
       <div className="md:hidden flex items-center">
         <button onClick={() => setIsOpen(!isOpen)} className="text-[#2F4156]">
           {isOpen ? (
@@ -133,7 +140,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* mobile menu */}
       {isOpen && (
         <div className="absolute top-[59px] right-0 w-[50%]  px-3  bg-white shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
           <NavLink
@@ -165,24 +171,6 @@ const Navbar = () => {
           </NavLink>
 
           <NavLink
-            to="/profile/info"
-            onClick={() => setIsOpen(false)}
-            className={({ isActive }) =>
-              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-            }
-          >
-            Profile
-          </NavLink>
-          <NavLink
-            to="/profile/orders"
-            onClick={() => setIsOpen(false)}
-            className={({ isActive }) =>
-              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-            }
-          >
-            Orders
-          </NavLink>
-          <NavLink
             to="/profile/appointments"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
@@ -201,16 +189,31 @@ const Navbar = () => {
             Beginner Guide
           </NavLink>
           <NavLink
-            to="/"
+            to="/profile/info"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
               isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
             }
           >
+            <NavLink
+              to="/profile/orders"
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+              }
+            >
+              Orders
+            </NavLink>
+            Profile
+          </NavLink>
+          <NavLink
+            to="/login"
+            onClick={() => setIsOpen(false)}
+            className="text-[#FF383C] font-semibold"
+          >
             Signout
           </NavLink>
 
-          {/* mobile login */}
           <button className={`${style.btn} md:hidden`}>Login</button>
         </div>
       )}
