@@ -55,7 +55,7 @@ const Navbar = () => {
               : "px-1.5"
           }
         >
-          Grooming
+          Pet Services
         </NavLink>
         <NavLink
           to="/beginner-guide"
