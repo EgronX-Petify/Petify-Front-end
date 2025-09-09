@@ -48,7 +48,7 @@ const Navbar = () => {
           Vets
         </NavLink>
         <NavLink
-          to="/grooming"
+          to="/services"
           className={({ isActive }) =>
             isActive
               ? "px-1.5 text-[#FD7E14] border-b-2 border-b-[#FD7E14]"
