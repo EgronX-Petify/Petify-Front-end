@@ -3,7 +3,7 @@ import style from "../css-modules/Navbar.module.css";
 import { NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineCancel } from "react-icons/md";
-import logo from "../public/logo55.png"
+import logo from "../public/logo55.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,16 +12,10 @@ const Navbar = () => {
     <nav
       className={`${style.navbar} sticky top-0 z-50 px-4 py-3 flex items-center justify-between`}
     >
-      {/* Logo */}
       <div className="w-[70px] h-[70px] flex items-center">
-        <img
-          src={logo}
-          alt="Logo"
-          className="w-[60px] h-[60px]"
-        />
+        <img src={logo} alt="Logo" className="w-[60px] h-[60px]" />
       </div>
 
-      {/* Desktop Links */}
       <div className="hidden md:flex justify-between w-[500px] font-semibold">
         <NavLink
           to="/"
@@ -32,6 +26,16 @@ const Navbar = () => {
           }
         >
           Home
+        </NavLink>
+        <NavLink
+          to="/shop"
+          className={({ isActive }) =>
+            isActive
+              ? "px-1.5 text-[#FD7E14] border-b-2 border-b-[#FD7E14]"
+              : "px-1.5"
+          }
+        >
+          Shop
         </NavLink>
         <NavLink
           to="/vets"
@@ -65,9 +69,7 @@ const Navbar = () => {
         </NavLink>
       </div>
 
-      {/* Right Side (Cart + Profile + Login) */}
       <div className="hidden md:flex gap-4 items-center">
-        {/* cart */}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <div className="indicator">
@@ -128,7 +130,6 @@ const Navbar = () => {
         <button className={style.btn}>Login</button>
       </div>
 
-      {/* Mobile Hamburger */}
       <div className="md:hidden flex items-center">
         <button onClick={() => setIsOpen(!isOpen)} className="text-[#2F4156]">
           {isOpen ? (
@@ -139,7 +140,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
         <div className="absolute top-[59px] right-0 w-[50%]  px-3  bg-white shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
           <NavLink
@@ -167,7 +167,7 @@ const Navbar = () => {
               isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
             }
           >
-           Pet Services
+            Pet Services
           </NavLink>
 
           <NavLink
@@ -197,7 +197,7 @@ const Navbar = () => {
           >
             Appointments
           </NavLink>
-                    <NavLink
+          <NavLink
             to="/beginner-guide"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
@@ -216,7 +216,6 @@ const Navbar = () => {
             Signout
           </NavLink>
 
-          {/* mobile login */}
           <button className={`${style.btn} md:hidden`}>Login</button>
         </div>
       )}
