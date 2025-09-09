@@ -23,4 +23,6 @@
   background-color: var(--primary);
   justify-content: center;
   align-items: center;
+  font-weight:600;
+  
 }

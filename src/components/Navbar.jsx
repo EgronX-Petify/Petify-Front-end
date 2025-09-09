@@ -80,7 +80,6 @@ const Navbar = () => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                {" "}
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -89,7 +88,7 @@ const Navbar = () => {
                   2.293c-.63.63-.184 1.707.707 1.707H17m0 
                   0a2 2 0 100 4 2 2 0 000-4zm-8 
                   2a2 2 0 11-4 0 2 2 0 014 0z"
-                />{" "}
+                />
               </svg>
               <span className="badge badge-xs indicator-item bg-[#FD7E14] text-white">
                 0
@@ -97,36 +96,6 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-
-        {/* profile */}
-        {/* <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-10 rounded-full">
-              <img
-                alt="User Avatar"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
-            </div>
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <a className="justify-between">
-                Profile <span className="badge">New</span>
-              </a>
-            </li>
-            <li>
-              <a>Logout</a>
-            </li>
-          </ul>
-        </div> */}
-
         <button className={style.btn}>Login</button>
       </div>
 
@@ -169,7 +138,6 @@ const Navbar = () => {
           >
             Pet Services
           </NavLink>
-
           <NavLink
             to="/profile/info"
             onClick={() => setIsOpen(false)}
@@ -215,7 +183,6 @@ const Navbar = () => {
           >
             Signout
           </NavLink>
-
           <button className={`${style.btn} md:hidden`}>Login</button>
         </div>
       )}

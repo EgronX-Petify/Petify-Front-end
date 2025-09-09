@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Poppins', 'system-ui', 'sans-serif'],
+        pet: ['Poppins', 'system-ui', 'sans-serif'],
       },
       colors: {
         primary: '#2F4156',
