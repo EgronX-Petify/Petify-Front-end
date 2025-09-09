@@ -15,6 +15,7 @@ function App() {
       <Shop />
       <Vets />
       <Grooming />
+      <BeginnerGuide />
       <Footer />
     </div>
   );
