@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Vets from "./pages/Vets";
 import Grooming from "./pages/PetServices";
+import BeginnerGuide from "./pages/BeginnerGuide";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <Shop />
       <Vets />
       <Grooming />
-      <BeginnerGuide />
+      <BeginnerGuide/>
       <Footer />
     </div>
   );
