@@ -55,7 +55,7 @@ const Navbar = () => {
               : "px-1.5"
           }
         >
-          Grooming
+          Pet Services
         </NavLink>
         <NavLink
           to="/beginner-guide"
@@ -139,24 +139,6 @@ const Navbar = () => {
             Pet Services
           </NavLink>
           <NavLink
-            to="/profile/info"
-            onClick={() => setIsOpen(false)}
-            className={({ isActive }) =>
-              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-            }
-          >
-            Profile
-          </NavLink>
-          <NavLink
-            to="/profile/orders"
-            onClick={() => setIsOpen(false)}
-            className={({ isActive }) =>
-              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-            }
-          >
-            Orders
-          </NavLink>
-          <NavLink
             to="/profile/appointments"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
@@ -175,11 +157,27 @@ const Navbar = () => {
             Beginner Guide
           </NavLink>
           <NavLink
-            to="/"
+            to="/profile/info"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
               isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
             }
+          >
+            <NavLink
+              to="/profile/orders"
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+              }
+            >
+              Orders
+            </NavLink>
+            Profile
+          </NavLink>
+          <NavLink
+            to="/login"
+            onClick={() => setIsOpen(false)}
+            className="text-[#FF383C] font-semibold"
           >
             Signout
           </NavLink>
