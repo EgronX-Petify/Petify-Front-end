@@ -2,7 +2,7 @@ import React from "react";
 import SignNavbar from "../components/SignNavbar";
 import { Link } from "react-router-dom";
 
-const LoginForm = () => {
+const Login = () => {
   return (
     <>
       <SignNavbar />
@@ -39,6 +39,15 @@ const LoginForm = () => {
                   placeholder="Enter your password"
                   className="w-full px-4 py-2 border-[1px] border-solid border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
                 />
+                {/* Forgot password link */}
+                <div className="flex justify-end mt-2">
+                  <Link 
+                    to="/forgot-password"
+                    className="text-sm text-[#FD7E14] hover:underline"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
               </div>
 
               <Link to="/">
@@ -74,4 +83,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default Login;
