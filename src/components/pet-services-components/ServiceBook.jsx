@@ -51,6 +51,10 @@ const ServiceBook = () => {
             Confirm
           </button>
         </div>
+        <div>
+          <label htmlFor="emergency" className="text-sm font-medium text-[#2F4156]">Emergency Service? </label>
+          <input type="checkbox" name="emergency" id="emergency" className="mx-2" />
+        </div>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ const EditUserInfo = () => {
     photo: "https://i.pravatar.cc/150?img=12",
     username: "mayno123",
     email: "mayno@example.com",
+    phone: "+20123456789",
     password: "1234skjhs",
   };
 
@@ -25,7 +26,9 @@ const EditUserInfo = () => {
       <form className="space-y-4">
         {/* Username */}
         <div>
-          <label className="block text-sm font-medium text-[#2F4156]">Username</label>
+          <label className="block text-sm font-medium text-[#2F4156]">
+            Username
+          </label>
           <input
             type="text"
             name="username"
@@ -36,7 +39,9 @@ const EditUserInfo = () => {
 
         {/* Email */}
         <div>
-          <label className="block text-sm font-medium text-[#2F4156]">Email</label>
+          <label className="block text-sm font-medium text-[#2F4156]">
+            Email
+          </label>
           <input
             type="email"
             name="email"
@@ -44,10 +49,23 @@ const EditUserInfo = () => {
             className="w-full p-2 border border-gray-200 rounded-lg mt-1 placeholder:text-[#2f4156b0] focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-[#2F4156]">
+            Email
+          </label>
+          <input
+            type="phone"
+            name="phone"
+            placeholder={formData.phone}
+            className="w-full p-2 border border-gray-200 rounded-lg mt-1 placeholder:text-[#2f4156b0] focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
+          />
+        </div>
 
         {/* Password */}
         <div>
-          <label className="block text-sm font-medium text-[#2F4156]">Password</label>
+          <label className="block text-sm font-medium text-[#2F4156]">
+            Password
+          </label>
           <div className="flex items-center gap-2">
             <input
               type="text"
@@ -72,7 +90,9 @@ const EditUserInfo = () => {
 
         {/* Upload Photo */}
         <div>
-          <label className="block text-sm font-medium text-[#2F4156]">Profile Photo</label>
+          <label className="block text-sm font-medium text-[#2F4156]">
+            Profile Photo
+          </label>
           <input
             type="file"
             name="photo"

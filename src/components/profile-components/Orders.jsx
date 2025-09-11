@@ -79,7 +79,7 @@ const Orders = () => {
                   <td className="p-3">
                     {isCancelable && (
                       <button
-                        className="cursor-pointer px-3 py-1 text-sm rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition"
+                        className="cursor-pointer px-3 py-1 text-sm rounded-lg bg-[#ff383be0] text-white hover:bg-[#ff383b] transition"
                       >
                         Cancel
                       </button>
@@ -123,7 +123,7 @@ const Orders = () => {
               {isCancelable && (
                 <button
                   onClick={() => onCancel(order.id)}
-                  className="self-end mt-2 px-3 py-1 text-sm rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition"
+                  className="self-end mt-2 px-3 py-1 text-sm rounded-lg bg-[#ff383be0] text-white hover:bg-[#ff383b] transition"
                 >
                   Cancel
                 </button>

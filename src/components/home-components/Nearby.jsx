@@ -14,7 +14,7 @@ const Nearby = () => {
           Locate grooming salons, vet clinics, and pet-friendly spots around you
           in seconds.
         </p>
-        <Link to="nearby-place">
+        <Link to="nearby-places">
           <button className="hidden mx-auto md:mx-0 md:flex w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer hover:bg-[#1f2c3d] transition">
             Search Now
           </button>

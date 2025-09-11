@@ -7,6 +7,7 @@ const UserInfo = () => {
     username: "mayno123",
     email: "mayno@example.com",
     password: "1234skjhs",
+    phone: "+20123456789",
     pets: [
       { name: "Max", species: "Dog" },
       { name: "Luna", species: "Cat" },
@@ -44,6 +45,10 @@ const UserInfo = () => {
             <span className="font-medium text-[#2F4156]">Email:</span>{" "}
             {user.email}
           </p>
+          <p className="bg-white p-2 rounded-lg text-sm md:text-base">
+            <span className="font-medium text-[#2F4156]">Phone Number:</span>{" "}
+            {user.phone}
+          </p>
           <div className="bg-white p-2 rounded-lg flex justify-between items-center text-sm md:text-base ">
             <span className="font-medium text-[#2F4156]">Password:</span>
             <button
@@ -70,9 +75,10 @@ const UserInfo = () => {
         {/* Edit Profile Button */}
         <div className="mt-6 flex justify-center md:justify-end">
           <Link to="/edit-user-info">
-          <button className="cursor-pointer px-5 py-2 rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition shadow-md">
-            Edit Profile
-          </button></Link>
+            <button className="cursor-pointer px-5 py-2 rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition shadow-md">
+              Edit Profile
+            </button>
+          </Link>
         </div>
       </div>
     </div>

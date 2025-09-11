@@ -22,9 +22,14 @@ const UpcomingAppointments = ({ appointments }) => {
                 <p className="text-sm text-gray-500">for: name</p>
               </div>
 
-              <button className="cursor-pointer px-4 py-2 text-sm rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition">
-                Cancel
-              </button>
+              <div className="flex flex-col gap-2">
+                                <button className="cursor-pointer px-4 py-2 text-sm rounded-lg bg-[#2f4156a0] text-white hover:bg-[#2f4156] transition">
+                  Reschedule
+                </button>
+                <button className="cursor-pointer px-4 py-2 text-sm rounded-lg bg-[#ff383be0] text-white hover:bg-[#ff383b] transition">
+                  Cancel
+                </button>
+              </div>
             </div>
           ))}
         </div>
