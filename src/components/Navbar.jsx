@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "../css-modules/Navbar.module.css";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineCancel } from "react-icons/md";
 import logo from "../public/logo55.png";
@@ -96,7 +96,8 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <button className={style.btn}>Login</button>
+        <Link to="/login">
+        <button className={style.btn}>Login</button></Link>
       </div>
 
       <div className="md:hidden flex items-center">
@@ -181,7 +182,8 @@ const Navbar = () => {
           >
             Signout
           </NavLink>
-          <button className={`${style.btn} md:hidden`}>Login</button>
+          <Link to="/login">
+          <button className={`${style.btn} md:hidden`}>Login</button></Link>
         </div>
       )}
     </nav>
