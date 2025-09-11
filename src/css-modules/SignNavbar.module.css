@@ -21,4 +21,5 @@
   background-color: var(--primary);
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }

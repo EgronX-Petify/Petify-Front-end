@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import react from '@vitejs/plugin-react';
 
 export default {
   content: [
@@ -13,9 +12,13 @@ export default {
       },
       colors: {
         primary: '#2F4156',
+        lightPrimary:'#2f415677',
         warm: '#FD7E14',
+        font: '#F5EFED',
+        back: '#F8F9FA',
+        back2:'#417481'
       },
     },
   },
-  plugins: [react()],
+  plugins: [],
 }

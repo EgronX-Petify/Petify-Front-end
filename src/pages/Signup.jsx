@@ -1,11 +1,9 @@
 import React from "react";
-import SignNavbar from "../components/SignNavbar";
 import logo from "../public/logo55.png";
 
 const Signup = () => {
   return (
     <>
-      <SignNavbar />
       <div className="my-[30px] flex flex-col md:flex-row justify-evenly items-center min-h-[600px] px-[20px] md:px-[30px] gap-8">
         <div className="flex flex-grow items-center justify-start h-full bg-gray-50 shadow-lg p-2 rounded-lg w-full md:w-auto">
           <div className="flex flex-col justify-center w-full p-6 md:p-8 max-w-md min-h-[400px] md:min-h-[600px]">
