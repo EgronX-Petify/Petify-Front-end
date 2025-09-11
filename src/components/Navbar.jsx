@@ -102,9 +102,37 @@ const Navbar = () => {
             </div>
           </div>
         </Link>
-        <Link to="/login">
+                {/* profile */}
+        <div className="cursor-pointer dropdown dropdown-end">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost btn-circle avatar"
+          >
+            <div className="w-10 rounded-full">
+              <img
+                alt="User Avatar"
+                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+              />
+            </div>
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
+          >
+            <li>
+              <Link to="/profile" className="justify-between">
+                Profile
+              </Link>
+            </li>
+            <li>
+              <Link to="/login" className="text-[#FF383C]">Logout</Link>
+            </li>
+          </ul>
+        </div>
+        {/* <Link to="/login">
           <button className={style.btn}>Login</button>
-        </Link>
+        </Link> */}
       </div>
 
       <div className="md:hidden flex items-center">
