@@ -97,7 +97,8 @@ const Navbar = () => {
           </div>
         </div>
         <Link to="/login">
-        <button className={style.btn}>Login</button></Link>
+          <button className={style.btn}>Login</button>
+        </Link>
       </div>
 
       <div className="md:hidden flex items-center">
@@ -122,6 +123,15 @@ const Navbar = () => {
             Home
           </NavLink>
           <NavLink
+            to="/shop"
+            onClick={() => setIsOpen(false)}
+            className={({ isActive }) =>
+              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+            }
+          >
+            Shop
+          </NavLink>
+          <NavLink
             to="/vets"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
@@ -140,15 +150,6 @@ const Navbar = () => {
             Pet Services
           </NavLink>
           <NavLink
-            to="/profile/appointments"
-            onClick={() => setIsOpen(false)}
-            className={({ isActive }) =>
-              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-            }
-          >
-            Appointments
-          </NavLink>
-          <NavLink
             to="/beginner-guide"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
@@ -158,21 +159,30 @@ const Navbar = () => {
             Beginner Guide
           </NavLink>
           <NavLink
+            to="/profile/appointments"
+            onClick={() => setIsOpen(false)}
+            className={({ isActive }) =>
+              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+            }
+          >
+            Appointments
+          </NavLink>
+          <NavLink
+            to="/profile/orders"
+            onClick={() => setIsOpen(false)}
+            className={({ isActive }) =>
+              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+            }
+          >
+            Orders
+          </NavLink>
+          <NavLink
             to="/profile/info"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
               isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
             }
           >
-            <NavLink
-              to="/profile/orders"
-              onClick={() => setIsOpen(false)}
-              className={({ isActive }) =>
-                isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-              }
-            >
-              Orders
-            </NavLink>
             Profile
           </NavLink>
           <NavLink
@@ -183,7 +193,8 @@ const Navbar = () => {
             Signout
           </NavLink>
           <Link to="/login">
-          <button className={`${style.btn} md:hidden`}>Login</button></Link>
+            <button className={`${style.btn} md:hidden`}>Login</button>
+          </Link>
         </div>
       )}
     </nav>

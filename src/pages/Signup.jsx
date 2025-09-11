@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../public/logo55.png";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   return (
@@ -72,12 +73,12 @@ const Signup = () => {
 
           <p className="text-center text-[#2f415677] mt-4 text-sm md:text-base">
             Already have an account?{" "}
-            <a
-              href="#"
+            <Link
+              to="/login"
               className="font-semibold text-[#FD7E14] border-b-[2px] pb-[1px] px-1"
             >
               Sign In
-            </a>
+            </Link>
           </p>
         </div>
       </div>
