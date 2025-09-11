@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import style from "../css-modules/SignNavbar.module.css";
 import { Link, NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineCancel } from "react-icons/md";
-import logo from "../public/logo55.png";
+import logo from "../../public/logo55.png";
+import style from "./SignNavbar.module.css"
 
 const SignNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -178,7 +178,7 @@ const SignNavbar = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute top-[59px] right-0 w-[50%]  px-3  bg-white shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
+        <div className="absolute top-[59px] right-0 w-[50%]  px-3 bg-[linear-gradient(17deg,#8195a1_60%,#9ba6b0a1_100%)] shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
           <NavLink
             to="/"
             onClick={() => setIsOpen(false)}
