@@ -344,8 +344,10 @@ const Footer = () => {
       <aside className="flex justify-center py-[20px]">
         <p>Copyright ©2025 - All right reserved by Petify</p>
       </aside>
+    
     </footer>
   );
+
 };
 
 export default Footer;
