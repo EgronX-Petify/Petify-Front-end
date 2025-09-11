@@ -1,5 +1,6 @@
 import React from "react";
 import locPhoto from "../../public/home-media/pexels-lara-jameson-8828418.jpg";
+import { Link } from "react-router-dom";
 
 const Nearby = () => {
   return (
@@ -13,16 +14,20 @@ const Nearby = () => {
           Locate grooming salons, vet clinics, and pet-friendly spots around you
           in seconds.
         </p>
-        <button className="hidden mx-auto md:mx-0 md:flex w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer hover:bg-[#1f2c3d] transition">
-          Search Now
-        </button>
+        <Link to="nearby-place">
+          <button className="hidden mx-auto md:mx-0 md:flex w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer hover:bg-[#1f2c3d] transition">
+            Search Now
+          </button>
+        </Link>
       </div>
       <div className="w-full md:w-[400px] h-[250px] md:h-[400px] flex justify-center items-center overflow-hidden">
         <img src={locPhoto} alt="" className="w-full h-full object-cover" />
       </div>
-      <button className="md:hidden mx-auto md:mx-0 flex w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer hover:bg-[#1f2c3d] transition">
-        Search Now
-      </button>
+      <Link to="nearby-place">
+        <button className="md:hidden mx-auto md:mx-0 flex w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer hover:bg-[#1f2c3d] transition">
+          Search Now
+        </button>
+      </Link>
     </div>
   );
 };

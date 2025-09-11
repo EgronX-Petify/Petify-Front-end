@@ -1,5 +1,6 @@
 import React from "react";
 import BeginnerHero from "../components/beginner-guide-components/BeginnerHero";
+import { Link } from "react-router-dom";
 
 const BeginnerGuide = () => {
   const pets = [
@@ -30,15 +31,36 @@ const BeginnerGuide = () => {
   ];
 
   const supportStages = [
-    { id: 1, stage: "Vet Visits", description: "health checks & vaccines" },
+    {
+      id: 1,
+      stage: "Vet Visits",
+      description: "health checks & vaccines",
+      section: "vets",
+    },
     {
       id: 2,
       stage: "Grooming",
       description: "fur care, bathing, nail trimming",
+      section: "services",
     },
-    { id: 3, stage: "Training", description: "obedience & behavior" },
-    { id: 4, stage: "Pet Suppliers", description: "food, medicine, toys" },
-    { id: 5, stage: "Pet Sitting", description: "when you travel" },
+    {
+      id: 3,
+      stage: "Training",
+      description: "obedience & behavior",
+      section: "services",
+    },
+    {
+      id: 4,
+      stage: "Pet Suppliers",
+      description: "food, medicine, toys",
+      section: "shop",
+    },
+    {
+      id: 5,
+      stage: "Pet Sitting",
+      description: "when you travel",
+      section: "services",
+    },
   ];
 
   const petCareGuides = [
@@ -92,9 +114,11 @@ const BeginnerGuide = () => {
             services that match their lifestyle.
           </div>
         </div>
-        <button className="w-fit px-5 py-2 rounded-[10px] bg-[#2F4156] text-white font-semibold">
-          Get Started
-        </button>
+        <Link to="/signup">
+          <button className="w-fit px-5 py-2 rounded-[10px] bg-[#2F4156] text-white font-semibold">
+            Get Started
+          </button>
+        </Link>
       </div>
 
       <div className="flex flex-col items-center p-6 md:p-10 gap-4 bg-[#F8F9FA]">
@@ -231,9 +255,11 @@ const BeginnerGuide = () => {
               key={stage.id}
               className="flex flex-col items-center gap-1 px-2 text-center"
             >
-              <p className="text-[#2F4156] font-semibold text-lg md:text-2xl">
-                {stage.stage}
-              </p>
+              <Link to={`/${stage.section}`}>
+                <p className="text-[#2F4156] font-semibold text-lg md:text-2xl">
+                  {stage.stage}
+                </p>
+              </Link>
               <p className="text-[#2f415677] text-sm md:text-base">
                 {stage.description}
               </p>

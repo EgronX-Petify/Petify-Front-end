@@ -7,7 +7,6 @@ const PetServices = () => {
     <div className='bg-[#F8F9FA]'>
       <GroomingHero />
       <AllPetServices />
-    
     </div>
   )
 }

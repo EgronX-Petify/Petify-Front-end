@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight } from "react-icons/fa";
 import upcomingPhoto from "../../public/home-media/pexels-mikhail-nilov-7469213.jpg";
+import { Link } from "react-router-dom";
 
 const Upcoming = () => {
   return (
@@ -20,9 +21,11 @@ const Upcoming = () => {
           Manage and view your scheduled vet visits and services all in one
           convenient dashboard.
         </p>
-        <button className="mx-auto md:mx-0 flex px-5 py-2 align-middle font-semibold rounded-3xl w-fit text-xl md:text-2xl bg-[#F8F9FA] transition cursor-pointer duration-300 ease-in-out hover:bg-gray-200 hover:scale-105">
-          <FaArrowRight className="text-[#FD7E14]" />
-        </button>
+        <Link to="/profile/appointments">
+          <button className="mx-auto flex px-5 py-2 align-middle font-semibold rounded-3xl w-fit text-xl md:text-2xl bg-[#F8F9FA] transition cursor-pointer duration-300 ease-in-out hover:bg-gray-200 hover:scale-105">
+            <FaArrowRight className="text-[#FD7E14]" />
+          </button>
+        </Link>
       </div>
     </div>
   );

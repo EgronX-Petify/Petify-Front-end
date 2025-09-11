@@ -1,5 +1,4 @@
 import React from "react";
-import PetServices from "../../pages/PetServices";
 import PetService from "./PetService";
 import ServiceBook from "./ServiceBook";
 
@@ -56,7 +55,6 @@ const AllPetServices = () => {
           <PetService service={service} key={id} />
         ))}
       </div>
-      <ServiceBook />
     </>
   );
 };

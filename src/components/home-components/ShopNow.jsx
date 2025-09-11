@@ -1,5 +1,6 @@
 import React from "react";
 import shopPhoto from "../../public/home-media/pexels-mateusz-3627236-8368423.jpg";
+import { Link } from "react-router-dom";
 
 const ShopNow = () => {
   return (
@@ -21,9 +22,11 @@ const ShopNow = () => {
           straight to your door.
         </p>
         <div className="flex justify-center md:justify-start">
-          <button className="flex w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer hover:bg-[#1f2d3a] transition">
-            Shop Now
-          </button>
+          <Link to="/shop">
+            <button className="flex w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer hover:bg-[#1f2d3a] transition">
+              Shop Now
+            </button>
+          </Link>
         </div>
       </div>
     </div>

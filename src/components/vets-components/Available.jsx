@@ -1,5 +1,6 @@
 import React from "react";
 import Vet from "./Vet";
+import { Link } from "react-router-dom";
 
 const Available = ({ vets }) => {
   return (
@@ -12,9 +13,16 @@ const Available = ({ vets }) => {
           <Vet key={index} vet={vet} />
         ))}
       </div>
-      <button className="capitalize flex w-fit px-5 py-4 align-middle rounded-[15px] bg-[#417481] text-[#F5EFED] font-semibold cursor-pointer duration-300 hover:bg-[#2F4156]">
-        book an apponitment
-      </button>
+      <Link to="/vets/book-vet">
+        <button className="capitalize flex w-fit px-5 py-4 align-middle rounded-[15px] bg-[#417481] text-[#F5EFED] font-semibold cursor-pointer duration-300 hover:bg-[#2F4156]">
+          book an apponitment
+        </button>
+      </Link>
+      <Link to="/vets/emergency">
+        <button className="capitalize flex w-fit px-5 py-4 align-middle rounded-[15px] bg-[#ff383be0] text-[#F5EFED] font-semibold cursor-pointer duration-300 hover:bg-[#ff383b]">
+          Emergency
+        </button>
+      </Link>
     </div>
   );
 };

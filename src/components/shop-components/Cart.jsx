@@ -1,5 +1,6 @@
 import React from "react";
 import CartItem from "./CartItem";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const cartItems = [
@@ -81,9 +82,10 @@ const Cart = () => {
               <span>${total.toFixed(2)}</span>
             </div>
           </div>
+          <Link to="/checkout" >
           <button className="w-full bg-[#FD7E14] hover:bg-[#e66f0c] text-white font-semibold py-3 rounded-lg mt-5">
             Checkout
-          </button>
+          </button></Link>
         </div>
       )}
     </div>

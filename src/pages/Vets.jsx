@@ -273,7 +273,6 @@ const Vets = () => {
     <div>
       <VetHero />
       <Available vets={vets} />
-      <VetBook vets={vets} />
       <VetFooter />
     </div>
   );

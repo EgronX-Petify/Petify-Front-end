@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const PetService = ({ service }) => {
+  const navigate = useNavigate();
   return (
     <div className="w-full max-w-sm sm:max-w-xs md:max-w-sm rounded-2xl shadow-md hover:shadow-xl transition p-4 bg-[#F8F9FA] flex flex-col">
       <div className="w-full h-40 sm:h-44 md:h-40 overflow-hidden rounded-xl">
@@ -44,7 +46,8 @@ const PetService = ({ service }) => {
           {service.priceRange}
         </p>
 
-        <button className="w-full mt-3 rounded-xl bg-[#417481] hover:bg-[#2F4156] text-white py-2 text-sm sm:text-base cursor-pointer">
+        <button className="w-full mt-3 rounded-xl bg-[#417481] hover:bg-[#2F4156] text-white py-2 text-sm sm:text-base cursor-pointer"
+        onClick={() => navigate("/services/book-service")}  >
           Book Now
         </button>
       </div>

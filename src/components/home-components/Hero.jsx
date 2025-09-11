@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../../public/logo55.png";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -14,9 +15,11 @@ const Hero = () => {
           guides to booking vets and services — all in one place.
         </p>
 
-        <button className="hidden md:flex mx-auto md:mx-0 w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer">
-          Start Now
-        </button>
+        <Link to="/signup">
+          <button className="hidden md:flex mx-auto md:mx-0 w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer">
+            Start Now
+          </button>
+        </Link>
       </div>
 
       <div className="w-full md:w-[500px] h-[300px] md:h-[500px] mt-5 md:mt-0 overflow-hidden flex items-center justify-center">
@@ -26,9 +29,12 @@ const Hero = () => {
           className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] object-contain"
         />
       </div>
-      <button className="md:hidden mx-auto md:mx-0 w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer">
-        Start Now
-      </button>
+      {/* only show if u are not loggid in */}
+      <Link to="/signup" className="md:hidden mx-auto">
+        <button className=" w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer">
+          Start Now
+        </button>
+      </Link>
     </div>
   );
 };

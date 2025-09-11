@@ -52,7 +52,7 @@ const Signup = () => {
             </div>
 
             <div>
-              <label className="block text-[#2F4156] mb-2" htmlFor="type">
+              {/* <label className="block text-[#2F4156] mb-2" htmlFor="type">
                 Pet Type
               </label>
               <input
@@ -60,7 +60,7 @@ const Signup = () => {
                 id="type"
                 placeholder="Enter your pet's type"
                 className="w-full px-4 py-2 border border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
-              />
+              /> */}
             </div>
 
             <button
