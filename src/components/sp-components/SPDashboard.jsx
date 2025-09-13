@@ -17,6 +17,7 @@ import ManageProducts from "./ManageProducts";
 import EditProduct from "./EditProduct";
 import UpdateServices from "./UpdateServices";
 import RescheduleAppointment from "./RescheduleAppointment";
+import ServiceProviderProfile from "./ServiceProviderProfile" ;
 
 const SPDashboard = () => {
   return (
@@ -36,6 +37,7 @@ const SPDashboard = () => {
         />
         <Route path="/dashboard/products" element={<ManageProducts />} />
         <Route path="/dashboard/edit-product" element={<EditProduct />} />
+        <Route path="/sp-profile" element={<ServiceProviderProfile />} />
       </Routes>
     </div>
   );
