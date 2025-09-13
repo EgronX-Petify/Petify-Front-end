@@ -4,6 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineCancel } from "react-icons/md";
 import logo from "../public/logo55.png";
+import Notifications from "./sp-components/Notifications";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +49,7 @@ const Navbar = () => {
           Vets
         </NavLink>
         <NavLink
-          to="/grooming"
+          to="/services"
           className={({ isActive }) =>
             isActive
               ? "px-1.5 text-[#FD7E14] border-b-2 border-b-[#FD7E14]"
@@ -69,9 +70,9 @@ const Navbar = () => {
         </NavLink>
       </div>
 
-      <div className="hidden md:flex gap-4 items-center">
-        <div className="dropdown dropdown-end">
-          <Link to="/shop/cart">
+      <div className="hidden md:flex gap-4 items-center justify-center">
+        <Link to="/cart">
+          <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
               role="button"
@@ -85,7 +86,6 @@ const Navbar = () => {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  {" "}
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -94,18 +94,18 @@ const Navbar = () => {
                   2.293c-.63.63-.184 1.707.707 1.707H17m0 
                   0a2 2 0 100 4 2 2 0 000-4zm-8 
                   2a2 2 0 11-4 0 2 2 0 014 0z"
-                  />{" "}
+                  />
                 </svg>
                 <span className="badge badge-xs indicator-item bg-[#FD7E14] text-white">
                   0
                 </span>
               </div>
             </div>
-          </Link>
-        </div>
-
+          </div>
+        </Link>
+        <Notifications />
         {/* profile */}
-        {/* <div className="dropdown dropdown-end">
+        <div className="hidden md:block cursor-pointer dropdown dropdown-end">
           <div
             tabIndex={0}
             role="button"
@@ -120,26 +120,32 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
+            className="menu dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a className="justify-between">
-                Profile <span className="badge">New</span>
-              </a>
+              <Link to="/profile" className="justify-between">
+                Profile
+              </Link>
             </li>
             <li>
-              <a>Logout</a>
+              <Link to="/dashboard" className="justify-between">
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link to="/login" className="text-[#FF383C]">
+                Logout
+              </Link>
             </li>
           </ul>
-        </div> */}
-
-        <Link to="/login">
+        </div>
+        {/* <Link to="/login">
           <button className={style.btn}>Login</button>
-        </Link>
+        </Link> */}
       </div>
 
-      <div className="flex md:hidden gap-5">
-        <Link to="/shop/cart">
+      <div className="md:hidden flex items-center justify-center gap-2">
+        <Link to="/cart">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <div className="indicator">
               <svg
@@ -149,7 +155,6 @@ const Navbar = () => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                {" "}
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -158,7 +163,7 @@ const Navbar = () => {
                   2.293c-.63.63-.184 1.707.707 1.707H17m0 
                   0a2 2 0 100 4 2 2 0 000-4zm-8 
                   2a2 2 0 11-4 0 2 2 0 014 0z"
-                />{" "}
+                />
               </svg>
               <span className="badge badge-xs indicator-item bg-[#FD7E14] text-white">
                 0
@@ -166,15 +171,14 @@ const Navbar = () => {
             </div>
           </div>
         </Link>
-        <div className="md:hidden flex items-center">
-          <button onClick={() => setIsOpen(!isOpen)} className="text-[#2F4156]">
-            {isOpen ? (
-              <MdOutlineCancel size={28} />
-            ) : (
-              <RxHamburgerMenu size={28} />
-            )}
-          </button>
-        </div>
+        <Notifications />
+        <button onClick={() => setIsOpen(!isOpen)} className="text-[#2F4156]">
+          {isOpen ? (
+            <MdOutlineCancel size={28} />
+          ) : (
+            <RxHamburgerMenu size={28} />
+          )}
+        </button>
       </div>
 
       {isOpen && (
@@ -187,6 +191,15 @@ const Navbar = () => {
             }
           >
             Home
+          </NavLink>
+          <NavLink
+            to="/shop"
+            onClick={() => setIsOpen(false)}
+            className={({ isActive }) =>
+              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+            }
+          >
+            Shop
           </NavLink>
           <NavLink
             to="/vets"
@@ -215,7 +228,6 @@ const Navbar = () => {
           >
             Beginner Guide
           </NavLink>
-
           <NavLink
             to="/profile/appointments"
             onClick={() => setIsOpen(false)}
@@ -225,7 +237,6 @@ const Navbar = () => {
           >
             Appointments
           </NavLink>
-
           <NavLink
             to="/profile/orders"
             onClick={() => setIsOpen(false)}
@@ -245,6 +256,15 @@ const Navbar = () => {
             Profile
           </NavLink>
           <NavLink
+            to="/dashboard"
+            onClick={() => setIsOpen(false)}
+            className={({ isActive }) =>
+              isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+            }
+          >
+            Dashboard
+          </NavLink>
+          <NavLink
             to="/login"
             onClick={() => setIsOpen(false)}
             className="text-[#FF383C] font-semibold"
@@ -252,7 +272,6 @@ const Navbar = () => {
             Signout
           </NavLink>
           <Link to="/login">
-            {" "}
             <button className={`${style.btn} md:hidden`}>Login</button>
           </Link>
         </div>
