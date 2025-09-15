@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import ForgotPassword from "../components/sign-components/ForgotPassword";
 
 const Login = () => {
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
   return (
     <div className="my-[30px] flex flex-col md:flex-row justify-evenly items-center min-h-[600px] px-[20px] md:px-[30px] gap-8">
       <div className="flex flex-grow items-center justify-start h-full bg-gray-50 shadow-lg p-2 rounded-lg w-full md:w-auto">
@@ -13,7 +15,9 @@ const Login = () => {
             Please login to continue to your account
           </p>
 
-          <form className="space-y-4">
+          <form
+            className="space-y-4"
+          >
             <div>
               <label className="block text-[#2F4156] mb-2" htmlFor="username">
                 Username
@@ -38,12 +42,13 @@ const Login = () => {
               />
               {/* Forgot password link */}
               <div className="flex justify-end mt-2">
-                <Link
-                  to="/forgot-password"
+                <button
+                type="button"
                   className="text-sm text-[#FD7E14] hover:underline"
+                  onClick={() => setOpenForgotPassword(true)}
                 >
                   Forgot Password?
-                </Link>
+                </button>
               </div>
             </div>
 
@@ -75,6 +80,10 @@ const Login = () => {
           className="w-full h-full object-contain md:object-cover"
         />
       </div>
+      <ForgotPassword
+        open={openForgotPassword}
+        setOpen={setOpenForgotPassword}
+      />
     </div>
   );
 };
