@@ -1,6 +1,6 @@
 import React from "react";
 
-const UpcomingAppointments = ({ appointments }) => {
+const UpcomingAppointments = ({ appointments, setOpen }) => {
   return (
     <div className="mb-8 7]">
       <h3 className="text-xl text-[#FD7E14] mb-3">Upcoming Appointments</h3>
@@ -23,7 +23,10 @@ const UpcomingAppointments = ({ appointments }) => {
               </div>
 
               <div className="flex flex-col gap-2">
-                                <button className="cursor-pointer px-4 py-2 text-sm rounded-lg bg-[#2f4156a0] text-white hover:bg-[#2f4156] transition">
+                <button
+                  className="cursor-pointer px-4 py-2 text-sm rounded-lg bg-[#2f4156a0] text-white hover:bg-[#2f4156] transition"
+                  onClick={() => setOpen(true)}
+                >
                   Reschedule
                 </button>
                 <button className="cursor-pointer px-4 py-2 text-sm rounded-lg bg-[#ff383be0] text-white hover:bg-[#ff383b] transition">

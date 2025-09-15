@@ -2,7 +2,22 @@ import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
 
-const ServiceProviderProfile = ({ sp, onClose }) => {
+const ServiceProviderProfile = () => {
+  const [showProfile, setShowProfile] = useState(false);
+
+  const onClose = () => setShowProfile(false);
+  const sp = {
+    name: "Dr. Ahmed Khaled",
+    photo: "https://via.placeholder.com/150",
+    clinic: "Happy Pets Clinic",
+    rating: 4,
+    address: "Nasr City, Cairo, Egypt",
+    phone: "+20 101 234 5678",
+    availability: [
+      { day: "Saturday", times: ["10:00 AM", "12:00 PM", "04:00 PM"] },
+      { day: "Sunday", times: ["09:00 AM", "11:30 AM", "03:00 PM"] },
+    ],
+  };
   if (!sp) return null;
 
   return (
@@ -30,18 +45,26 @@ const ServiceProviderProfile = ({ sp, onClose }) => {
               {Array.from({ length: 5 }).map((_, i) => (
                 <FaStar
                   key={i}
-                  className={i < sp.rating ? "text-yellow-500" : "text-gray-300"}
+                  className={
+                    i < sp.rating ? "text-yellow-500" : "text-gray-300"
+                  }
                 />
               ))}
-              <span className="ml-2 text-sm text-gray-600">{sp.rating} / 5</span>
+              <span className="ml-2 text-sm text-gray-600">
+                {sp.rating} / 5
+              </span>
             </div>
           </div>
         </div>
 
         {/* Contact info */}
         <div className="mt-4 text-gray-700">
-          <p><strong>Address:</strong> {sp.address}</p>
-          <p><strong>Phone:</strong> {sp.phone}</p>
+          <p>
+            <strong>Address:</strong> {sp.address}
+          </p>
+          <p>
+            <strong>Phone:</strong> {sp.phone}
+          </p>
         </div>
 
         {/* Availability */}
@@ -85,36 +108,4 @@ const ServiceProviderProfile = ({ sp, onClose }) => {
     </div>
   );
 };
-
-// Example usage
-export default function App() {
-  const [showProfile, setShowProfile] = useState(false);
-
-  const sampleSP = {
-    name: "Dr. Ahmed Khaled",
-    photo: "https://via.placeholder.com/150",
-    clinic: "Happy Pets Clinic",
-    rating: 4,
-    address: "Nasr City, Cairo, Egypt",
-    phone: "+20 101 234 5678",
-    availability: [
-      { day: "Saturday", times: ["10:00 AM", "12:00 PM", "04:00 PM"] },
-      { day: "Sunday", times: ["09:00 AM", "11:30 AM", "03:00 PM"] },
-    ],
-  };
-
-  return (
-    <div className="p-6">
-      <button
-        onClick={() => setShowProfile(true)}
-        className="bg-[#FD7E14] text-white px-4 py-2 rounded-lg"
-      >
-        Know More
-      </button>
-
-      {showProfile && (
-        <ServiceProviderProfile sp={sampleSP} onClose={() => setShowProfile(false)} />
-      )}
-    </div>
-  );
-}
+export default ServiceProviderProfile;

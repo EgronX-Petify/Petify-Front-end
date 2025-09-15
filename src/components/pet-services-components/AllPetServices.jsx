@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PetService from "./PetService";
 import ServiceFilters from "./ServiceFilters";
+import ServiceBook from "./ServiceBook";
 
 const AllPetServices = () => {
   const petServices = [
@@ -74,6 +75,7 @@ const AllPetServices = () => {
       category: "Healthcare",
     },
   ];
+  const [openBook, setOpenBook] = useState(false);
 
   // Extract unique filter options
   const categories = [...new Set(petServices.map((s) => s.category))];
@@ -174,7 +176,7 @@ const AllPetServices = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentServices.length > 0 ? (
               currentServices.map((service, id) => (
-                <PetService key={id} service={service} />
+                <PetService key={id} service={service} setOpen={setOpenBook}  />
               ))
             ) : (
               <p className="col-span-full text-center text-gray-500">
@@ -208,6 +210,7 @@ const AllPetServices = () => {
           )}
         </main>
       </div>
+      <ServiceBook open={openBook} setOpen={setOpenBook} />
     </div>
 
     // <div className="flex flex-col md:flex-row gap-6 w-[90%] mx-auto my-10">

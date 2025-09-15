@@ -7,29 +7,23 @@ import Shop from "./pages/Shop";
 import Vets from "./pages/Vets";
 import BeginnerGuide from "./pages/BeginnerGuide";
 import PetServices from "./pages/PetServices";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import ResetPassword from "./components/sign-components/ResetPassword";
-import ForgotPassword from "./components/sign-components/ForgotPassword";
 import Cart from "./components/shop-components/Cart";
 import Checkout from "./components/shop-components/Checkout";
-import EmergencyCall from "./components/vets-components/EmergencyCall";
-import VetBook from "./components/vets-components/VetBook";
-import ServiceBook from "./components/pet-services-components/ServiceBook";
-import AddNewPet from "./components/profile-components/AddNewPet";
-import EditProfile from "./components/profile-components/EditProfile";
-import EditUserInfo from "./components/profile-components/EditUserInfo";
 import NearbyPlaces from "./components/nearby-places-components/NearbyPlaces";
 import SPDashboard from "./components/sp-components/SPDashboard";
 import MainDashboard from "./components/sp-components/MainDashboard";
 import ManageServices from "./components/sp-components/ManageServices";
-import UpdateServices from "./components/sp-components/UpdateServices";
 import ManageAppointments from "./components/sp-components/ManageAppointments";
-import RescheduleAppointment from "./components/sp-components/RescheduleAppointment";
 import ManageProducts from "./components/sp-components/ManageProducts";
-import EditProduct from "./components/sp-components/EditProduct";
 import ServiceProviderProfile from "./components/sp-components/ServiceProviderProfile";
+import UserInfo from "./components/profile-components/UserInfo";
+import AllProfiles from "./components/profile-components/AllProfiles";
+import Orders from "./components/profile-components/Orders";
+import Appointments from "./components/profile-components/Appointments";
 
 function App() {
   return (
@@ -45,13 +39,15 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/vets" element={<Vets />} />
         <Route path="/services" element={<PetServices />} />
-        <Route path="/services/book-service" element={<ServiceBook />} />
         <Route path="/nearby-places" element={<NearbyPlaces />} />
         <Route path="/beginner-guide" element={<BeginnerGuide />} />
-        <Route path="/profile/*" element={<Profile />} />
-        <Route path="/newpet-form" element={<AddNewPet />} />
-        <Route path="edit-pet-profile" element={<EditProfile />} />
-        <Route path="/edit-user-info" element={<EditUserInfo />} />
+        <Route path="/profile" element={<Profile />}>
+          <Route index element={<Navigate to="my-profile" replace />} />
+          <Route path="my-profile" element={<UserInfo />} />
+          <Route path="my-pets" element={<AllProfiles />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="appointments" element={<Appointments />} />
+        </Route>
         <Route path="/dashboard" element={<SPDashboard />}>
           <Route index element={<MainDashboard />} />
           <Route path="services" element={<ManageServices />} />
@@ -60,7 +56,7 @@ function App() {
           <Route path="sp-profile" element={<ServiceProviderProfile />} />
         </Route>
       </Routes>
-      <Footer /> 
+      <Footer />
     </>
   );
 }

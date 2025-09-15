@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import ProfileInfo from "./ProfileInfo";
 import { Link } from "react-router-dom";
+import EditProfile from "./EditProfile";
+import AddNewPet from "./AddNewPet";
 
 const AllProfiles = () => {
   const allPets = [
@@ -27,12 +29,15 @@ const AllProfiles = () => {
       photo: "https://placedog.net/400/300?id=1",
     },
   ];
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
   return (
     <>
       {allPets.length > 0 ? (
         <div className="w-full flex flex-col">
           {allPets.map((pet, id) => (
-            <ProfileInfo pet={pet} key={id} />
+            <ProfileInfo pet={pet} key={id} setOpen={setEditOpen} />
           ))}
         </div>
       ) : (
@@ -44,14 +49,16 @@ const AllProfiles = () => {
         </div>
       )}
 
-      <Link
-        to="/newpet-form"
-        className="max-w-[80%] flex mx-auto md:justify-end mb-5 "
-      >
-        <button className="w-full md:w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer">
+      <div className="max-w-[80%] flex mx-auto md:justify-end mb-5 ">
+        <button
+          className="w-full md:w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer"
+          onClick={() => setAddOpen(true)}
+        >
           + Add New Pet
         </button>
-      </Link>
+      </div>
+      <EditProfile open={editOpen} setOpen={setEditOpen} />
+      <AddNewPet open={addOpen} setOpen={setAddOpen} />
     </>
   );
 };

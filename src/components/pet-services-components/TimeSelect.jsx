@@ -31,7 +31,7 @@ const TimeSelect = ({ onChange }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full md:w-[50%] h-fit max-w-md p-4 rounded-lg shadow-sm bg-[#F8F9FA]">
+    <div className="flex flex-col gap-4 w-full md:w-full h-fit max-w-md p-4 rounded-lg shadow-sm bg-[#F8F9FA]">
       <label className="text-sm font-medium text-gray-700">Select Time</label>
 
       <div className="flex w-fit justify-center gap-2 md:gap-4 ">

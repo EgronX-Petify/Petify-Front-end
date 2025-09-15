@@ -1,62 +1,78 @@
 import React from "react";
 import TimeSelect from "./TimeSelect";
-import { useNavigate } from "react-router-dom";
 import { MdCancelPresentation } from "react-icons/md";
 
-const ServiceBook = () => {
+const ServiceBook = ({ open, setOpen }) => {
   const handleTimeChange = (value) => {
     console.log("Selected Time:", value);
   };
 
-  const navigate = useNavigate();
-
   return (
-    <div className="flex flex-col gap-7 items-center md:my-5 bg-gray-50 py-10 w-[95%] md:w-[80%] m-auto shadow-xl rounded-xl">
-      <button
-        className="flex justify-end  w-[90%]"
-        onClick={() => navigate(-1)}
-      >
-        <MdCancelPresentation className="text-2xl text-[#2F4156] cursor-pointer" />
-      </button>
-      <p className="text-[#2F4156] font-semibold rounded-lg text-lg md:text-3xl w-[95%] md:w-[80%] p-2 flex justify-center bg-[#fd7d1467] m-auto text-center">
-        Select your visit date & Time
-      </p>
-
-      <div className="flex flex-col p-6 md:p-10 rounded-xl bg-white w-full md:w-[70%]">
-        <div className="flex flex-col md:flex-row gap-7 items-stretch md:items-start justify-center bg-white p-5 w-full">
-          <div className="flex flex-col w-full md:w-fit max-w-md p-4 rounded-lg shadow-sm h-fit justify-start bg-[#F8F9FA]">
-            <label className="mb-1 text-sm font-medium text-[#2F4156]">
-              Select Date
-            </label>
-            <input
-              type="date"
-              className="px-3 py-2 border rounded-lg shadow-sm text-[#2f415677] focus:ring-1 focus:ring-[#417481] focus:border-[#417481] outline-none w-full"
-            />
+    open && (
+      <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-3">
+        <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl relative max-h-[90vh] overflow-y-auto">
+          {/* Header */}
+          <div className="text-center bg-[#41748137] py-5 px-4 rounded-t-2xl">
+            <h2 className="text-xl md:text-2xl font-bold text-[#2F4156]">
+              Select Your Visit Date & Time
+            </h2>
           </div>
 
-          <TimeSelect onChange={handleTimeChange} />
-        </div>
+          {/* Content */}
+          <div className="p-6 md:p-10 flex flex-col gap-6">
+            {/* Date + Time */}
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Date Picker */}
+              <div className="flex flex-col w-full md:w-fit bg-[#F8F9FA] p-4 rounded-lg shadow-sm h-fit">
+                <label className="mb-2 text-sm font-medium text-[#2F4156]">
+                  Select Date
+                </label>
+                <input
+                  type="date"
+                  className="px-3 py-2 border border-[#2f415677] rounded-lg text-[#2F4156] focus:ring-2 focus:ring-[#FD7E14] focus:border-[#FD7E14] outline-none w-full"
+                />
+              </div>
 
-        <div className="flex flex-col md:flex-row justify-end gap-3 mt-6">
-          <button
-            className="capitalize md:w-fit w-full px-5 py-3 rounded-[15px] bg-[#ff383be0] text-[#F5EFED] cursor-pointer duration-300 hover:bg-[#FF383C]"
-            onClick={() => navigate(-1)}
-          >
-            Cancel
-          </button>
-          <button
-            className="capitalize md:w-fit w-full px-5 py-3 rounded-[15px] bg-[#417481] text-[#F5EFED] cursor-pointer duration-300 hover:bg-[#2F4156]"
-            onClick={() => alert("done")}
-          >
-            Confirm
-          </button>
-        </div>
-        <div>
-          <label htmlFor="emergency" className="text-sm font-medium text-[#2F4156]">Emergency Service? </label>
-          <input type="checkbox" name="emergency" id="emergency" className="mx-2" />
+              {/* Time Picker */}
+              <div className="flex-1 md:w-full">
+                <TimeSelect onChange={handleTimeChange} />
+              </div>
+            </div>
+
+            {/* Emergency Option */}
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="emergency"
+                className="w-4 h-4 accent-[#FD7E14] cursor-pointer"
+              />
+              <label
+                htmlFor="emergency"
+                className="text-sm md:text-base font-medium text-[#2F4156] cursor-pointer"
+              >
+                Emergency Service?
+              </label>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-2">
+              <button
+                className="cursor-pointer capitalize w-full md:w-auto px-6 py-3 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="cursor-pointer capitalize w-full md:w-auto px-6 py-3 rounded-xl bg-[#417481] text-white font-medium hover:bg-[#2F4156] transition"
+                onClick={() => alert("done")}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    )
   );
 };
 

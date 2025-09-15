@@ -33,7 +33,7 @@ const ManageServices = () => {
           <div className="flex gap-2">
             <button
               className="cursor-pointer bg-green-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-green-600"
-              onClick={() => setOpen(true)}
+              onClick={() => setEditOpen(true)}
             >
               <MdOutlineModeEditOutline /> Edit
             </button>
@@ -47,7 +47,7 @@ const ManageServices = () => {
           <div className="flex gap-2">
             <button
               className="cursor-pointer bg-green-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-green-600"
-              onClick={() => setOpen(true)}
+              onClick={() => setEditOpen(true)}
             >
               <MdOutlineModeEditOutline /> Edit
             </button>
@@ -61,7 +61,7 @@ const ManageServices = () => {
           <div className="flex gap-2">
             <button
               className="cursor-pointer bg-green-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-green-600"
-              onClick={() => setOpen(true)}
+              onClick={() => setEditOpen(true)}
             >
               <MdOutlineModeEditOutline /> Edit
             </button>

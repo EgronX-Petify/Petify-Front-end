@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const ProfileInfo = ({ pet }) => {
+const ProfileInfo = ({ pet, setOpen }) => {
   const navigate = useNavigate();
   return (
     <div className="max-w-[95%] md:max-w-[90%] mx-auto my-10 bg-[#F8F9FA] shadow-lg rounded-2xl p-6 flex flex-col md:flex-row items-center gap-8">
@@ -63,11 +63,12 @@ const ProfileInfo = ({ pet }) => {
           <button className="cursor-pointer px-5 py-2 rounded-lg bg-[#ff383be0] text-white hover:bg-[#ff383b] transition shadow-md">
             Remove Pet
           </button>
-          <Link to="/edit-pet-profile">
-            <button className="cursor-pointer px-5 py-2 rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition shadow-md">
-              Edit Profile
-            </button>
-          </Link>
+          <button
+            className="cursor-pointer px-5 py-2 rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition shadow-md"
+            onClick={() => setOpen(true)}
+          >
+            Edit Profile
+          </button>
         </div>
       </div>
     </div>

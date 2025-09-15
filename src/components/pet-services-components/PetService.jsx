@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const PetService = ({ service }) => {
+const PetService = ({ service, setOpen }) => {
   const navigate = useNavigate();
   return (
     <div className="w-full max-w-sm sm:max-w-xs md:max-w-sm rounded-2xl shadow-md hover:shadow-xl transition p-4 bg-[#F8F9FA] flex flex-col">
@@ -47,7 +47,7 @@ const PetService = ({ service }) => {
         </p>
 
         <button className="w-full mt-3 rounded-xl bg-[#417481] hover:bg-[#2F4156] text-white py-2 text-sm sm:text-base cursor-pointer"
-        onClick={() => navigate("/services/book-service")}  >
+        onClick={() => setOpen(true)}  >
           Book Now
         </button>
       </div>

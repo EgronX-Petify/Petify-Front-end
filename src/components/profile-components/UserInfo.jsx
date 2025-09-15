@@ -1,5 +1,6 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { Link } from "react-router-dom";
+import EditUserInfo from "./EditUserInfo";
 
 const UserInfo = () => {
   const user = {
@@ -17,6 +18,8 @@ const UserInfo = () => {
   const handleResetPassword = () => {
     alert("Password reset link sent to your email!");
   };
+
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="max-w-[95%] md:max-w-[90%] mx-auto my-10 bg-[#F8F9FA] shadow-lg rounded-2xl p-6 flex flex-col md:flex-row items-center gap-8">
@@ -74,13 +77,15 @@ const UserInfo = () => {
 
         {/* Edit Profile Button */}
         <div className="mt-6 flex justify-center md:justify-end">
-          <Link to="/edit-user-info">
-            <button className="cursor-pointer px-5 py-2 rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition shadow-md">
-              Edit Profile
-            </button>
-          </Link>
+          <button
+            className="cursor-pointer px-5 py-2 rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition shadow-md"
+            onClick={() => setOpen(true)}
+          >
+            Edit Profile
+          </button>
         </div>
       </div>
+      <EditUserInfo open={open} setOpen={setOpen} />
     </div>
   );
 };

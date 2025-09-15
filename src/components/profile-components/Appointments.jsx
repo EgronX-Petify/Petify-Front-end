@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import UpcomingAppointments from "./UpcomingAppointments";
 import PastAppointments from "./PastAppointments";
+import RescheduleAppointment from "../sp-components/RescheduleAppointment"
 
 const Appointments = () => {
   const appointments = [
@@ -71,6 +72,8 @@ const Appointments = () => {
     (appt) => new Date(`${appt.date} ${appt.time}`) <= now
   );
 
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="max-w-6xl mx-auto my-10 bg-[#F8F9FA] shadow-lg rounded-2xl p-6">
       <h2 className="text-3xl  text-[#2F4156] mb-6 text-center">
@@ -78,10 +81,11 @@ const Appointments = () => {
       </h2>
 
       {/* Upcoming */}
-      <UpcomingAppointments appointments={upcoming} />
+      <UpcomingAppointments appointments={upcoming} setOpen={setOpen} />
 
       {/* Past */}
       <PastAppointments appointments={past} />
+      <RescheduleAppointment open={open} setOpen={setOpen} />
     </div>
   );
 };
