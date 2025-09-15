@@ -1,9 +1,47 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import ForgotPassword from "../components/sign-components/ForgotPassword";
+import { loginService } from "../services/authService";
+import UseLogged from "../hooks/UseLogged";
 
 const Login = () => {
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const tryLogin = UseLogged();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    tryLogin({ username: formData.username, password: formData.password });
+    // try {
+    //   const data = await loginService(formData);
+    //   localStorage.getItem("token", data.token);
+    //   login({ username: data.username, role: data.role }); //**********
+    //   console.log("✅ Login success:", data);
+
+    //   // navigate("/");
+    // } catch (err) {
+    //   console.error("❌ Login failed:", err);
+    //   setError(err.message || "Login failed, please try again");
+    // } finally {
+    //   setLoading(false);
+    // }
+  };
+
   return (
     <div className="my-[30px] flex flex-col md:flex-row justify-evenly items-center min-h-[600px] px-[20px] md:px-[30px] gap-8">
       <div className="flex flex-grow items-center justify-start h-full bg-gray-50 shadow-lg p-2 rounded-lg w-full md:w-auto">
@@ -15,9 +53,7 @@ const Login = () => {
             Please login to continue to your account
           </p>
 
-          <form
-            className="space-y-4"
-          >
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-[#2F4156] mb-2" htmlFor="username">
                 Username
@@ -25,6 +61,8 @@ const Login = () => {
               <input
                 type="text"
                 id="username"
+                value={formData.username}
+                onChange={handleChange}
                 placeholder="Enter your username"
                 className="w-full px-4 py-2 border-[1px] border-solid border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
               />
@@ -37,13 +75,14 @@ const Login = () => {
               <input
                 type="password"
                 id="password"
+                value={formData.password}
+                onChange={handleChange}
                 placeholder="Enter your password"
                 className="w-full px-4 py-2 border-[1px] border-solid border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
               />
-              {/* Forgot password link */}
               <div className="flex justify-end mt-2">
                 <button
-                type="button"
+                  type="button"
                   className="text-sm text-[#FD7E14] hover:underline"
                   onClick={() => setOpenForgotPassword(true)}
                 >
@@ -52,14 +91,17 @@ const Login = () => {
               </div>
             </div>
 
-            <Link to="/">
-              <button
-                type="submit"
-                className="cursor-pointer w-full bg-[#FD7E14] text-white py-2 rounded-lg hover:bg-[#e76c0a] transition-colors"
-              >
-                Sign In
-              </button>
-            </Link>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`cursor-pointer w-full bg-[#FD7E14] text-white py-2 rounded-lg hover:bg-[#e76c0a] transition-colors ${
+                loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
+            >
+              {loading ? "Signing In..." : "Sign In"}
+            </button>
           </form>
 
           <p className="text-center text-[#2f415677] mt-4 text-sm md:text-base">

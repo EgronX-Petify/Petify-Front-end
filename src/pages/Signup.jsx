@@ -1,12 +1,88 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../public/logo55.png";
 import { Link } from "react-router-dom";
+import { signupService } from "../services/authService.js";
 
 const Signup = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    gender: "",
+    role: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  // regexes
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const usernameRegex = /^[a-zA-Z0-9_]{3,15}$/;
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const validate = () => {
+    const newErrors = {};
+
+    // Username
+    if (!formData.username.trim()) {
+      newErrors.username = "Username is required";
+    } else if (!usernameRegex.test(formData.username)) {
+      newErrors.username =
+        "Username must be 3-15 chars, only letters, numbers, and underscores";
+    }
+
+    // Email
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    // Password
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (!passwordRegex.test(formData.password)) {
+      newErrors.password =
+        "Password must be 8+ chars, include 1 uppercase, 1 number, and 1 special character";
+    }
+
+    if (!formData.gender.trim()) {
+      newErrors.gender = "Please select your gender";
+    }
+    if (!formData.role.trim()) {
+      newErrors.role = "Please select your role";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (validate()) {
+      try {
+        const data = await signupService(formData);
+        console.log("✅ Signup successful:", data);
+        // هنا تقدر تعملي redirect للـ login أو تظهري رسالة نجاح
+      } catch (err) {
+        console.error("❌ Signup failed:", err);
+        // هنا ممكن تعرضي error message من السيرفر تحت الفورم
+      }
+    }
+  };
+
   return (
     <div className="my-[30px] flex flex-col md:flex-row justify-evenly items-center min-h-[600px] px-[20px] md:px-[30px] gap-8">
-      <div className="flex flex-grow items-center justify-start h-full bg-gray-50 shadow-lg p-2 rounded-lg w-full md:w-auto">
-        <div className="flex flex-col justify-center w-full p-6 md:p-8 max-w-md min-h-[400px] md:min-h-[600px]">
+      <div className="flex flex-grow items-center justify-start h-full bg-gray-50 shadow-lg px-2 rounded-lg w-full md:w-auto">
+        <div className="flex flex-col justify-center w-full p-6 md:px-8 md:py-4 max-w-md min-h-[400px] md:min-h-[600px]">
           <h2 className="flex items-start text-3xl md:text-5xl font-bold mb-2 text-center text-[#FD7E14]">
             Sign Up
           </h2>
@@ -14,55 +90,143 @@ const Signup = () => {
             Sign up to enjoy the features of Petify
           </p>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit}>
+            {/* Username */}
             <div>
-              <label className="block text-[#2F4156] mb-2" htmlFor="username">
+              <label className="block text-[#2F4156] mb-1" htmlFor="username">
                 Username
               </label>
               <input
                 type="text"
                 id="username"
+                value={formData.username}
+                onChange={handleChange}
                 placeholder="Enter your username"
-                className="w-full px-4 py-2 border border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
+                className={`w-full px-4 py-2 border ${
+                  errors.username ? "border-red-500" : "border-[#2f415677]"
+                } rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]`}
               />
+              <p
+                className={`text-red-500 text-xs mt-1 min-h-[20px] ${
+                  errors.username ? "visible" : "invisible"
+                }`}
+              >
+                {errors.username || "placeholder"}
+              </p>
             </div>
 
+            {/* Email */}
             <div>
-              <label className="block text-[#2F4156] mb-2" htmlFor="email">
+              <label className="block text-[#2F4156] mb-1" htmlFor="email">
                 Email
               </label>
               <input
-                type="email"
+                type="text"
                 id="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="Enter your email"
-                className="w-full px-4 py-2 border border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
+                className={`w-full px-4 py-2 border ${
+                  errors.email ? "border-red-500" : "border-[#2f415677]"
+                } rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]`}
               />
+              <p
+                className={`text-red-500 text-xs mt-1 min-h-[20px] ${
+                  errors.email ? "visible" : "invisible"
+                }`}
+              >
+                {errors.email || "placeholder"}
+              </p>
             </div>
 
+            {/* Password */}
             <div>
-              <label className="block text-[#2F4156] mb-2" htmlFor="password">
+              <label className="block text-[#2F4156] mb-1" htmlFor="password">
                 Password
               </label>
               <input
                 type="password"
                 id="password"
+                value={formData.password}
+                onChange={handleChange}
                 placeholder="Enter your password"
-                className="w-full px-4 py-2 border border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
+                className={`w-full px-4 py-2 border ${
+                  errors.password ? "border-red-500" : "border-[#2f415677]"
+                } rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]`}
               />
+              <p
+                className={`text-red-500 text-xs mt-1 min-h-[20px] ${
+                  errors.password ? "visible" : "invisible"
+                }`}
+              >
+                {errors.password || "placeholder"}
+              </p>
             </div>
 
+            {/* Gender */}
             <div>
-              {/* <label className="block text-[#2F4156] mb-2" htmlFor="type">
-                Pet Type
+              <label className="block text-[#2F4156] mb-1" htmlFor="gender">
+                Gender
               </label>
-              <input
-                type="text"
-                id="type"
-                placeholder="Enter your pet's type"
-                className="w-full px-4 py-2 border border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
-              /> */}
+              <select
+                id="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border ${
+                  errors.gender ? "border-red-500" : "border-[#2f415677]"
+                } rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]`}
+              >
+                <option value="" className="text-[#2f4156]">
+                  Select your Gender
+                </option>
+                <option value="female" className="text-[#2f4156]">
+                  Female
+                </option>
+                <option value="male" className="text-[#2f4156]">
+                  Male
+                </option>
+              </select>
+              <p
+                className={`text-red-500 text-xs mt-1 min-h-[20px] ${
+                  errors.gender ? "visible" : "invisible"
+                }`}
+              >
+                {errors.gender}
+              </p>
+            </div>
+            {/* Role */}
+            <div>
+              <label className="block text-[#2F4156] mb-1" htmlFor="role">
+                Role
+              </label>
+              <select
+                id="role"
+                value={formData.role}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border ${
+                  errors.role ? "border-red-500" : "border-[#2f415677]"
+                } rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]`}
+              >
+                <option value="" className="text-[#2f4156]">
+                  Select your role
+                </option>
+                <option value="pet owner" className="text-[#2f4156]">
+                  Pet Owner
+                </option>
+                <option value="service provider" className="text-[#2f4156]">
+                  Service Provider
+                </option>
+              </select>
+              <p
+                className={`text-red-500 text-xs mt-1 min-h-[20px] ${
+                  errors.role ? "visible" : "invisible"
+                }`}
+              >
+                {errors.role}
+              </p>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               className="cursor-pointer w-full bg-[#FD7E14] text-white py-2 rounded-lg hover:bg-[#e76c0a] transition-colors"
