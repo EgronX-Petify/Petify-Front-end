@@ -1,0 +1,118 @@
+import React, { useState } from "react";
+import style from "./SPNavbar.module.css";
+import logo from "../../../public/logo55.png";
+import UseLogout from "../../hooks/UseLogout";
+import UseLoggedUser from "../../hooks/UseLoggedUser";
+import { Link, NavLink } from "react-router-dom";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { MdOutlineCancel } from "react-icons/md";
+import Notifications from "../Notifications";
+
+const SPNavbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const logout = UseLogout();
+  const loggedUser = UseLoggedUser();
+
+  return (
+    <nav
+      className={`${style.navbar} sticky top-0 z-50 px-4 py-3 flex items-center justify-between`}
+    >
+      <div className="w-[70px] h-[70px] flex items-center">
+        <img src={logo} alt="Logo" className="w-[60px] h-[60px]" />
+      </div>
+
+      <div className="hidden md:flex gap-4 items-center justify-center">
+        {loggedUser && (
+          <>
+            <Notifications />
+            <div className="hidden md:block cursor-pointer dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="User Avatar"
+                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
+              >
+                <li>
+                  <Link to="/sp-profile" className="justify-between">
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/dashboard" className="justify-between">
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/login" className="text-[#FF383C]" onClick={logout}>
+                    Logout
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="md:hidden flex items-center justify-center gap-2">
+        {loggedUser && <Notifications />}
+
+        <button onClick={() => setIsOpen(!isOpen)} className="text-[#2F4156]">
+          {isOpen ? (
+            <MdOutlineCancel size={28} />
+          ) : (
+            <RxHamburgerMenu size={28} />
+          )}
+        </button>
+      </div>
+
+      {isOpen && (
+        <div className="absolute top-[59px] right-0 w-[50%]  px-3  bg-white shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
+          {loggedUser && (
+            <>
+              <NavLink
+                to="/sp-profile"
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+                }
+              >
+                Profile
+              </NavLink>
+              <NavLink
+                to="/dashboard"
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
+                }
+              >
+                Dashboard
+              </NavLink>
+              <NavLink
+                to="/login"
+                onClick={() => {
+                  logout();
+                  setIsOpen(false);
+                }}
+                className="text-[#FF383C] font-semibold"
+              >
+                Logout
+              </NavLink>
+            </>
+          )}
+        </div>
+      )}
+    </nav>
+  );
+};
+
+export default SPNavbar;

@@ -1,14 +1,18 @@
 import React from "react";
 
 import DashboardSidebar from "./DashboardSidebar";
-import { Outlet} from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import SPNavbar from "./SPNavbar";
 
 const SPDashboard = () => {
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      <DashboardSidebar />
-      <Outlet />
-    </div>
+    <>
+      <SPNavbar />
+      <div className="min-h-screen flex bg-gray-100">
+        <DashboardSidebar />
+        <Outlet />
+      </div>
+    </>
   );
 };
 

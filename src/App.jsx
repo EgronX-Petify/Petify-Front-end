@@ -29,6 +29,10 @@ import ViewService from "./components/pet-services-components/ViewService";
 import ServicesProvider from "./contexts/ServicesContext";
 import VetsProvider from "./contexts/VetsContext";
 import ViewVet from "./components/vets-components/ViewVet";
+import AdminDashboard from "./components/admin-components/AdminDashboard";
+import UsersTable from "./components/admin-components/UsersTable";
+import ProductsTable from "./components/admin-components/ProductsTable";
+import ServicesTable from "./components/admin-components/ServicesTable";
 
 function App() {
   return (
@@ -89,7 +93,13 @@ function App() {
           <Route path="services" element={<ManageServices />} />
           <Route path="appointments" element={<ManageAppointments />} />
           <Route path="products" element={<ManageProducts />} />
-          <Route path="sp-profile" element={<ServiceProviderProfile />} />
+        </Route>
+        <Route path="/sp-profile" element={<ServiceProviderProfile />} />
+        <Route path="/admin" element={<AdminDashboard />}>
+          <Route index element={<Navigate to="users" replace />} />
+          <Route path="users" element={<UsersTable />} />
+          <Route path="products" element={<ProductsTable />} />
+          <Route path="services" element={<ServicesTable />} />
         </Route>
       </Routes>
       <Footer />
