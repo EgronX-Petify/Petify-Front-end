@@ -21,8 +21,23 @@ const AddService = ({ open, setOpen }) => {
 
           {/* Form */}
           <form className="space-y-5 text-sm md:text-base">
-            {/* Row 1: Service Name + Price */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Row 0: Service Photo */}
+            <div>
+              <label className="block text-sm font-medium mb-1 text-[#2F4156]">
+                Service Photo
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="w-full border border-[#2f415677] rounded-lg px-3 py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Upload a photo (JPG, PNG, or JPEG)
+              </p>
+            </div>
+
+            {/* Row 1: Service Name + Price + Rate */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div>
                 <label className="block text-sm font-medium mb-1 text-[#2F4156]">
                   Service Name
@@ -41,6 +56,19 @@ const AddService = ({ open, setOpen }) => {
                 <input
                   type="number"
                   placeholder="Enter price"
+                  className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1 text-[#2F4156]">
+                  Rate (1–5)
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="5"
+                  placeholder="Enter rate"
                   className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
                 />
               </div>

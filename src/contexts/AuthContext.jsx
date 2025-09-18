@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useState } from "react";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("logged user");
@@ -12,14 +12,14 @@ const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     setUser(userData);
-    localStorage.setItem("logged user", JSON.stringify(userData))
-  }
+    localStorage.setItem("logged user", JSON.stringify(userData));
+  };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("logged user")
+    localStorage.removeItem("logged user");
     console.log("logged out");
-  }
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

@@ -5,23 +5,46 @@ const AddProduct = ({ open, setOpen }) => {
     name: "",
     desc: "",
     price: "",
-    img: "",
     notes: "",
     discounts: "",
     stock: "",
+    rate: "",
   });
 
+  const [images, setImages] = useState([0]); // dynamic image inputs
+  const [files, setFiles] = useState({}); // track uploaded files
+
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "file" ? files[0] : value,
-    }));
+    const { name, value, type, files: inputFiles } = e.target;
+    if (type === "file") {
+      setFiles((prev) => ({
+        ...prev,
+        [name]: inputFiles[0],
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const addImageField = () => {
+    setImages((prev) => [...prev, prev.length]);
+  };
+
+  const removeImageField = (indexToRemove) => {
+    setImages((prev) => prev.filter((_, i) => i !== indexToRemove));
+    setFiles((prev) => {
+      const newFiles = { ...prev };
+      delete newFiles[`img-${indexToRemove}`];
+      return newFiles;
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Product Data:", formData);
+    console.log("Product Data:", { ...formData, images: files });
   };
 
   return (
@@ -86,19 +109,41 @@ const AddProduct = ({ open, setOpen }) => {
               />
             </div>
 
-            {/* Row 3: Image + Stock */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 ">
+            {/* Row 3: Images + Stock */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div>
                 <label className="block text-sm font-medium mb-1 text-[#2F4156]">
-                  Product Image
+                  Product Images
                 </label>
-                <input
-                  type="file"
-                  name="img"
-                  accept="image/*"
-                  onChange={handleChange}
-                  className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-                />
+
+                {images.map((index, i) => (
+                  <div key={index} className="flex gap-2 items-center mb-2">
+                    <input
+                      type="file"
+                      name={`img-${index}`}
+                      accept="image/*"
+                      onChange={handleChange}
+                      className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
+                    />
+                    {i > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => removeImageField(i)}
+                        className="text-xs px-2 py-1 rounded-md text-white bg-red-500 font-medium hover:bg-red-600"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={addImageField}
+                  className="text-sm text-[#FD7E14] font-medium hover:underline"
+                >
+                  + Add another photo
+                </button>
               </div>
 
               <div>
@@ -144,9 +189,27 @@ const AddProduct = ({ open, setOpen }) => {
               </div>
             </div>
 
+            {/* Row 5: Rate */}
+            <div>
+              <label className="block text-sm font-medium mb-1 text-[#2F4156]">
+                Rate (1–5)
+              </label>
+              <input
+                type="number"
+                name="rate"
+                value={formData.rate}
+                onChange={handleChange}
+                min="1"
+                max="5"
+                step="0.1"
+                className="w-full md:w-1/3 border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
+              />
+            </div>
+
             {/* Buttons */}
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-2">
               <button
+                type="button"
                 className="w-full md:w-auto bg-red-500 text-white px-3 py-2 rounded-lg font-medium hover:bg-red-600 transition"
                 onClick={() => setOpen(false)}
               >

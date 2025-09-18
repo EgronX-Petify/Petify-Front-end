@@ -1,5 +1,5 @@
 import React from "react";
-import shopPhoto from "../../public/image.png";
+import shopPhoto from "../../../public/image.png";
 
 const ShopHero = () => {
   return (

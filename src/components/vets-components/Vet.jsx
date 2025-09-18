@@ -1,15 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import Rating from "../Rating";
+import { Link } from "react-router-dom";
 
-const Vet = ({ vet }) => {
+const Vet = ({ vet, setBookOpen }) => {
   return (
-    <div className="group w-full sm:w-[300px] md:w-[400px] flex flex-col sm:flex-row p-4 rounded-[10px] gap-5 bg-[#F3F3F4] cursor-pointer duration-300 ease-in-out hover:bg-[#417481] hover:scale-105">
-      <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] overflow-hidden flex items-center rounded-full mx-auto sm:mx-0">
-        <img src={vet.photo} alt="" className="w-full h-full object-cover" />
+    <div className=" w-full sm:w-[300px] md:w-[400px] flex flex-col sm:flex-row p-4 rounded-xl gap-5 bg-[#f3f3f4ba] shadow-lg hover:shadow-2xl">
+      <div className="w-full h-[150px] md:w-[200px] md:h-full overflow-hidden flex items-center rounded-xl mx-auto sm:mx-0">
+        <img
+          src={vet.photo}
+          alt={vet.name}
+          className="w-full h-full object-cover"
+        />
       </div>
-      <div className="flex flex-col gap-2 sm:gap-4 justify-center items-center sm:items-start text-center sm:text-left">
-        <p className="text-[#FD7E14] group-hover:text-white">{vet.name}</p>
-        <p className="text-[#2f415677] group-hover:text-[#F5EFED]">{vet.clinicAddress}</p>
-        <p className="text-[#2f415677] group-hover:text-[#FD7E14]">{vet.rate}</p>
+
+      <div className="flex flex-col gap-4 sm:gap-4 justify-center items-center sm:items-start text-center sm:text-left w-full">
+        <Link to={`/vets/view-vet/${vet.id}`}>
+          <p className="text-[#2F4156]  text-xl font-semibold">{vet.name}</p>
+          <p className="text-[#2f415677] ">{vet.clinicAddress}</p>
+        </Link>
+
+        <Rating value={vet.rate} readOnly />
+
+        <button
+          className="cursor-pointer w-full mt-3 px-4 py-2 bg-[#417481] hover:bg-[#2F4156] text-white rounded-lg shadow-md transition"
+          onClick={() => setBookOpen(true)}
+        >
+          Book Now
+        </button>
       </div>
     </div>
   );

@@ -3,15 +3,17 @@ import style from "../css-modules/Navbar.module.css";
 import { Link, NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineCancel } from "react-icons/md";
-import logo from "../public/logo55.png";
+import logo from "../../public/logo55.png";
 import Notifications from "./Notifications";
 import UseLogout from "../hooks/UseLogout";
 import UseLoggedUser from "../hooks/UseLoggedUser";
+import UseCartCount from "../hooks/UseCartCount";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const logout = UseLogout();
   const loggedUser = UseLoggedUser();
+  const count = UseCartCount();
 
   return (
     <nav
@@ -103,7 +105,7 @@ const Navbar = () => {
                       />
                     </svg>
                     <span className="badge badge-xs indicator-item bg-[#FD7E14] text-white">
-                      0
+                      {count}
                     </span>
                   </div>
                 </div>
@@ -180,7 +182,7 @@ const Navbar = () => {
                     />
                   </svg>
                   <span className="badge badge-xs indicator-item bg-[#FD7E14] text-white">
-                    0
+                    {count}
                   </span>
                 </div>
               </div>

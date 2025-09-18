@@ -2,118 +2,49 @@ import React, { useState } from "react";
 import PetService from "./PetService";
 import ServiceFilters from "./ServiceFilters";
 import ServiceBook from "./ServiceBook";
+import UseServices from "../../hooks/UseServices";
 
 const AllPetServices = () => {
-  const petServices = [
-    {
-      id: 1,
-      name: "Veterinary Visits",
-      description: "Comprehensive check-ups and treatments for your pet.",
-      image: "src/public/pexels-tima-miroshnichenko-6131529.jpg",
-      priceRange: "300 - 800 EGP",
-      duration: "30 - 60 minutes",
-      availability: ["Daily except Friday"],
-      rating: 5,
-      category: "Healthcare",
-    },
-    {
-      id: 2,
-      name: "Grooming",
-      description: "Full-service grooming including bath, haircut, and more.",
-      image: "src/public/pexels-tima-miroshnichenko-6131529.jpg",
-      priceRange: "200 - 600 EGP",
-      duration: "45 - 90 minutes",
-      availability: ["Saturday", "Sunday", "Monday", "Wednesday"],
-      rating: 4,
-      category: "Care & Hygiene",
-    },
-    {
-      id: 3,
-      name: "Training",
-      description:
-        "Professional pet training sessions to improve behavior, obedience, and social skills.",
-      image: "src/public/pexels-tima-miroshnichenko-6131529.jpg",
-      priceRange: "400 - 1000 EGP per session",
-      duration: "60 minutes",
-      availability: ["Sunday", "Tuesday", "Thursday"],
-      rating: 3,
-      category: "Behavior & Skills",
-    },
-    {
-      id: 4,
-      name: "Boarding",
-      description:
-        "Safe and comfortable boarding facilities where your pets are cared for while you’re away.",
-      image: "src/public/pexels-tima-miroshnichenko-6131529.jpg",
-      priceRange: "150 - 400 EGP per night",
-      duration: "Overnight or multiple days",
-      availability: ["All week"],
-      rating: 5,
-      category: "Accommodation",
-    },
-    // 🔥 Add more dummy services to test pagination
-    {
-      id: 5,
-      name: "Daycare",
-      description: "Daily care service for your pets.",
-      image: "src/public/pexels-tima-miroshnichenko-6131529.jpg",
-      priceRange: "100 - 250 EGP per day",
-      duration: "8 hours",
-      availability: ["All week"],
-      rating: 4,
-      category: "Accommodation",
-    },
-    {
-      id: 6,
-      name: "Dental Care",
-      description: "Pet dental cleaning and check-up.",
-      image: "src/public/pexels-tima-miroshnichenko-6131529.jpg",
-      priceRange: "250 - 600 EGP",
-      duration: "30 minutes",
-      availability: ["Monday", "Thursday"],
-      rating: 5,
-      category: "Healthcare",
-    },
-  ];
+  const petServices = UseServices();
   const [openBook, setOpenBook] = useState(false);
 
-  // Extract unique filter options
+  // unique filter options
   const categories = [...new Set(petServices.map((s) => s.category))];
   const prices = [...new Set(petServices.map((s) => s.priceRange))];
   const ratings = [5, 4, 3, 2, 1];
 
-  // State for filters
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
 
-  // Pagination state
+  // pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const servicesPerPage = 4; // number of services per page
+  const servicesPerPage = 10;
 
-  // Handlers
   const handleCategoryChange = (category) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+    setSelectedCategories(
+      selectedCategories.includes(category)
+        ? selectedCategories.filter((categ) => categ != category)
+        : [...selectedCategories, category]
     );
     setCurrentPage(1);
   };
 
   const handlePriceChange = (price) => {
-    setSelectedPrices((prev) =>
-      prev.includes(price) ? prev.filter((p) => p !== price) : [...prev, price]
+    setSelectedPrices(
+      selectedPrices.includes(price)
+        ? selectedPrices.filter((p) => p != price)
+        : [...selectedPrices, price]
     );
     setCurrentPage(1);
   };
 
   const handleRatingChange = (rating) => {
-    setSelectedRatings((prev) =>
-      prev.includes(rating)
-        ? prev.filter((r) => r !== rating)
-        : [...prev, rating]
+    setSelectedRatings(
+      selectedRatings.includes(rating)
+        ? selectedRatings.filter((r) => r != rating)
+        : [...selectedRatings, rating]
     );
     setCurrentPage(1);
   };
@@ -121,15 +52,19 @@ const AllPetServices = () => {
   // Apply filters
   const filteredServices = petServices.filter((service) => {
     const categoryMatch =
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(service.category);
+      selectedCategories.length > 0
+        ? selectedCategories.includes(service.category)
+        : service;
 
     const priceMatch =
-      selectedPrices.length === 0 ||
-      selectedPrices.includes(service.priceRange);
+      selectedPrices.length > 0
+        ? selectedPrices.includes(service.priceRange)
+        : service;
 
     const ratingMatch =
-      selectedRatings.length === 0 || selectedRatings.includes(service.rating);
+      selectedRatings.length > 0
+        ? selectedRatings.includes(service.rating)
+        : service;
 
     return categoryMatch && priceMatch && ratingMatch;
   });
@@ -176,10 +111,10 @@ const AllPetServices = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentServices.length > 0 ? (
               currentServices.map((service, id) => (
-                <PetService key={id} service={service} setOpen={setOpenBook}  />
+                <PetService key={id} service={service} setOpen={setOpenBook} />
               ))
             ) : (
-              <p className="col-span-full text-center text-gray-500">
+              <p className="col-span-full text-center text-gray-500 min-h-14">
                 No services found
               </p>
             )}

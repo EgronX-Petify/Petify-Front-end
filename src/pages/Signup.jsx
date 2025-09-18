@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../public/logo55.png";
+import logo from "../../public/logo55.png";
 import { Link } from "react-router-dom";
 import { signupService } from "../services/authService.js";
 
@@ -8,7 +8,7 @@ const Signup = () => {
     username: "",
     email: "",
     password: "",
-    gender: "",
+    confirmPassword: "",
     role: "",
   });
 
@@ -53,9 +53,13 @@ const Signup = () => {
         "Password must be 8+ chars, include 1 uppercase, 1 number, and 1 special character";
     }
 
-    if (!formData.gender.trim()) {
-      newErrors.gender = "Please select your gender";
+    // Password
+    if (!formData.confirmPassword.trim()) {
+      newErrors.confirmPassword = "Confirm password is required";
+    } else if (formData.confirmPassword !== formData.password) {
+      newErrors.confirmPassword = "Password and confirm password must be same";
     }
+
     if (!formData.role.trim()) {
       newErrors.role = "Please select your role";
     }
@@ -163,37 +167,32 @@ const Signup = () => {
               </p>
             </div>
 
-            {/* Gender */}
+            {/* Confirm Password */}
             <div>
-              <label className="block text-[#2F4156] mb-1" htmlFor="gender">
-                Gender
+              <label className="block text-[#2F4156] mb-1" htmlFor="c-password">
+                Confirm Password
               </label>
-              <select
-                id="gender"
-                value={formData.gender}
+              <input
+                type="password"
+                id="c-password"
+                value={formData.confirmPassword}
                 onChange={handleChange}
+                placeholder="Confirm your password"
                 className={`w-full px-4 py-2 border ${
-                  errors.gender ? "border-red-500" : "border-[#2f415677]"
+                  errors.confirmPassword
+                    ? "border-red-500"
+                    : "border-[#2f415677]"
                 } rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]`}
-              >
-                <option value="" className="text-[#2f4156]">
-                  Select your Gender
-                </option>
-                <option value="female" className="text-[#2f4156]">
-                  Female
-                </option>
-                <option value="male" className="text-[#2f4156]">
-                  Male
-                </option>
-              </select>
+              />
               <p
                 className={`text-red-500 text-xs mt-1 min-h-[20px] ${
-                  errors.gender ? "visible" : "invisible"
+                  errors.confirmPassword ? "visible" : "invisible"
                 }`}
               >
-                {errors.gender}
+                {errors.confirmPassword || "placeholder"}
               </p>
             </div>
+
             {/* Role */}
             <div>
               <label className="block text-[#2F4156] mb-1" htmlFor="role">

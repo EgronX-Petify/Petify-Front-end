@@ -13,6 +13,7 @@ const New = ({ obj }) => {
           src={obj.photo}
           alt={obj.header}
           className="w-full h-full object-cover rounded-t-[10px]"
+          loading="lazy"
         />
       </div>
       <div className="flex flex-col gap-2 px-3 py-2 justify-between">

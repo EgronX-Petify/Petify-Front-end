@@ -1,5 +1,5 @@
 import React from "react";
-import shopPhoto from "../../public/home-media/pexels-mateusz-3627236-8368423.jpg";
+import shopPhoto from "../../../public/home-media/pexels-mateusz-3627236-8368423.jpg";
 import { Link } from "react-router-dom";
 
 const ShopNow = () => {
@@ -10,6 +10,7 @@ const ShopNow = () => {
           src={shopPhoto}
           alt="Pet shopping"
           className="w-full h-full object-cover rounded-lg"
+          loading="lazy"
         />
       </div>
       <div className="flex flex-col justify-center gap-4 md:px-[50px] w-full md:w-[37%] text-center md:text-left">

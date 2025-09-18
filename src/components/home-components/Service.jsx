@@ -11,6 +11,7 @@ const Service = ({ service }) => {
             src={service.photo}
             alt={service.name}
             className="w-full h-full object-cover rounded-t-[10px]"
+            loading="lazy"
           />
         </div>
         <div className="flex gap-2 px-3 py-2 justify-between items-center">

@@ -7,7 +7,7 @@ import UseLogged from "../hooks/UseLogged";
 const Login = () => {
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [error, setError] = useState("");
@@ -26,20 +26,20 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    tryLogin({ username: formData.username, password: formData.password });
-    // try {
-    //   const data = await loginService(formData);
-    //   localStorage.getItem("token", data.token);
-    //   login({ username: data.username, role: data.role }); //**********
-    //   console.log("✅ Login success:", data);
-
-    //   // navigate("/");
-    // } catch (err) {
-    //   console.error("❌ Login failed:", err);
-    //   setError(err.message || "Login failed, please try again");
-    // } finally {
-    //   setLoading(false);
-    // }
+    tryLogin({ email: formData.email, password: formData.password });
+    try {
+      // const data = await loginService(formData);
+      // console.log(data);
+      // localStorage.setItem("token", data.token);
+      // // login({ username: data.username, role: data.role }); //**********
+      // console.log("Login success:", data);
+      // navigate("/");
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError(err.message || "Login failed, please try again");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,12 +55,12 @@ const Login = () => {
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-[#2F4156] mb-2" htmlFor="username">
-                Username
+              <label className="block text-[#2F4156] mb-2" htmlFor="email">
+                Email
               </label>
               <input
-                type="text"
-                id="username"
+                type="email"
+                id="email"
                 value={formData.username}
                 onChange={handleChange}
                 placeholder="Enter your username"
@@ -117,7 +117,7 @@ const Login = () => {
 
       <div className="hidden w-full md:w-[600px] h-[300px] md:h-[600px] overflow-hidden md:flex justify-center items-center">
         <img
-          src="src/public/logo55.png"
+          src="/public/logo55.png"
           alt=""
           className="w-full h-full object-contain md:object-cover"
         />

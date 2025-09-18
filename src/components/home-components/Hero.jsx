@@ -1,8 +1,10 @@
 import React from "react";
-import logo from "../../public/logo55.png";
+import logo from "../../../public/logo55.png";
 import { Link } from "react-router-dom";
+import UseLoggedUser from "../../hooks/UseLoggedUser";
 
 const Hero = () => {
+  const isLogged = UseLoggedUser();
   return (
     <div className="flex flex-col md:flex-row justify-center bg-[#F8F9FA] px-5 py-5 md:px-[70px]">
       <div className="flex flex-col justify-center gap-5 px-5 md:px-[50px] w-full md:w-[50%] text-center md:text-left">
@@ -14,12 +16,14 @@ const Hero = () => {
           Caring for your furry friends has never been easier. From products and
           guides to booking vets and services — all in one place.
         </p>
-
-        <Link to="/signup">
-          <button className="hidden md:flex mx-auto md:mx-0 w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer">
-            Start Now
-          </button>
+        {!isLogged &&
+        <Link
+          to="/signup"
+          className="hidden md:flex mx-auto md:mx-0 w-fit px-5 py-2 align-middle rounded-[10px] bg-[#2F4156] text-[#F5EFED] font-semibold cursor-pointer"
+        >
+          Start Now
         </Link>
+        }
       </div>
 
       <div className="w-full md:w-[500px] h-[300px] md:h-[500px] mt-5 md:mt-0 overflow-hidden flex items-center justify-center">
@@ -27,6 +31,7 @@ const Hero = () => {
           src={logo}
           alt="petify logo"
           className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] object-contain"
+          loading="lazy"
         />
       </div>
       {/* only show if u are not loggid in */}

@@ -6,22 +6,22 @@ const Services = () => {
     {
       id: "shop",
       name: "Pet Products",
-      photo: "src/public/home-media/pexels-misolo-cosmetic-2588316-4841264.jpg",
+      photo: "/public/home-media/pexels-misolo-cosmetic-2588316-4841264.jpg",
     },
     {
       id: "beginner-guide",
       name: "Beginner Guide",
-      photo: "src/public/home-media/pexels-arina-krasnikova-7725619.jpg",
+      photo: "/public/home-media/pexels-arina-krasnikova-7725619.jpg",
     },
     {
       id: "vets",
       name: "Book Vet Appointments",
-      photo: "src/public/home-media/pexels-tahir-x-lf-2153788153-33394308.jpg",
+      photo: "/public/home-media/pexels-tahir-x-lf-2153788153-33394308.jpg",
     },
     {
       id: "services",
       name: "Book Service",
-      photo: "src/public/home-media/pexels-goochie-poochie-19145890.jpg",
+      photo: "/public/home-media/pexels-goochie-poochie-19145890.jpg",
     },
   ];
 

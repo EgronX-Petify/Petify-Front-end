@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 
 const BeginnerGuide = () => {
   const pets = [
-    { id: 1, type: "Cat", photo: "src/public/beginner-media/sora.png" },
-    { id: 2, type: "Hamster", photo: "src/public/beginner-media/hamster.png" },
-    { id: 3, type: "Dog", photo: "src/public/beginner-media/dog.png" },
-    { id: 4, type: "Parrot", photo: "src/public/beginner-media/parrot.png" },
-    { id: 5, type: "Rabbit", photo: "src/public/beginner-media/rabbit.png" },
-    { id: 6, type: "Turtle", photo: "src/public/beginner-media/turtle.png" },
+    { id: 1, type: "Cat", photo: "/public/beginner-media/sora.png" },
+    { id: 2, type: "Hamster", photo: "/public/beginner-media/hamster.png" },
+    { id: 3, type: "Dog", photo: "/public/beginner-media/dog.png" },
+    { id: 4, type: "Parrot", photo: "/public/beginner-media/parrot.png" },
+    { id: 5, type: "Rabbit", photo: "/public/beginner-media/rabbit.png" },
+    { id: 6, type: "Turtle", photo: "/public/beginner-media/turtle.png" },
   ];
 
   const petAges = [
@@ -68,26 +68,25 @@ const BeginnerGuide = () => {
       id: 1,
       title: "Protection Comes First",
       text: "Core vaccines protect against dangerous diseases. Puppies and kittens get a series of shots in the first months, then annual boosters. Always consult your vet for the right schedule.",
-      photo:
-        "src/public/beginner-media/pexels-tahir-x-lf-2153788153-33394308.jpg",
+      photo: "/public/beginner-media/pexels-tahir-x-lf-2153788153-33394308.jpg",
     },
     {
       id: 2,
       title: "Clean Pet, Happy Pet",
       text: "Brush fur, trim nails, bathe when needed, and clean ears. Grooming prevents infections and keeps pets comfortable.",
-      photo: "src/public/beginner-media/pexels-goochie-poochie-19145890.jpg",
+      photo: "/public/beginner-media/pexels-goochie-poochie-19145890.jpg",
     },
     {
       id: 3,
       title: "Healthy Body, Happy Mind",
       text: "Walks, toys, and training keep pets fit and prevent boredom. Different pets have different activity needs — know yours!",
-      photo: "src/public/beginner-media/pexels-helen1-16395147.jpg",
+      photo: "/public/beginner-media/pexels-helen1-16395147.jpg",
     },
     {
       id: 4,
       title: "Love is the Best Care",
       text: "Spend quality time, learn your pet’s body language, and create a safe environment. A happy pet is a healthy pet.",
-      photo: "src/public/beginner-media/pexels-annetnavi-792775.jpg",
+      photo: "/public/beginner-media/pexels-annetnavi-792775.jpg",
     },
   ];
 
@@ -139,6 +138,7 @@ const BeginnerGuide = () => {
                   src={pet.photo}
                   alt={pet.type}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
               <div className="text-[#2F4156] font-semibold">{pet.type}</div>
@@ -165,9 +165,10 @@ const BeginnerGuide = () => {
         </div>
         <div className="hidden w-full md:w-1/2 h-[250px] md:h-[400px] overflow-hidden md:flex items-center">
           <img
-            src="src/public/beginner-media/pexels-helen1-16395151.jpg"
+            src="/public/beginner-media/pexels-helen1-16395151.jpg"
             alt="pet age guide"
             className="w-full h-full object-cover"
+            loading="lazy"
           />
         </div>
       </div>
@@ -175,9 +176,10 @@ const BeginnerGuide = () => {
       <div className="flex flex-col md:flex-row justify-center items-center px-6 md:px-[70px] py-6 md:py-[30px] gap-6">
         <div className="w-full md:w-[550px] h-[250px] md:h-[400px] overflow-hidden flex items-center">
           <img
-            src="src/public/beginner-media/pexels-enginakyurt-1437465.jpg"
+            src="/public/beginner-media/pexels-enginakyurt-1437465.jpg"
             alt="food is health"
             className="w-full h-full object-cover"
+            loading="lazy"
           />
         </div>
         <div className="flex flex-col justify-center gap-2 md:px-[50px] w-full md:w-[37%] text-center md:text-left">
@@ -207,6 +209,7 @@ const BeginnerGuide = () => {
                 <img
                   src={guide.photo}
                   alt={guide.title}
+                  loading="lazy"
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                 />
               </div>
@@ -238,7 +241,7 @@ const BeginnerGuide = () => {
         </div>
         <div className="w-full md:w-[520px] h-[260px] md:h-[320px] overflow-hidden">
           <img
-            src="src/public/beginner-media/image (4).png"
+            src="/public/beginner-media/image (4).png"
             alt="pets are family"
             className="w-full h-full object-contain"
           />
@@ -276,6 +279,7 @@ const BeginnerGuide = () => {
             title="Owning a Dog - Things to Know Before Getting a Puppy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            loading="lazy"
           ></iframe>
         </div>
       </div>

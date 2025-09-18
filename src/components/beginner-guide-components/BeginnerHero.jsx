@@ -1,5 +1,5 @@
 import React from "react";
-import beginnerPhoto from "../../public/beginner-media/download.png"
+import beginnerPhoto from "../../../public/beginner-media/download.png";
 
 const BeginnerHero = () => {
   return (
@@ -23,6 +23,7 @@ const BeginnerHero = () => {
             src={beginnerPhoto}
             alt="Happy pet"
             className="w-full h-full object-cover rounded-xl"
+            loading="lazy"
           />
         </div>
       </div>

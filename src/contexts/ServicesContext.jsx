@@ -1,0 +1,88 @@
+import React, { createContext, useState } from "react";
+
+const ServicesContext = createContext();
+
+const ServicesProvider = ({ children }) => {
+  const [services, setServices] = useState([
+    {
+      id: 1,
+      name: "Veterinary Visits",
+      description: "Comprehensive check-ups and treatments for your pet.",
+      image: "/public/pexels-tima-miroshnichenko-6131529.jpg",
+      priceRange: "300 - 800 EGP",
+      duration: "30 - 60 minutes",
+      availability: ["Daily except Friday"],
+      rating: 5,
+      category: "Healthcare",
+    },
+    {
+      id: 2,
+      name: "Grooming",
+      description: "Full-service grooming including bath, haircut, and more.",
+      image: "/public/pexels-tima-miroshnichenko-6131529.jpg",
+      priceRange: "200 - 600 EGP",
+      duration: "45 - 90 minutes",
+      availability: ["Saturday", "Sunday", "Monday", "Wednesday"],
+      rating: 4,
+      category: "Care & Hygiene",
+    },
+    {
+      id: 3,
+      name: "Training",
+      description:
+        "Professional pet training sessions to improve behavior, obedience, and social skills.",
+      image: "/public/pexels-tima-miroshnichenko-6131529.jpg",
+      priceRange: "400 - 1000 EGP per session",
+      duration: "60 minutes",
+      availability: ["Sunday", "Tuesday", "Thursday"],
+      rating: 3,
+      category: "Behavior & Skills",
+    },
+    {
+      id: 4,
+      name: "Boarding",
+      description:
+        "Safe and comfortable boarding facilities where your pets are cared for while you’re away.",
+      image: "/public/pexels-tima-miroshnichenko-6131529.jpg",
+      priceRange: "150 - 400 EGP per night",
+      duration: "Overnight or multiple days",
+      availability: ["All week"],
+      rating: 5,
+      category: "Accommodation",
+    },
+    // 🔥 Add more dummy services to test pagination
+    {
+      id: 5,
+      name: "Daycare",
+      description: "Daily care service for your pets.",
+      image: "/public/pexels-tima-miroshnichenko-6131529.jpg",
+      priceRange: "100 - 250 EGP per day",
+      duration: "8 hours",
+      availability: ["All week"],
+      rating: 4,
+      category: "Accommodation",
+    },
+    {
+      id: 6,
+      name: "Dental Care",
+      description: "Pet dental cleaning and check-up.",
+      image: "/public/pexels-tima-miroshnichenko-6131529.jpg",
+      priceRange: "250 - 600 EGP",
+      duration: "30 minutes",
+      availability: ["Monday", "Thursday"],
+      rating: 5,
+      category: "Healthcare",
+    },
+  ]);
+  const [selectedService, setSelectedService] = useState(null);
+
+  return (
+    <ServicesContext.Provider value={{ services, setServices, selectedService, setSelectedService }}>
+      {children}
+    </ServicesContext.Provider>
+  );
+};
+
+export default ServicesProvider;
+export  {ServicesContext};
+

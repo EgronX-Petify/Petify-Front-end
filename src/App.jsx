@@ -24,6 +24,11 @@ import UserInfo from "./components/profile-components/UserInfo";
 import AllProfiles from "./components/profile-components/AllProfiles";
 import Orders from "./components/profile-components/Orders";
 import Appointments from "./components/profile-components/Appointments";
+import ViewProduct from "./components/shop-components/ViewProduct";
+import ViewService from "./components/pet-services-components/ViewService";
+import ServicesProvider from "./contexts/ServicesContext";
+import VetsProvider from "./contexts/VetsContext";
+import ViewVet from "./components/vets-components/ViewVet";
 
 function App() {
   return (
@@ -35,10 +40,41 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="reset-password" element={<ResetPassword />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/shop/view-product/:id" element={<ViewProduct />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/vets" element={<Vets />} />
-        <Route path="/services" element={<PetServices />} />
+        <Route
+          path="/vets"
+          element={
+            <VetsProvider>
+              <Vets />
+            </VetsProvider>
+          }
+        />
+        <Route
+          path="/vets/view-vet/:id"
+          element={
+            <VetsProvider>
+              <ViewVet />
+            </VetsProvider>
+          }
+        />
+        <Route
+          path="/services"
+          element={
+            <ServicesProvider>
+              <PetServices />
+            </ServicesProvider>
+          }
+        />
+        <Route
+          path="/services/view-service/:id"
+          element={
+            <ServicesProvider>
+              <ViewService />
+            </ServicesProvider>
+          }
+        />
         <Route path="/nearby-places" element={<NearbyPlaces />} />
         <Route path="/beginner-guide" element={<BeginnerGuide />} />
         <Route path="/profile" element={<Profile />}>

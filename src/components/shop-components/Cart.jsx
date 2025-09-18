@@ -1,37 +1,42 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
+import Checkout from "./Checkout";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 const Cart = () => {
-  const cartItems = [
-    {
-      id: 1,
-      name: "Premium Dog Food - Chicken Flavor",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 250,
-      category: "Food",
-      brand: "Royal Canin",
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: "Cat Dry Food - Salmon Recipe",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 180,
-      category: "Food",
-      brand: "Whiskas",
-      quantity: 2,
-    },
-    {
-      id: 3,
-      name: "Small Animal Hay Pack",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 120,
-      category: "Food",
-      brand: "Kaytee",
-      quantity: 1,
-    },
-  ];
+  // const cartItems = [
+  //   {
+  //     id: 1,
+  //     name: "Premium Dog Food - Chicken Flavor",
+  //     photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
+  //     price: 250,
+  //     category: "Food",
+  //     brand: "Royal Canin",
+  //     quantity: 1,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Cat Dry Food - Salmon Recipe",
+  //     photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
+  //     price: 180,
+  //     category: "Food",
+  //     brand: "Whiskas",
+  //     quantity: 2,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Small Animal Hay Pack",
+  //     photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
+  //     price: 120,
+  //     category: "Food",
+  //     brand: "Kaytee",
+  //     quantity: 1,
+  //   },
+  // ];
+  const { cartItems, setCartItems } = useContext(ProductsContext);
+
+  const [open, setOpen] = useState(false);
 
   const shipping = 5.99;
   const taxRate = 0.1;
@@ -54,7 +59,7 @@ const Cart = () => {
             <CartItem key={id} item={item} />
           ))
         ) : (
-          <p className="text-gray-500 text-center">Your cart is empty 🛒</p>
+          <p className="text-gray-500 text-center min-h-[157px]">Your cart is empty 🛒</p>
         )}
       </div>
 
@@ -82,12 +87,13 @@ const Cart = () => {
               <span>${total.toFixed(2)}</span>
             </div>
           </div>
-          <Link to="/checkout" >
-          <button className="w-full bg-[#FD7E14] hover:bg-[#e66f0c] text-white font-semibold py-3 rounded-lg mt-5">
+          <button className="w-full bg-[#FD7E14] hover:bg-[#e66f0c] text-white font-semibold py-3 rounded-lg mt-5"
+          onClick={() => setOpen(true)} >
             Checkout
-          </button></Link>
+          </button>
         </div>
       )}
+    <Checkout open={open} setOpen={setOpen} />
     </div>
   );
 };

@@ -1,212 +1,42 @@
 import React, { useState } from "react";
 import Product from "./Product";
 import Filters from "./Filters";
+import UseProducts from "../../hooks/UseProducts";
 
 const Products = () => {
-  const petProducts = [
-    {
-      id: 1,
-      name: "Premium Dog Food - Chicken Flavor",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 250,
-      category: "Food",
-      brand: "Royal Canin",
-    },
-    {
-      id: 2,
-      name: "Cat Dry Food - Salmon Recipe",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 180,
-      category: "Food",
-      brand: "Whiskas",
-    },
-    {
-      id: 3,
-      name: "Small Animal Hay Pack",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 120,
-      category: "Food",
-      brand: "Kaytee",
-    },
-    {
-      id: 4,
-      name: "Interactive Dog Toy Ball",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 90,
-      category: "Toys",
-      brand: "KONG",
-    },
-    {
-      id: 5,
-      name: "Cat Teaser Feather Wand",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 75,
-      category: "Toys",
-      brand: "Petmate",
-    },
-    {
-      id: 6,
-      name: "Pet Grooming Brush",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 150,
-      category: "Grooming",
-      brand: "FURminator",
-    },
-    {
-      id: 7,
-      name: "Dog Nail Clipper",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 100,
-      category: "Grooming",
-      brand: "Safari",
-    },
-    {
-      id: 8,
-      name: "Flea & Tick Shampoo",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 200,
-      category: "Health",
-      brand: "Adams",
-    },
-    {
-      id: 9,
-      name: "Pet Vitamin Supplement",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 160,
-      category: "Health",
-      brand: "Nutri-Vet",
-    },
-    {
-      id: 10,
-      name: "Soft Dog Bed - Medium",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 400,
-      category: "Bedding",
-      brand: "MidWest",
-    },
-    {
-      id: 11,
-      name: "Cat Scratching Post",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 350,
-      category: "Bedding",
-      brand: "Frisco",
-    },
-    {
-      id: 12,
-      name: "Pet Travel Carrier",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 500,
-      category: "Accessories",
-      brand: "AmazonBasics",
-    },
-    {
-      id: 13,
-      name: "Dog Leash - Nylon 5ft",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 110,
-      category: "Accessories",
-      brand: "Blueberry Pet",
-    },
-    {
-      id: 14,
-      name: "Cat Litter Box - Large",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 300,
-      category: "Accessories",
-      brand: "PetSafe",
-    },
-    {
-      id: 15,
-      name: "Bird Cage Starter Kit",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 700,
-      category: "Accessories",
-      brand: "Prevue",
-    },
-    {
-      id: 16,
-      name: "Aquarium Starter Kit - 20L",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 950,
-      category: "Accessories",
-      brand: "Tetra",
-    },
-    {
-      id: 17,
-      name: "Dog Harness - Adjustable",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 180,
-      category: "Accessories",
-      brand: "Ruffwear",
-    },
-    {
-      id: 18,
-      name: "Cat Collar with Bell",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 60,
-      category: "Accessories",
-      brand: "PetSafe",
-    },
-    {
-      id: 19,
-      name: "Dog Chew Bone - Pack of 2",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 95,
-      category: "Toys",
-      brand: "Nylabone",
-    },
-    {
-      id: 20,
-      name: "Rabbit Hutch - Wooden",
-      photo: "src/public/shop-media/pexels-rdne-7310213.jpg",
-      price: 1200,
-      category: "Bedding",
-      brand: "Aivituvin",
-    },
-  ];
+  const petProducts = UseProducts();
+
+
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedBrands, setSelectedBrands] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
-
   const categories = [...new Set(petProducts.map((p) => p.category))];
-  const brands = [...new Set(petProducts.map((p) => p.brand))];
 
+  // if category is selected remove it, else add it
   const handleCategoryChange = (category) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
+    selectedCategories.includes(category)
+      ? setSelectedCategories(
+          selectedCategories.filter((categ) => categ != category)
+        )
+      : setSelectedCategories([...selectedCategories, category]);
     setCurrentPage(1);
   };
+  // if there is filters show products according to it, else show all products
+  const filteredProducts = petProducts.filter((product) =>
+    selectedCategories.length > 0
+      ? selectedCategories.includes(product.category)
+      : product
+  );
 
-  const handleBrandChange = (brand) => {
-    setSelectedBrands((prev) =>
-      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
-    );
-    setCurrentPage(1);
-  };
-
-  const filteredProducts = petProducts.filter((product) => {
-    const matchCategory =
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(product.category);
-    const matchBrand =
-      selectedBrands.length === 0 || selectedBrands.includes(product.brand);
-    return matchCategory && matchBrand;
-  });
-
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const indexOfLastProduct = currentPage * productsPerPage;  // 12 
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage; // 0 
+  // take products of [0 - 12] index
   const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);  
 
   return (
     <div className="p-4 md:p-10">
@@ -228,11 +58,8 @@ const Products = () => {
         >
           <Filters
             categories={categories}
-            brands={brands}
             selectedCategories={selectedCategories}
-            selectedBrands={selectedBrands}
-            onCategoryChange={handleCategoryChange}
-            onBrandChange={handleBrandChange}
+            handleCategoryChange={handleCategoryChange}
           />
         </div>
 

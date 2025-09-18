@@ -19,6 +19,21 @@ const UpdateServices = ({ open, setOpen }) => {
           </h2>
 
           <form className="space-y-4 text-sm">
+            {/* Service Photo */}
+            <div>
+              <label className="block text-sm font-medium mb-1 text-[#2F4156]">
+                Service Photo
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="w-full border border-[#2f415677] rounded-md p-2 cursor-pointer focus:ring-2 focus:ring-[#FD7E14]"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Upload a photo (JPG, PNG, JPEG)
+              </p>
+            </div>
+
             {/* Service Name */}
             <div>
               <label className="block text-sm font-medium mb-1 text-[#2F4156]">
@@ -43,16 +58,33 @@ const UpdateServices = ({ open, setOpen }) => {
               ></textarea>
             </div>
 
-            {/* Price */}
-            <div>
-              <label className="block text-sm font-medium mb-1 text-[#2F4156]">
-                Price ($)
-              </label>
-              <input
-                type="number"
-                placeholder="Enter price"
-                className="w-full border outline-none border-[#2f415677] rounded-md p-2 focus:ring-2 focus:ring-[#FD7E14]"
-              />
+            {/* Price + Rate in a row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Price */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-[#2F4156]">
+                  Price ($)
+                </label>
+                <input
+                  type="number"
+                  placeholder="Enter price"
+                  className="w-full border outline-none border-[#2f415677] rounded-md p-2 focus:ring-2 focus:ring-[#FD7E14]"
+                />
+              </div>
+
+              {/* Rate */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-[#2F4156]">
+                  Rate (1–5)
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="5"
+                  placeholder="Enter rate"
+                  className="w-full border outline-none border-[#2f415677] rounded-md p-2 focus:ring-2 focus:ring-[#FD7E14]"
+                />
+              </div>
             </div>
 
             {/* Buttons */}
