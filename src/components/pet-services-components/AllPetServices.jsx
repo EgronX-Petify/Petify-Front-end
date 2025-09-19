@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PetService from "./PetService";
 import ServiceFilters from "./ServiceFilters";
 import ServiceBook from "./ServiceBook";
 import UseServices from "../../hooks/UseServices";
+import toast, { Toaster } from "react-hot-toast";
 
 const AllPetServices = () => {
   const petServices = UseServices();
   const [openBook, setOpenBook] = useState(false);
+  const [bookFlag, setBookFlag] = useState(false);
+
+  function showSucessBookAlert() {
+    toast.success("Service Booked Successfully!");
+  }
 
   // unique filter options
   const categories = [...new Set(petServices.map((s) => s.category))];
@@ -76,6 +82,12 @@ const AllPetServices = () => {
 
   const totalPages = Math.ceil(filteredServices.length / servicesPerPage);
 
+  const [searchTerm, setSearchTerm] = useState("");
+  // search by name
+  const searchedServices = currentServices.filter((service) =>
+    service.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="p-4 md:p-10">
       <div className="flex justify-between items-center mb-4 md:hidden">
@@ -108,9 +120,34 @@ const AllPetServices = () => {
         </div>
 
         <main className="w-full md:w-3/4">
+          {/* 🔍 Search Bar */}
+          <label className="input w-full  mb-7 outline-none focus:ring-2 focus:ring-[#FD7E14]">
+            <svg
+              className="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input
+              type="search"
+              placeholder="Search services..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {currentServices.length > 0 ? (
-              currentServices.map((service, id) => (
+            {searchedServices.length > 0 ? (
+              searchedServices.map((service, id) => (
                 <PetService key={id} service={service} setOpen={setOpenBook} />
               ))
             ) : (
@@ -120,7 +157,7 @@ const AllPetServices = () => {
             )}
           </div>
 
-          {filteredServices.length > 0 && (
+          {searchedServices.length > 0 && (
             <div className="flex justify-center items-center gap-4 mt-6">
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -145,63 +182,13 @@ const AllPetServices = () => {
           )}
         </main>
       </div>
-      <ServiceBook open={openBook} setOpen={setOpenBook} />
+      <Toaster position="top-center" reverseOrder={false} />
+      <ServiceBook
+        open={openBook}
+        setOpen={setOpenBook}
+        showSucessBookAlert={showSucessBookAlert}
+      />
     </div>
-
-    // <div className="flex flex-col md:flex-row gap-6 w-[90%] mx-auto my-10">
-    //   {/* Filters Sidebar */}
-    //   <div className="w-fit w-full">
-    //     <ServiceFilters
-    //       categories={categories}
-    //       prices={prices}
-    //       ratings={ratings}
-    //       selectedCategories={selectedCategories}
-    //       selectedPrices={selectedPrices}
-    //       selectedRatings={selectedRatings}
-    //       onCategoryChange={handleCategoryChange}
-    //       onPriceChange={handlePriceChange}
-    //       onRatingChange={handleRatingChange}
-    //     />
-    //   </div>
-
-    //   {/* Services + Pagination */}
-    //   <div className="flex-1 bg-white p-7 rounded-xl shadow-md">
-    //     {currentServices.length > 0 ? (
-    //       <div className="flex justify-evenly flex-wrap gap-4">
-    //         {currentServices.map((service) => (
-    //           <PetService service={service} key={service.id} />
-    //         ))}
-    //       </div>
-    //     ) : (
-    //       <p className="text-center text-gray-500">
-    //         No services match your filters.
-    //       </p>
-    //     )}
-
-    //     {/* Pagination Buttons */}
-    //     {totalPages > 1 && (
-    //       <div className="flex justify-center items-center gap-4 mt-6">
-    //         <button
-    //           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-    //           disabled={currentPage === 1}
-    //           className="px-4 py-2 bg-[#2F4156] text-white rounded-lg disabled:opacity-50"
-    //         >
-    //           Prev
-    //         </button>
-    //         <span className="text-gray-700 font-medium">
-    //           Page {currentPage} of {totalPages}
-    //         </span>
-    //         <button
-    //           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-    //           disabled={currentPage === totalPages}
-    //           className="px-4 py-2 bg-[#FD7E14] text-white rounded-lg disabled:opacity-50"
-    //         >
-    //           Next
-    //         </button>
-    //       </div>
-    //     )}
-    //   </div>
-    // </div>
   );
 };
 

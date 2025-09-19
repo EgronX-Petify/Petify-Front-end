@@ -5,9 +5,13 @@ import UseSelectedService from "../../hooks/UseSelectedService";
 import { ServicesContext } from "../../contexts/ServicesContext";
 import Rating from "../Rating";
 import LoadingSpinner from "../LoadingSpinner";
+import toast, { Toaster } from "react-hot-toast";
+import ServiceBook from "./ServiceBook";
 
 const ViewService = () => {
+  const [openBook, setOpenBook] = useState(false);
   const service = UseSelectedService();
+  const { setServices } = useContext(ServicesContext);
   const { setSelectedService } = useContext(ServicesContext);
   const { id } = useParams();
   const services = UseServices();
@@ -18,6 +22,19 @@ const ViewService = () => {
     const foundService = services.find((s) => s.id == id);
     setSelectedService(foundService);
   }, [id, services, service]);
+
+  function updateRating(baseRating) {
+    return (baseRating + userRating) / 2;
+  }
+  function handleRate(id) {
+    setServices(
+      services.map((s) =>
+        s.id === id ? { ...s, rating: updateRating(s.rating) } : s
+      )
+    );
+    toast.success("Your Rate Is Saved");
+    setUserRating(0);
+  }
 
   //   if (!service) return <;
   return (
@@ -63,13 +80,13 @@ const ViewService = () => {
             <div className="flex gap-5">
               {" "}
               <button
-                onClick={() => handleAddToCart(vet)}
+                onClick={() => setOpenBook(true)}
                 className="cursor-pointer flex items-center gap-2 bg-[#2f4156d6] text-white px-6 py-3 rounded-xl shadow-md hover:bg-[#2F4156] transition-colors w-fit"
               >
                 Book Now
               </button>
               <button
-                onClick={() => handleAddToCart(vet)}
+                onClick={() => handleRate(service?.id)}
                 className={
                   !userRating
                     ? `invisible`
@@ -82,6 +99,8 @@ const ViewService = () => {
           </div>
         </div>
       )}
+      <Toaster position="top-center" reverseOrder={false} />
+      <ServiceBook open={openBook} setOpen={setOpenBook} />
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ForgotPassword from "../components/sign-components/ForgotPassword";
-import { loginService } from "../services/authService";
 import UseLogged from "../hooks/UseLogged";
 
 const Login = () => {
@@ -25,21 +24,21 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    console.log("Login success:", formData);
     setLoading(true);
-    tryLogin({ email: formData.email, password: formData.password });
-    try {
-      // const data = await loginService(formData);
-      // console.log(data);
-      // localStorage.setItem("token", data.token);
-      // // login({ username: data.username, role: data.role }); //**********
-      // console.log("Login success:", data);
-      // navigate("/");
-    } catch (err) {
-      console.error("Login failed:", err);
-      setError(err.message || "Login failed, please try again");
-    } finally {
-      setLoading(false);
-    }
+    tryLogin(formData);
+    setLoading(false);
+    // try {
+    //   // const data = await loginService(formData);
+    //   // console.log(data);
+    //   tryLogin(formData);
+    //   console.log("Login success:", formData);
+    // } catch (err) {
+    //   console.error("Login failed:", err);
+    //   setError(err.message || err.error || "Login failed, please try again");
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (

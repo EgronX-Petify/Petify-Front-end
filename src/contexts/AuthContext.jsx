@@ -12,17 +12,19 @@ const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     setUser(userData);
-    localStorage.setItem("logged user", JSON.stringify(userData));
+    localStorage.setItem("logged user", JSON.stringify(userData)); // remove after add backend
+  };
+  const signup = (userData) => {
+    login(userData);
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("logged user");
-    console.log("logged out");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -33,6 +33,7 @@ import AdminDashboard from "./components/admin-components/AdminDashboard";
 import UsersTable from "./components/admin-components/UsersTable";
 import ProductsTable from "./components/admin-components/ProductsTable";
 import ServicesTable from "./components/admin-components/ServicesTable";
+import AppointmentsProvider from "./contexts/AppointmentsContext";
 
 function App() {
   return (
@@ -67,7 +68,9 @@ function App() {
           path="/services"
           element={
             <ServicesProvider>
-              <PetServices />
+              <AppointmentsProvider>
+                <PetServices />
+              </AppointmentsProvider>
             </ServicesProvider>
           }
         />
@@ -75,7 +78,9 @@ function App() {
           path="/services/view-service/:id"
           element={
             <ServicesProvider>
-              <ViewService />
+              <AppointmentsProvider>
+                <ViewService />
+              </AppointmentsProvider>
             </ServicesProvider>
           }
         />

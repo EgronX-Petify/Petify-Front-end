@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../../public/logo55.png";
 import { Link } from "react-router-dom";
 import { signupService } from "../services/authService.js";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 
 const Signup = () => {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -68,18 +70,27 @@ const Signup = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const { email, password, role } = formData;
+  const reqBody = { email, password, role };
+  const { signup } = useContext(AuthContext);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(reqBody);
+    setErrors({});
+    setLoading(true);
     if (validate()) {
       try {
-        const data = await signupService(formData);
+        const data = await signupService(reqBody);
+        signup(data);
         console.log("✅ Signup successful:", data);
-        // هنا تقدر تعملي redirect للـ login أو تظهري رسالة نجاح
       } catch (err) {
         console.error("❌ Signup failed:", err);
-        // هنا ممكن تعرضي error message من السيرفر تحت الفورم
+      } finally {
+        setLoading(false);
       }
+    } else {
+      setLoading(false);
     }
   };
 
@@ -169,12 +180,15 @@ const Signup = () => {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-[#2F4156] mb-1" htmlFor="c-password">
+              <label
+                className="block text-[#2F4156] mb-1"
+                htmlFor="confirmPassword"
+              >
                 Confirm Password
               </label>
               <input
                 type="password"
-                id="c-password"
+                id="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="Confirm your password"
@@ -209,10 +223,10 @@ const Signup = () => {
                 <option value="" className="text-[#2f4156]">
                   Select your role
                 </option>
-                <option value="pet owner" className="text-[#2f4156]">
+                <option value="PET_OWNER" className="text-[#2f4156]">
                   Pet Owner
                 </option>
-                <option value="service provider" className="text-[#2f4156]">
+                <option value="SERVICE_PROVIDER" className="text-[#2f4156]">
                   Service Provider
                 </option>
               </select>
@@ -228,9 +242,12 @@ const Signup = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="cursor-pointer w-full bg-[#FD7E14] text-white py-2 rounded-lg hover:bg-[#e76c0a] transition-colors"
+              disabled={loading}
+              className={`cursor-pointer w-full bg-[#FD7E14] text-white py-2 rounded-lg hover:bg-[#e76c0a] transition-colors ${
+                loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              Sign Up
+              {loading ? "Signing In..." : "Sign In"}
             </button>
           </form>
 

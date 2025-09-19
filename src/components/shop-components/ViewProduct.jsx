@@ -6,16 +6,18 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import UseProducts from "../../hooks/UseProducts";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import Rating from "../Rating";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
 import LoadingSpinner from "../LoadingSpinner";
+import toast, { Toaster } from "react-hot-toast";
 
 const ViewProduct = () => {
   const { id } = useParams();
   const products = UseProducts();
+  const { setProducts } = useContext(ProductsContext);
   const { setSelectedProduct } = useContext(ProductsContext);
   const product = UseSelectedProduct();
 
@@ -35,33 +37,36 @@ const ViewProduct = () => {
     product && setCartItem({ ...product, quantity: 1 });
   }, [product]);
 
-  function increaseQuantity() {
-    setCartItem((prev) => ({ ...prev, quantity: prev.quantity + 1 }));
+  function increaseQuantity(id) {
+    setCartItems(
+      cartItems.map((item) =>
+        item.id == id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
   }
-  function handleAddToCart() {
-    isLogged ? console.log("added ✅") : console.log("login first ❌");
-    if (!cartItem) return;
-    // cartItems.includes(cartItem)
-    //   ? setCartItems((prev) => [
-    //       ...prev,
-    //       { ...cartItem, quantity: cartItem.quantity + 1 },
-    //     ])
-    //   : setCartItems((prev) => [...prev, cartItem]);
-    // setCartItems((prev) => [...prev, cartItem]);
+  function handleAddToCart(id) {
+    !isLogged && toast.error("Login First!");
+    const thisCartItem = cartItems.find((ci) => ci.id == id);
+    if (isLogged) {
+      thisCartItem
+        ? increaseQuantity(id)
+        : setCartItems([...cartItems, cartItem]);
+        toast.success("Added To Cart");
+    }
+    
+  }
 
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === cartItem.id);
-
-      if (existing) {
-        return prev.map((item) =>
-          item.id === cartItem.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        return [...prev, cartItem];
-      }
-    });
+  function updateRating(baseRating) {
+    return (baseRating + userRating) / 2;
+  }
+  function handleRate(id) {
+    setProducts(
+      products.map((p) =>
+        p.id === id ? { ...p, rating: updateRating(p.rating) } : p
+      )
+    );
+    toast.success("Your Rate Is Saved");
+    setUserRating(0);
   }
 
   return (
@@ -120,14 +125,15 @@ const ViewProduct = () => {
             <div className="flex gap-5">
               {/* Add to Cart */}
               <button
-                onClick={() => handleAddToCart(product)}
+                onClick={() => handleAddToCart(product.id)}
                 className="cursor-pointer flex items-center gap-2 bg-[#2f4156d6] text-white px-6 py-3 rounded-xl shadow-md hover:bg-[#2F4156] transition-colors w-fit"
               >
                 <MdAddShoppingCart size={20} />
                 Add to Cart
               </button>
+              
               <button
-                onClick={() => handleAddToCart(vet)}
+                onClick={() => handleRate(product.id)}
                 className={
                   !userRating
                     ? `invisible`
@@ -138,6 +144,7 @@ const ViewProduct = () => {
               </button>
             </div>
           </div>
+          <Toaster position="top-center" reverseOrder={false} />
         </div>
       )}
     </div>

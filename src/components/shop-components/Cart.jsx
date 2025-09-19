@@ -3,6 +3,7 @@ import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 import Checkout from "./Checkout";
 import { ProductsContext } from "../../contexts/ProductsContext";
+import UseCartItems from "../../hooks/UseCartItems";
 
 const Cart = () => {
   // const cartItems = [
@@ -34,7 +35,7 @@ const Cart = () => {
   //     quantity: 1,
   //   },
   // ];
-  const { cartItems, setCartItems } = useContext(ProductsContext);
+  const cartItems = UseCartItems();
 
   const [open, setOpen] = useState(false);
 
@@ -55,11 +56,11 @@ const Cart = () => {
         <h2 className="text-xl font-bold text-[#2F4156] mb-2">Your Cart</h2>
 
         {cartItems.length > 0 ? (
-          cartItems.map((item, id) => (
-            <CartItem key={id} item={item} />
-          ))
+          cartItems.map((item, id) => <CartItem key={id} item={item} />)
         ) : (
-          <p className="text-gray-500 text-center min-h-[157px]">Your cart is empty 🛒</p>
+          <p className="text-gray-500 text-center min-h-[157px]">
+            Your cart is empty 🛒
+          </p>
         )}
       </div>
 
@@ -87,13 +88,15 @@ const Cart = () => {
               <span>${total.toFixed(2)}</span>
             </div>
           </div>
-          <button className="w-full bg-[#FD7E14] hover:bg-[#e66f0c] text-white font-semibold py-3 rounded-lg mt-5"
-          onClick={() => setOpen(true)} >
+          <button
+            className="w-full bg-[#FD7E14] hover:bg-[#e66f0c] text-white font-semibold py-3 rounded-lg mt-5"
+            onClick={() => setOpen(true)}
+          >
             Checkout
           </button>
         </div>
       )}
-    <Checkout open={open} setOpen={setOpen} />
+      <Checkout open={open} setOpen={setOpen} />
     </div>
   );
 };

@@ -16,8 +16,8 @@ export const signupService = async (formData) => {
 export const loginService = async (formData) => {
   try {
     const response = await login(formData);
-    const {token} = response.data ;
-    localStorage.setItem("token", token);
+    const data = response.data ;
+    localStorage.setItem("logged user", data);
     return response.data;
   } catch (error) {
     if (error.response) {
