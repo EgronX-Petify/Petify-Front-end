@@ -28,18 +28,15 @@ const CartItem = ({ item }) => {
         },
       },
       dangerMode: true,
-    })
-      .then((willDelete) => {
-        if (willDelete) {
-          setCartItems(cartItems.filter((item) => item.id !== id));
-        }
-      })
-      .finally(() => {
+    }).then((willDelete) => {
+      if (willDelete) {
+        setCartItems(cartItems.filter((item) => item.id !== id));
         toast("Removed", {
           icon: "👍",
           duration: "300",
         });
-      });
+      }
+    });
   }
   function increaseQuantity(id) {
     setCartItems(

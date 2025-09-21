@@ -1,8 +1,10 @@
 import React from "react";
 import BeginnerHero from "../components/beginner-guide-components/BeginnerHero";
 import { Link } from "react-router-dom";
+import UseLoggedUser from "../hooks/UseLoggedUser";
 
 const BeginnerGuide = () => {
+  const logged = UseLoggedUser();
   const pets = [
     { id: 1, type: "Cat", photo: "/public/beginner-media/sora.png" },
     { id: 2, type: "Hamster", photo: "/public/beginner-media/hamster.png" },
@@ -113,8 +115,8 @@ const BeginnerGuide = () => {
             services that match their lifestyle.
           </div>
         </div>
-        <Link to="/signup">
-          <button className="w-fit px-5 py-2 rounded-[10px] bg-[#2F4156] text-white font-semibold">
+        <Link to={logged ? `/` : `/signup`}>
+          <button className="cursor-pointer w-fit px-5 py-2 rounded-[10px] bg-[#2F4156] text-white font-semibold">
             Get Started
           </button>
         </Link>

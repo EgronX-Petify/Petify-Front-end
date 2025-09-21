@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import UseSelectedAppointment from "../../hooks/UseSelectedAppointment";
 import UseAppointments from "../../hooks/UseAppointments";
 import { AppointmentsContext } from "../../contexts/AppointmentsContext";
+import toast from "react-hot-toast";
 
-const ServiceBook = ({ open, setOpen, showSucessBookAlert }) => {
+const ServiceBook = ({ open, setOpen }) => {
   const userPets = [
     { id: 1, name: "Bella" },
     { id: 2, name: "Max" },
@@ -17,19 +18,52 @@ const ServiceBook = ({ open, setOpen, showSucessBookAlert }) => {
     emergency: false,
   });
 
-  const [errors, setErrors] = useState({});
-  const { setSelectedAppointment } = useContext(AppointmentsContext);
+  const [errors, setErrors] = useState([]);
   const selectedAppointment = UseSelectedAppointment();
-  const appointments = UseAppointments();
   const { setAppointments } = useContext(AppointmentsContext);
 
   // validate form fields
   const validate = () => {
+    const { pet, date, time } = formData;
     const newErrors = {};
-    if (!formData.pet) newErrors.pet = "Pet is required";
-    if (!formData.date) newErrors.date = "Date is required";
-    if (!formData.time) newErrors.time = "Time is required";
+
+    // 1. Pet must be chosen
+    if (!pet) {
+      newErrors.pet = "Please select a pet.";
+    }
+
+    // 2. Date validation
+    if (!date) {
+      newErrors.date = "Please select a date.";
+    } else {
+      const today = new Date();
+      const selectedDate = new Date(date);
+
+      today.setHours(0, 0, 0, 0);
+      selectedDate.setHours(0, 0, 0, 0);
+
+      if (selectedDate < today) {
+        newErrors.date = "Date cannot be in the past.";
+      }
+    }
+
+    // 3. Time validation
+    if (!time) {
+      newErrors.time = "Please select a time.";
+    } else {
+      const now = new Date();
+      const selectedDateTime = new Date(`${date}T${time}`);
+
+      if (
+        new Date(date).toDateString() === now.toDateString() &&
+        selectedDateTime < now
+      ) {
+        newErrors.time = "Time cannot be in the past.";
+      }
+    }
+
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -45,14 +79,11 @@ const ServiceBook = ({ open, setOpen, showSucessBookAlert }) => {
     if (!validate()) return;
 
     const newAppointment = {
+      id: Date.now(),
       ...selectedAppointment,
       ...formData,
     };
-
-    setSelectedAppointment(newAppointment);
-
     setAppointments((prev) => [...prev, newAppointment]);
-
     setFormData({
       pet: "",
       date: "",
@@ -60,9 +91,25 @@ const ServiceBook = ({ open, setOpen, showSucessBookAlert }) => {
       emergency: false,
     });
     setOpen(false);
-    showSucessBookAlert();
-    console.log(appointments);
+        toast.success("Service Booked Successfully!");
+    setErrors({});
   };
+
+  function handleCancel() {
+    setFormData({
+      pet: "",
+      date: "",
+      time: "",
+      emergency: false,
+    });
+
+    setOpen(false);
+    setErrors({});
+  }
+  // useEffect(() => {
+  //   // call api backend
+  //   console.log("Appointments updated:", appointments);
+  // }, [appointments]);
 
   return (
     open && (
@@ -77,6 +124,12 @@ const ServiceBook = ({ open, setOpen, showSucessBookAlert }) => {
 
           {/* Content */}
           <div className="p-6 md:p-10 flex flex-col gap-6">
+            <div className="text-[#2F4156] font-semibold">
+              Availability:
+              <span className="ml-1 text-sm text-gray-600 font-light">
+                {selectedAppointment.availability}
+              </span>
+            </div>
             <div className="flex flex-col md:flex-row gap-6">
               {/* Pet */}
               <div className="flex flex-col w-full md:w-fit bg-[#F8F9FA] p-4 rounded-lg shadow-sm h-fit">
@@ -93,7 +146,7 @@ const ServiceBook = ({ open, setOpen, showSucessBookAlert }) => {
                 >
                   <option value="">Choose a pet</option>
                   {userPets.map((pet) => (
-                    <option key={pet.id} value={pet.id}>
+                    <option key={pet.id} value={pet.name}>
                       {pet.name}
                     </option>
                   ))}
@@ -174,10 +227,7 @@ const ServiceBook = ({ open, setOpen, showSucessBookAlert }) => {
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-2">
               <button
                 className="cursor-pointer capitalize w-full md:w-auto px-6 py-3 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition"
-                onClick={() => {
-                  setOpen(false);
-                  setErrors({});
-                }}
+                onClick={() => handleCancel()}
               >
                 Cancel
               </button>

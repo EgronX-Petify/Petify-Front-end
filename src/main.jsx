@@ -5,13 +5,22 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./contexts/AuthContext.jsx";
 import ProductsProvider from "./contexts/ProductsContext.jsx";
+import AppointmentsProvider from "./contexts/AppointmentsContext.jsx";
+import ServicesProvider from "./contexts/ServicesContext.jsx";
+import VetsProvider from "./contexts/VetsContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <ProductsProvider>
-          <App />
+          <ServicesProvider>
+            <AppointmentsProvider>
+              <VetsProvider>
+                <App />
+              </VetsProvider>
+            </AppointmentsProvider>
+          </ServicesProvider>
         </ProductsProvider>
       </AuthProvider>
     </BrowserRouter>

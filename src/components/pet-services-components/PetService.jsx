@@ -3,14 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import Rating from "../Rating";
 import { AppointmentsContext } from "../../contexts/AppointmentsContext";
 import UseSelectedAppointment from "../../hooks/UseSelectedAppointment";
+import toast, { Toaster } from "react-hot-toast";
+import UseLoggedUser from "../../hooks/UseLoggedUser";
 
 const PetService = ({ service, setOpen }) => {
+  const isLogged = UseLoggedUser();
   const { setSelectedAppointment } = useContext(AppointmentsContext);
   const selectedAppointment = UseSelectedAppointment();
 
   function handleBook() {
-    const { id, name, description } = service;
-    const neededData = { id, name, description };
+    !isLogged && toast.error("Login First!");
+    const { id, name, description, availability } = service;
+    const neededData = { id, name, description, availability };
     setSelectedAppointment(neededData);
     setOpen(true);
   }
@@ -49,6 +53,7 @@ const PetService = ({ service, setOpen }) => {
       >
         Book Now
       </button>
+       <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

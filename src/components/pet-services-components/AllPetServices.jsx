@@ -5,6 +5,7 @@ import ServiceBook from "./ServiceBook";
 import UseServices from "../../hooks/UseServices";
 import toast, { Toaster } from "react-hot-toast";
 
+const PAGECOUNT = 10;
 const AllPetServices = () => {
   const petServices = UseServices();
   const [openBook, setOpenBook] = useState(false);
@@ -26,7 +27,7 @@ const AllPetServices = () => {
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const servicesPerPage = 10;
+  const servicesPerPage = PAGECOUNT;
 
   const handleCategoryChange = (category) => {
     setSelectedCategories(

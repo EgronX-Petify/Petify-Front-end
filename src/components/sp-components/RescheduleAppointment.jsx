@@ -1,7 +1,96 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { FaCalendarAlt, FaClock, FaRedo } from "react-icons/fa";
+import { AppointmentsContext } from "../../contexts/AppointmentsContext";
+import UseAppointments from "../../hooks/UseAppointments";
+import UseSelectedAppointment from "../../hooks/UseSelectedAppointment";
+import toast from "react-hot-toast";
 
 const RescheduleAppointment = ({ open, setOpen }) => {
+  const { setAppointments } = useContext(AppointmentsContext);
+  const { setSelectedAppointment } = useContext(AppointmentsContext);
+  const appointments = UseAppointments();
+  const appointment = UseSelectedAppointment();
+  const id = appointment?.id;
+
+ 
+  const [formData, setFormData] = useState({ date: "", time: "" });
+  const [errors, setErrors] = useState({ date: "", time: "" });
+
+ 
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+    setErrors((prev) => ({
+      ...prev,
+      [e.target.name]: "", 
+    }));
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    let newErrors = { date: "", time: "" };
+
+    const today = new Date();
+    const selectedDate = new Date(formData.date);
+
+    if (!formData.date) {
+      newErrors.date = "Date is required.";
+      valid = false;
+    } else if (selectedDate < today.setHours(0, 0, 0, 0)) {
+      newErrors.date = "Date cannot be in the past.";
+      valid = false;
+    }
+
+    if (!formData.time) {
+      newErrors.time = "Time is required.";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+
+  const handleRescheduleAppointment = (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    swal({
+      text: "Are you sure you want to reschedule this appointment?",
+      buttons: {
+        cancel: {
+          text: "Cancel",
+          value: false,
+          visible: true,
+          className:
+            "bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded",
+        },
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className:
+            "bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded",
+        },
+      },
+      dangerMode: true,
+    }).then((confirmed) => {
+      if (confirmed) {
+        setAppointments(
+          appointments.map((appt) =>
+            appt.id === id
+              ? { ...appt, date: formData.date, time: formData.time }
+              : appt
+          )
+        );
+        setSelectedAppointment(null);
+        setOpen(false);
+        toast.success("Appointment Rescheduled Successfully!");
+      }
+    });
+  };
+
   return (
     open && (
       <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
@@ -18,46 +107,53 @@ const RescheduleAppointment = ({ open, setOpen }) => {
             <FaRedo /> Reschedule Appointment
           </h2>
 
-          <form className="flex flex-col gap-4">
-            {/* Appointment ID / Info */}
-            <div>
-              <label className="block text-sm font-medium text-[#2F4156] mb-1">
-                Appointment ID
-              </label>
-              <input
-                type="text"
-                placeholder="Enter appointment ID"
-                className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-              />
-            </div>
-
+          <form
+            onSubmit={handleRescheduleAppointment}
+            className="flex flex-col gap-4"
+          >
             {/* New Date */}
             <div>
-              <label className=" text-sm font-medium text-[#2F4156] mb-1 flex items-center gap-1">
+              <label className="text-sm font-medium text-[#2F4156] mb-1 flex items-center gap-1">
                 <FaCalendarAlt /> New Date
               </label>
               <input
                 type="date"
-                className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 ${
+                  errors.date
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-[#2f415677] focus:ring-[#FD7E14]"
+                }`}
               />
+              <p className="text-xs text-red-500 h-4">{errors.date}</p>
             </div>
 
             {/* New Time */}
             <div>
-              <label className=" text-sm font-medium text-[#2F4156] mb-1 flex items-center gap-1">
+              <label className="text-sm font-medium text-[#2F4156] mb-1 flex items-center gap-1">
                 <FaClock /> New Time
               </label>
               <input
                 type="time"
-                className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+                className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 ${
+                  errors.time
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-[#2f415677] focus:ring-[#FD7E14]"
+                }`}
               />
+              <p className="text-xs text-red-500 h-4">{errors.time}</p>
             </div>
 
             {/* Buttons */}
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3">
               <button
                 type="button"
-                className=" sm:w-auto bg-red-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-red-600 transition"
+                className="sm:w-auto bg-red-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-red-600 transition"
                 onClick={() => setOpen(false)}
               >
                 Cancel

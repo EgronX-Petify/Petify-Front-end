@@ -74,25 +74,54 @@ const Signup = () => {
   const reqBody = { email, password, role };
   const { signup } = useContext(AuthContext);
 
+  // try to fetch with the normal way
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(reqBody);
-    setErrors({});
-    setLoading(true);
     if (validate()) {
       try {
-        const data = await signupService(reqBody);
-        signup(data);
-        console.log("✅ Signup successful:", data);
+        const res = await fetch("http://localhost:8080/api/v1/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reqBody),
+        });
+
+        const data = await res.json();
+        console.log("Response:", data);
+
+        if (res.ok) {
+          localStorage.setItem("user", JSON.stringify(data));
+          alert("Signup successful ✅");
+        } else {
+          alert(data.message || "Something went wrong ❌");
+        }
       } catch (err) {
-        console.error("❌ Signup failed:", err);
-      } finally {
-        setLoading(false);
+        console.error(err);
+        alert("Error connecting to server ❌");
       }
-    } else {
-      setLoading(false);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log(reqBody);
+  //   setErrors({});
+  //   setLoading(true);
+  //   if (validate()) {
+  //     try {
+  //       const data = await signupService(reqBody);
+  //       signup(data);
+  //       console.log("✅ Signup successful:", data);
+  //     } catch (err) {
+  //       console.error("❌ Signup failed:", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="my-[30px] flex flex-col md:flex-row justify-evenly items-center min-h-[600px] px-[20px] md:px-[30px] gap-8">

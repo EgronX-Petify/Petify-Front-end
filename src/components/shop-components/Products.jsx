@@ -4,13 +4,14 @@ import Filters from "./Filters";
 import UseProducts from "../../hooks/UseProducts";
 import LoadingSpinner from "../LoadingSpinner";
 
+const PAGECOUNT = 10;
 const Products = () => {
   const petProducts = UseProducts();
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 12;
+  const productsPerPage = PAGECOUNT;
   const categories = [...new Set(petProducts.map((p) => p.category))];
 
   // if category is selected remove it, else add it

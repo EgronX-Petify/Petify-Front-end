@@ -7,14 +7,18 @@ import Rating from "../Rating";
 import LoadingSpinner from "../LoadingSpinner";
 import toast, { Toaster } from "react-hot-toast";
 import ServiceBook from "./ServiceBook";
+import UseLoggedUser from "../../hooks/UseLoggedUser";
+import { AppointmentsContext } from "../../contexts/AppointmentsContext";
 
 const ViewService = () => {
+  const isLogged = UseLoggedUser();
   const [openBook, setOpenBook] = useState(false);
   const service = UseSelectedService();
   const { setServices } = useContext(ServicesContext);
   const { setSelectedService } = useContext(ServicesContext);
   const { id } = useParams();
   const services = UseServices();
+  const { setSelectedAppointment } = useContext(AppointmentsContext);
 
   const [userRating, setUserRating] = useState(0);
 
@@ -34,6 +38,14 @@ const ViewService = () => {
     );
     toast.success("Your Rate Is Saved");
     setUserRating(0);
+  }
+
+  function handleBook() {
+    !isLogged && toast.error("Login First!");
+    const { id, name, description } = service;
+    const neededData = { id, name, description };
+    setSelectedAppointment(neededData);
+    setOpenBook(true);
   }
 
   //   if (!service) return <;
@@ -100,7 +112,10 @@ const ViewService = () => {
         </div>
       )}
       <Toaster position="top-center" reverseOrder={false} />
-      <ServiceBook open={openBook} setOpen={setOpenBook} />
+      <ServiceBook
+        open={openBook}
+        setOpen={setOpenBook}
+      />
     </div>
   );
 };

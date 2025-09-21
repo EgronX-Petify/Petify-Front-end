@@ -5,17 +5,41 @@ import UseVets from "../../hooks/UseVets";
 import { VetsContext } from "../../contexts/VetsContext";
 import Rating from "../Rating";
 import LoadingSpinner from "../LoadingSpinner";
+import UseLoggedUser from "../../hooks/UseLoggedUser";
+import toast, { Toaster } from "react-hot-toast";
+import VetBook from "./VetBook";
 
 const ViewVet = () => {
+  const isLogged = UseLoggedUser();
+  const [bookOpen, setBookOpen] = useState(false);
   const vet = UseSelectedVet();
   const { id } = useParams();
   const vets = UseVets();
-  const { setSelectedVet } = useContext(VetsContext);
+  const { setSelectedVet, setVets } = useContext(VetsContext);
   const [userRating, setUserRating] = useState(0);
   useEffect(() => {
     const foundVet = vets.find((v) => v.id == id);
     setSelectedVet(foundVet);
   }, [id, vet, vets]);
+
+  function updateRating(baseRating) {
+    return (baseRating + userRating) / 2;
+  }
+  function handleRate(id) {
+    setVets(
+      vets.map((v) =>
+        v.id === id ? { ...v, rating: updateRating(v.rating) } : v
+      )
+    );
+    toast.success("Your Rate Is Saved");
+    setUserRating(0);
+  }
+
+  function handleBook() {
+    !isLogged && toast.error("Login First!");
+    setSelectedVet(vet);
+    setBookOpen(true);
+  }
 
   return (
     <div className="max-w-8xl my-5 mx-auto p-6">
@@ -56,13 +80,13 @@ const ViewVet = () => {
             <div className="flex gap-5">
               {" "}
               <button
-                onClick={() => handleAddToCart(vet)}
+                onClick={() => handleBook()}
                 className="cursor-pointer flex items-center gap-2 bg-[#2f4156d6] text-white px-6 py-3 rounded-xl shadow-md hover:bg-[#2F4156] transition-colors w-fit"
               >
                 Book Now
               </button>
               <button
-                onClick={() => handleAddToCart(vet)}
+                onClick={() => handleRate(vet?.id)}
                 className={
                   !userRating
                     ? `invisible`
@@ -75,6 +99,8 @@ const ViewVet = () => {
           </div>
         </div>
       )}
+      <Toaster position="top-center" reverseOrder={false} />
+      <VetBook open={bookOpen} setOpen={setBookOpen} />
     </div>
   );
 };

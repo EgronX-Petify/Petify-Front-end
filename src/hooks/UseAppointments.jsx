@@ -3,7 +3,7 @@ import { AppointmentsContext } from "../contexts/AppointmentsContext";
 
 const UseAppointments = () => {
   const { appointments } = useContext(AppointmentsContext);
-  return { appointments };
+  return appointments ;
 };
 
 export default UseAppointments;

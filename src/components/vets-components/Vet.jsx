@@ -1,8 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Rating from "../Rating";
 import { Link } from "react-router-dom";
+import { VetsContext } from "../../contexts/VetsContext";
+import { AppointmentsContext } from "../../contexts/AppointmentsContext";
+import toast, { Toaster } from "react-hot-toast";
+import VetBook from "./VetBook";
+import UseLoggedUser from "../../hooks/UseLoggedUser";
 
-const Vet = ({ vet, setBookOpen }) => {
+const Vet = ({ vet }) => {
+  const isLogged = UseLoggedUser();
+  const [bookOpen, setBookOpen] = useState(false);
+  const { setSelectedVet } = useContext(VetsContext);
+  const { setSelectedAppointment } = useContext(AppointmentsContext);
+
+  function handleSelectedVet() {
+    !isLogged && toast.error("Login First!");
+    setBookOpen(true);
+    setSelectedVet(vet);
+  }
   return (
     <div className=" w-full sm:w-[300px] md:w-[400px] flex flex-col sm:flex-row p-4 rounded-xl gap-5 bg-[#f3f3f4ba] shadow-lg hover:shadow-2xl">
       <div className="w-full h-[150px] md:w-[200px] md:h-full overflow-hidden flex items-center rounded-xl mx-auto sm:mx-0">
@@ -23,11 +38,13 @@ const Vet = ({ vet, setBookOpen }) => {
 
         <button
           className="cursor-pointer w-full mt-3 px-4 py-2 bg-[#417481] hover:bg-[#2F4156] text-white rounded-lg shadow-md transition"
-          onClick={() => setBookOpen(true)}
+          onClick={() => handleSelectedVet()}
         >
           Book Now
         </button>
       </div>
+      <VetBook open={bookOpen} setOpen={setBookOpen} />
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };
