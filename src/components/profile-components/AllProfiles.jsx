@@ -1,51 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ProfileInfo from "./ProfileInfo";
 import { Link } from "react-router-dom";
 import EditProfile from "./EditProfile";
 import AddNewPet from "./AddNewPet";
+import UseUserPets from "../../hooks/UseUserPets";
+import { UserPetsContext } from "../../contexts/UserPetsContext";
+import toast, { Toaster } from "react-hot-toast";
+import LoadingSpinner from "../LoadingSpinner";
 
 const AllProfiles = () => {
-  const allPets = [
-    {
-      id: 1,
-      name: "max",
-      species: "Dog",
-      breed: "Golden Retriever",
-      gender: "Male",
-      dob: "2020-05-14",
-      medicalHistory: "No major issues. Regular check-ups and healthy.",
-      vaccinations: ["2021-06-10", "2022-06-10", "2023-06-10"],
-      photo: "https://placedog.net/400/300?id=1",
-    },
-    {
-      id: 2,
-      name: "Liky",
-      species: "Cat",
-      breed: "Golden Retriever",
-      gender: "Male",
-      dob: "2020-05-14",
-      medicalHistory: "No major issues. Regular check-ups and healthy.",
-      vaccinations: ["2021-06-10", "2022-06-10", "2023-06-10"],
-      photo: "https://placedog.net/400/300?id=1",
-    },
-  ];
+  const allPets = UseUserPets();
 
-  const [editOpen, setEditOpen] = useState(false);
+  // const [editOpen, setEditOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
-  return (
+
+  return !allPets ? (
+    <LoadingSpinner text="Loading..." />
+  ) : (
     <>
       {allPets.length > 0 ? (
         <div className="w-full flex flex-col">
           {allPets.map((pet, id) => (
-            <ProfileInfo pet={pet} key={id} setOpen={setEditOpen} />
+            <ProfileInfo pet={pet} key={id} />
           ))}
         </div>
       ) : (
         <div
           to="/profile/newpet-form"
-          className="text-[#2F4156] w-fit mx-auto py-5 capitalize "
+          className="text-[#2F4156] w-fit mx-auto py-5 "
         >
-          You haven't added any pet yet
+          You haven't add any pet yet
         </div>
       )}
 
@@ -57,8 +41,9 @@ const AllProfiles = () => {
           + Add New Pet
         </button>
       </div>
-      <EditProfile open={editOpen} setOpen={setEditOpen} />
+
       <AddNewPet open={addOpen} setOpen={setAddOpen} />
+      <Toaster position="top-center" />
     </>
   );
 };

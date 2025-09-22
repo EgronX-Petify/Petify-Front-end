@@ -6,7 +6,7 @@ import UseAppointments from "../../hooks/UseAppointments";
 
 const Appointments = () => {
   const appointments = UseAppointments();
-  console.log(appointments);
+  // console.log(appointments);
   const now = new Date();
 
   // Split appointments into upcoming & past

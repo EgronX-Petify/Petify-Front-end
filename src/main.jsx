@@ -8,6 +8,7 @@ import ProductsProvider from "./contexts/ProductsContext.jsx";
 import AppointmentsProvider from "./contexts/AppointmentsContext.jsx";
 import ServicesProvider from "./contexts/ServicesContext.jsx";
 import VetsProvider from "./contexts/VetsContext.jsx";
+import UserPetsProvider from "./contexts/UserPetsContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -17,7 +18,9 @@ createRoot(document.getElementById("root")).render(
           <ServicesProvider>
             <AppointmentsProvider>
               <VetsProvider>
-                <App />
+                <UserPetsProvider>
+                  <App />
+                </UserPetsProvider>
               </VetsProvider>
             </AppointmentsProvider>
           </ServicesProvider>

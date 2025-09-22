@@ -7,7 +7,21 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("logged user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    if (storedUser) {
+      const logggedUserData = {
+        photo: "https://i.pravatar.cc/150?img=12",
+        username: "hello",
+        email: JSON.parse(storedUser)?.email,
+        password: JSON.parse(storedUser)?.password,
+        phone: "+20123456789",
+        pets: [
+          { name: "Max", species: "Dog" },
+          { name: "Luna", species: "Cat" },
+        ],
+      };
+      setUser(logggedUserData);
+      console.log(logggedUserData);
+    }
   }, []);
 
   const login = (userData) => {
@@ -24,7 +38,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, setUser, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -75,6 +75,7 @@ const Signup = () => {
   const { signup } = useContext(AuthContext);
 
   // try to fetch with the normal way
+  //jdbc:mysql://db:3306/petify
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
@@ -88,7 +89,7 @@ const Signup = () => {
         });
 
         const data = await res.json();
-        console.log("Response:", data);
+        // console.log("Response:", data);
 
         if (res.ok) {
           localStorage.setItem("user", JSON.stringify(data));
@@ -97,7 +98,7 @@ const Signup = () => {
           alert(data.message || "Something went wrong ❌");
         }
       } catch (err) {
-        console.error(err);
+        // console.error(err);
         alert("Error connecting to server ❌");
       }
     }

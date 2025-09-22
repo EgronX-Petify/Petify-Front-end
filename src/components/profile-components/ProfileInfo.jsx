@@ -1,14 +1,52 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import EditProfile from "./EditProfile";
+import { UserPetsContext } from "../../contexts/UserPetsContext";
+import UseUserPets from "../../hooks/UseUserPets";
+import swal from "sweetalert";
+import toast, { Toaster } from "react-hot-toast";
 
-const ProfileInfo = ({ pet, setOpen }) => {
-  const navigate = useNavigate();
+const ProfileInfo = ({ pet }) => {
+  const [open, setOpen] = useState(false);
+  const { setSelectedPet } = useContext(UserPetsContext);
+  const pets = UseUserPets();
+  const { setPets } = useContext(UserPetsContext);
+  function handleRemovePet(id) {
+    swal({
+      text: "Are you sure you want to delete this pet?",
+      buttons: {
+        cancel: {
+          text: "Cancel",
+          value: false,
+          visible: true,
+          className:
+            "bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded",
+        },
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className:
+            "bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded",
+        },
+      },
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        setPets(pets.filter((p) => p.id !== id));
+        toast("Removed", {
+          icon: "👍",
+          duration: "300",
+        });
+      }
+    });
+  }
   return (
     <div className="max-w-[95%] md:max-w-[90%] mx-auto my-10 bg-[#F8F9FA] shadow-lg rounded-2xl p-6 flex flex-col md:flex-row items-center gap-8">
       {/* Pet Photo */}
       <div className="w-36 h-36 md:w-48 md:h-48 flex-shrink-0">
         <img
-          src={pet.photo}
+          src={pet?.photo}
           alt={pet.name}
           className="w-full h-full object-cover rounded-xl shadow-md"
         />
@@ -17,26 +55,26 @@ const ProfileInfo = ({ pet, setOpen }) => {
       {/* Pet Info */}
       <div className="flex-1 w-full">
         <h2 className="capitalize text-xl md:text-2xl font-semibold text-[#2F4156] mb-4 text-center md:text-left">
-          {pet.name} profile
+          {pet?.name} profile
         </h2>
 
         {/* Pet Basic Info */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-[#2f4156b0]">
           <p className="bg-white p-2 rounded-lg text-sm md:text-base">
             <span className="font-medium text-[#2F4156]">Species:</span>{" "}
-            {pet.species}
+            {pet?.species}
           </p>
           <p className="bg-white p-2 rounded-lg text-sm md:text-base">
             <span className="font-medium text-[#2F4156]">Breed:</span>{" "}
-            {pet.breed}
+            {pet?.breed || "No Breed"}
           </p>
           <p className="bg-white p-2 rounded-lg text-sm md:text-base">
             <span className="font-medium text-[#2F4156]">Gender:</span>{" "}
-            {pet.gender}
+            {pet?.gender}
           </p>
           <p className="bg-white p-2 rounded-lg text-sm md:text-base">
             <span className="font-medium text-[#2F4156]">Date of Birth:</span>{" "}
-            {pet.dob}
+            {pet?.dob}
           </p>
         </div>
 
@@ -44,7 +82,7 @@ const ProfileInfo = ({ pet, setOpen }) => {
         <div className="mt-4">
           <h3 className="font-medium text-[#2F4156]">Medical History</h3>
           <p className="text-[#2f4156b0] mt-1 bg-white p-2 rounded-lg text-sm md:text-base">
-            {pet.medicalHistory}
+            {pet.medicalHistory || "No medical history"}
           </p>
         </div>
 
@@ -52,25 +90,36 @@ const ProfileInfo = ({ pet, setOpen }) => {
         <div className="mt-4">
           <h3 className="font-medium text-[#2F4156]">Vaccination Dates</h3>
           <ul className="list-disc list-inside text-[#2f4156b0] mt-1 bg-white p-2 rounded-lg text-sm md:text-base">
-            {pet.vaccinations.map((date, index) => (
-              <li key={index}>{date}</li>
-            ))}
+            {pet.vaccinations.length > 0 ? (
+              pet.vaccinations.map((date, index) => <li key={index}>{date}</li>)
+            ) : (
+              <p className="text-[#2f4156b0] bg-white rounded-lg text-sm md:text-base">
+                No vaccinations dates
+              </p>
+            )}
           </ul>
         </div>
 
         {/* Edit Button */}
         <div className="mt-6 flex justify-center gap-3 md:justify-end">
-          <button className="cursor-pointer px-5 py-2 rounded-lg bg-[#ff383be0] text-white hover:bg-[#ff383b] transition shadow-md">
+          <button
+            className="cursor-pointer px-5 py-2 rounded-lg bg-[#ff383be0] text-white hover:bg-[#ff383b] transition shadow-md"
+            onClick={() => handleRemovePet(pet?.id)}
+          >
             Remove Pet
           </button>
           <button
             className="cursor-pointer px-5 py-2 rounded-lg bg-[#FD7E14] text-white hover:bg-[#e86f0d] transition shadow-md"
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              setOpen(true);
+              setSelectedPet(pet);
+            }}
           >
             Edit Profile
           </button>
         </div>
       </div>
+      <EditProfile open={open} setOpen={setOpen} />
     </div>
   );
 };
