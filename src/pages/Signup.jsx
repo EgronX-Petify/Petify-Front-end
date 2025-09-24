@@ -1,10 +1,13 @@
 import React, { useContext, useState } from "react";
 import logo from "../../public/logo55.png";
-import { Link } from "react-router-dom";
-import { signupService } from "../services/authService.js";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext.jsx";
+import axios from "axios";
+import UseAuth from "../hooks/UseAuth.jsx";
+import toast from "react-hot-toast";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -70,59 +73,26 @@ const Signup = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const { email, password, role } = formData;
-  const reqBody = { email, password, role };
-  const { signup } = useContext(AuthContext);
-
-  // try to fetch with the normal way
-  //jdbc:mysql://db:3306/petify
-  const handleSubmit = async (e) => {
+  const { signup } = UseAuth();
+  const handleSignup = async (e) => {
     e.preventDefault();
-    if (validate()) {
+    setErrors({});
+    const validation = validate();
+    if (validation) {
+      const signupPromise = signup(formData);
+
+      toast.promise(signupPromise, {
+        loading: "Signing up... ⏳",
+        success: "Signup successfully!",
+        error: (err) => err.response?.data?.message || "Signup failed ❌",
+      });
+
       try {
-        const res = await fetch("http://localhost:8080/api/v1/auth/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(reqBody),
-        });
-
-        const data = await res.json();
-        // console.log("Response:", data);
-
-        if (res.ok) {
-          localStorage.setItem("user", JSON.stringify(data));
-          alert("Signup successful ✅");
-        } else {
-          alert(data.message || "Something went wrong ❌");
-        }
-      } catch (err) {
-        // console.error(err);
-        alert("Error connecting to server ❌");
-      }
+        await signupPromise;
+        navigate("/login");
+      } catch (err) {}
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log(reqBody);
-  //   setErrors({});
-  //   setLoading(true);
-  //   if (validate()) {
-  //     try {
-  //       const data = await signupService(reqBody);
-  //       signup(data);
-  //       console.log("✅ Signup successful:", data);
-  //     } catch (err) {
-  //       console.error("❌ Signup failed:", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <div className="my-[30px] flex flex-col md:flex-row justify-evenly items-center min-h-[600px] px-[20px] md:px-[30px] gap-8">
@@ -135,7 +105,7 @@ const Signup = () => {
             Sign up to enjoy the features of Petify
           </p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSignup}>
             {/* Username */}
             <div>
               <label className="block text-[#2F4156] mb-1" htmlFor="username">

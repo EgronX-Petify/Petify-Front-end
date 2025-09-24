@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ForgotPassword from "../components/sign-components/ForgotPassword";
 import UseLogged from "../hooks/UseLogged";
+import { login } from "../APIs/authAPI";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
@@ -20,26 +22,30 @@ const Login = () => {
     });
   };
 
-  const tryLogin = UseLogged();
-  const handleSubmit = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     setError("");
-    console.log("Login success:", formData);
-    setLoading(true);
-    tryLogin(formData);
-    setLoading(false);
-    // try {
-    //   // const data = await loginService(formData);
-    //   // console.log(data);
-    //   tryLogin(formData);
-    //   console.log("Login success:", formData);
-    // } catch (err) {
-    //   console.error("Login failed:", err);
-    //   setError(err.message || err.error || "Login failed, please try again");
-    // } finally {
-    //   setLoading(false);
-    // }
+    localStorage.setItem("logged user", JSON.stringify(formData));
+    navigate("/");
   };
+
+
+  // use it when the backend works
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   const loginPromise = login(formData);
+  //   toast.promise(loginPromise, {
+  //     loading: "Login In... ⏳",
+  //     success: "Logged in successfully!",
+  //     error: (err) => err.response?.data?.message || "Login failed ❌",
+  //   });
+
+  //   try {
+  //     await loginPromise;
+  //     navigate("/");
+  //   } catch (err) {}
+  // };
 
   return (
     <div className="my-[30px] flex flex-col md:flex-row justify-evenly items-center min-h-[600px] px-[20px] md:px-[30px] gap-8">
@@ -52,7 +58,7 @@ const Login = () => {
             Please login to continue to your account
           </p>
 
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-4" onSubmit={handleLogin}>
             <div>
               <label className="block text-[#2F4156] mb-2" htmlFor="email">
                 Email

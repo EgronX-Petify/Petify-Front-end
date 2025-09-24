@@ -135,11 +135,6 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/dashboard" className="justify-between">
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
                   <Link to="/login" className="text-[#FF383C]" onClick={logout}>
                     Logout
                   </Link>
@@ -277,16 +272,7 @@ const Navbar = () => {
               >
                 Profile
               </NavLink>
-              <NavLink
-                to="/dashboard"
-                onClick={() => setIsOpen(false)}
-                className={({ isActive }) =>
-                  isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-                }
-              >
-                Dashboard
-              </NavLink>
-              <NavLink
+              <Link
                 to="/login"
                 onClick={() => {
                   logout();
@@ -295,7 +281,7 @@ const Navbar = () => {
                 className="text-[#FF383C] font-semibold"
               >
                 Logout
-              </NavLink>
+              </Link>
             </>
           ) : (
             <Link to="/login">

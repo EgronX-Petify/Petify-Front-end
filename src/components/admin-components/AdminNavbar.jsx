@@ -2,7 +2,7 @@ import React from "react";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
 import Notifications from "../Notifications";
 import { Link } from "react-router-dom";
-import style from "./AdminNavbar.module.css";
+import style from "../../css-modules/Navbar.module.css";
 import logo from "../../../public/logo55.png";
 
 const AdminNavbar = () => {
@@ -22,7 +22,7 @@ const AdminNavbar = () => {
             <Notifications />
 
             <Link to="/login">
-              <button className={`${style.btn} md:hidden`}>Logout</button>
+              <button className={`${style.btn} !bg-[#FF383C]`}>Logout</button>
             </Link>
           </>
         )}

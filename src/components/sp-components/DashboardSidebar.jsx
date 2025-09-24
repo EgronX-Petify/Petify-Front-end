@@ -16,31 +16,31 @@ const DashboardSidebar = () => {
       <h2 className="text-2xl font-bold mb-6">Petify SP</h2>
       <nav className="space-y-4">
         <Link
-          to="/dashboard"
+          to="/"
           className="flex items-center gap-3 hover:bg-[#396874] p-2 rounded-md w-full text-left"
         >
           <FaClipboardList /> Dashboard
         </Link>
         <Link
-          to="services"
+          to="/services"
           className="flex items-center gap-3 hover:bg-[#396874] p-2 rounded-md w-full text-left"
         >
           <FaClipboardList /> Services
         </Link>
         <Link
-          to="/dashboard/appointments"
+          to="/appointments"
           className=" flex items-center gap-3 hover:bg-[#396874] p-2 rounded-md w-full text-left"
         >
           <FaCalendarCheck /> Appointments
         </Link>
         <Link
-          to="/dashboard/products"
+          to="/products"
           className="flex items-center gap-3 hover:bg-[#396874] p-2 rounded-md w-full text-left"
         >
           <FaBoxOpen /> Inventory
         </Link>
         <Link
-          to="/dashboard/clients"
+          to="/clients"
           className=" flex items-center gap-3 hover:bg-[#396874] p-2 rounded-md w-full text-left"
         >
           <FaUserMd /> Clients

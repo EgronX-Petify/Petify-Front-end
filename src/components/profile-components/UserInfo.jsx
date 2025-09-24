@@ -5,39 +5,13 @@ import toast, { Toaster } from "react-hot-toast";
 import swal from "sweetalert";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
 import LoadingSpinner from "../LoadingSpinner";
+import { changePassword } from "../../APIs/authAPI";
+import ChangePassword from "./ChangePassword";
 
 const UserInfo = () => {
   const user = UseLoggedUser();
-
-  const handleResetPassword = () => {
-    swal({
-      text: "Are you sure you want to reset your password?",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: false,
-          visible: true,
-          className:
-            "bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded",
-        },
-        confirm: {
-          text: "Yes",
-          value: true,
-          visible: true,
-          className:
-            "bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded",
-        },
-      },
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        // reset logic api
-        toast.success("Reset Link Sent To Your Email");
-      }
-    });
-  };
-
   const [open, setOpen] = useState(false);
+  const [changePassOpen, setChangePassOpen] = useState(false);
 
   return !user ? (
     <LoadingSpinner text="Loading..." />
@@ -75,7 +49,7 @@ const UserInfo = () => {
           <div className="bg-white p-2 rounded-lg flex justify-between items-center text-sm md:text-base ">
             <span className="font-medium text-[#2F4156]">Password:</span>
             <button
-              onClick={handleResetPassword}
+              onClick={() => setChangePassOpen(true)}
               className="text-[#FD7E14] font-medium hover:underline"
             >
               Reset
@@ -110,7 +84,7 @@ const UserInfo = () => {
         </div>
       </div>
       <EditUserInfo open={open} setOpen={setOpen} />
-      <Toaster position="top-center" reverseOrder={false} />
+      <ChangePassword open={changePassOpen} setOpen={setChangePassOpen} />
     </div>
   );
 };

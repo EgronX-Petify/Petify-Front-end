@@ -1,6 +1,19 @@
 import React, { useState } from "react";
+import { forgotPassword } from "../../APIs/authAPI";
+import toast from "react-hot-toast";
 
 const ForgotPassword = ({ open, setOpen }) => {
+  const [email, setEmail] = useState(null);
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    const forgotPromise = forgotPassword(email);
+    toast.promise(forgotPromise, {
+      loading: "Resseting password... ⏳",
+      success: "Reset link sent to your email",
+      error: (err) => err.response?.data?.message || "Reseting password failed ❌",
+    });
+
+  };
   return (
     open && (
       <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
@@ -14,7 +27,7 @@ const ForgotPassword = ({ open, setOpen }) => {
               password.
             </p>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleForgotPassword}>
               <div>
                 <label htmlFor="email" className="block text-[#2F4156] mb-2">
                   Email Address
@@ -22,6 +35,7 @@ const ForgotPassword = ({ open, setOpen }) => {
                 <input
                   type="email"
                   id="email"
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   className="w-full px-4 py-2 border border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
                   required

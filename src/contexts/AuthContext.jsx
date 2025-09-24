@@ -1,18 +1,21 @@
 import React, { createContext, useEffect, useState } from "react";
+import * as authApi from "../APIs/authAPI";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState("petOwner");
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("logged user");
-    if (storedUser) {
+    const loggedUser = localStorage.getItem("logged user");
+    if (loggedUser) {
+      setRole("petOwner");
       const logggedUserData = {
         photo: "https://i.pravatar.cc/150?img=12",
         username: "hello",
-        email: JSON.parse(storedUser)?.email,
-        password: JSON.parse(storedUser)?.password,
+        email: JSON.parse(loggedUser)?.email,
+        password: JSON.parse(loggedUser)?.password,
         phone: "+20123456789",
         pets: [
           { name: "Max", species: "Dog" },
@@ -20,25 +23,56 @@ const AuthProvider = ({ children }) => {
         ],
       };
       setUser(logggedUserData);
-      console.log(logggedUserData);
     }
   }, []);
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem("logged user", JSON.stringify(userData)); // remove after add backend
+  const signup = async (formData) => {
+    const { data } = await authApi.signup(formData);
+    return data;
+    // if bk return data of user
+    // setUser(data.user);
+    // localStorage.setItem("logged user", JSON.stringify(data.user));
+    // localStorage.setItem("token", data.token);
   };
-  const signup = (userData) => {
-    login(userData);
+
+  const login = async (formData) => {
+    const { data } = await authApi.login(formData);
+    console.log(data);
+    setUser(data.user);
+    localStorage.setItem("logged user", JSON.stringify(data.user));
+    localStorage.setItem("token", data.token);
+  };
+
+  const forgotPassword = async (email) => {
+    const { data } = await authApi.forgotPassword(email);
+    return data;
+  };
+  const changePassword = async (userData) => {
+    const { data } = authApi.changePassword(userData);
+    return data;
   };
 
   const logout = () => {
     setUser(null);
+    setRole("allUsers");
     localStorage.removeItem("logged user");
+    localStorage.removeItem("token");
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        login,
+        signup,
+        logout,
+        forgotPassword,
+        changePassword,
+        role,
+        setRole,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

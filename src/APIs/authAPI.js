@@ -2,5 +2,7 @@
 
 import api from "./axiosInstance.js";
 
-export const signup = (formDate) =>  api.post("/api/v1/auth/signup", formDate);
+export const signup = (formData) => api.post("/api/v1/auth/signup", formData);
 export const login = (formData) => api.post("/api/v1/auth/login", formData);
+export const forgotPassword = (email) => api.post("/api/v1/auth/forgot-password", email);
+export const changePassword = (userData) => api.post("/api/v1/auth/change-password", userData);

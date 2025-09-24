@@ -6,7 +6,7 @@ const Return = ({ label = "Back", showLabel = false }) => {
 
   return (
     <button
-      onClick={() => navigate("/dashboard")}
+      onClick={() => navigate("/")}
       className="md:hidden flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-2"
     >
       <FiArrowLeft className="text-2xl" />

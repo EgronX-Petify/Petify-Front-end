@@ -19,10 +19,7 @@ const MainDashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Services */}
-        <Link
-          to="/dashboard/services"
-          className="bg-white p-4 rounded-2xl shadow-md"
-        >
+        <Link to="/services" className="bg-white p-4 rounded-2xl shadow-md">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
               <FaClipboardList /> My Services
@@ -38,10 +35,7 @@ const MainDashboard = () => {
         </Link>
 
         {/* Appointments */}
-        <Link
-          to="/dashboard/appointments"
-          className="bg-white p-4 rounded-2xl shadow-md"
-        >
+        <Link to="/appointments" className="bg-white p-4 rounded-2xl shadow-md">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
               <FaCalendarCheck /> Upcoming Appointments
@@ -65,10 +59,7 @@ const MainDashboard = () => {
         </Link>
 
         {/* Inventory */}
-        <Link
-          to="/dashboard/products"
-          className="bg-white p-4 rounded-2xl shadow-md"
-        >
+        <Link to="/products" className="bg-white p-4 rounded-2xl shadow-md">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
               <FaBoxOpen /> Product Inventory

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import style from "./SPNavbar.module.css";
+import style from "../../css-modules/Navbar.module.css";
 import logo from "../../../public/logo55.png";
 import UseLogout from "../../hooks/UseLogout";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
@@ -48,12 +48,19 @@ const SPNavbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/dashboard" className="justify-between">
+                  <Link to="/" className="justify-between">
                     Dashboard
                   </Link>
                 </li>
                 <li>
-                  <Link to="/login" className="text-[#FF383C]" onClick={logout}>
+                  <Link
+                    to="/login"
+                    className="text-[#FF383C]"
+                    onClick={() => {
+                      setIsOpen(false);
+                      logout();
+                    }}
+                  >
                     Logout
                   </Link>
                 </li>
@@ -76,28 +83,16 @@ const SPNavbar = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute top-[59px] right-0 w-[50%]  px-3  bg-white shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
+        <div className="absolute top-[59px] right-0 w-[50%]  px-3 text-[#2F4156] bg-[#FFFFFF] shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
           {loggedUser && (
             <>
-              <NavLink
-                to="/sp-profile"
-                onClick={() => setIsOpen(false)}
-                className={({ isActive }) =>
-                  isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-                }
-              >
+              <Link to="/sp-profile" onClick={() => setIsOpen(false)}>
                 Profile
-              </NavLink>
-              <NavLink
-                to="/dashboard"
-                onClick={() => setIsOpen(false)}
-                className={({ isActive }) =>
-                  isActive ? "text-[#FD7E14] font-semibold" : "text-[#2F4156]"
-                }
-              >
+              </Link>
+              <Link to="/" onClick={() => setIsOpen(false)}>
                 Dashboard
-              </NavLink>
-              <NavLink
+              </Link>
+              <Link
                 to="/login"
                 onClick={() => {
                   logout();
@@ -106,7 +101,7 @@ const SPNavbar = () => {
                 className="text-[#FF383C] font-semibold"
               >
                 Logout
-              </NavLink>
+              </Link>
             </>
           )}
         </div>
