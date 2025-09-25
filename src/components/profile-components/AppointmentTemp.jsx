@@ -34,14 +34,14 @@ const AppointmentTemp = ({ appt, show = false }) => {
     }).then((willDelete) => {
       if (willDelete) {
         setAppointments(appointments.filter((appt) => appt.id !== id));
-        toast("Removed", {
-          icon: "👍",
+        toast("Canceled", {
+          icon: "✅",
           duration: "300",
         });
       }
     });
   }
-  
+
   return (
     <div className="px-8 py-4 border border-[#2f41565a] rounded-2xl flex justify-between items-center hover:bg-gray-50 transition">
       <div>

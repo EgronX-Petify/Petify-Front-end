@@ -38,7 +38,7 @@ const Product = ({ product }) => {
         {" "}
         <div className="w-full h-48 overflow-hidden rounded-xl mb-4">
           <img
-            src={product?.photos[0]}
+            src={product?.images[0]}
             alt={product?.name}
             className="w-full h-full object-cover"
           />
@@ -47,11 +47,11 @@ const Product = ({ product }) => {
           <h3 className="text-lg font-semibold text-[#2F4156] mb-1 cursor-pointer">
             {product?.name}
           </h3>
-          <p className="text-sm text-gray-500 mb-2">description</p>
+          <p className="text-sm text-gray-500 mb-2">{product?.description || ""}</p>
         </div>
       </Link>
 
-      <Rating value={product?.rating} readOnly={true} />
+      {product.rating && <Rating value={product?.rating} readOnly={true} />}
 
       <div className="flex justify-between items-center mt-auto">
         <span className="text-lg font-bold text-[#FD7E14]">

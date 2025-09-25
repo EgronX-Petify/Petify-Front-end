@@ -11,7 +11,7 @@ const ChangePassword = ({ open, setOpen }) => {
 
   const [errors, setErrors] = useState({});
   const passwordRegex =
-    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   const validate = () => {
     const newErrors = {};

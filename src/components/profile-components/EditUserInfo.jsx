@@ -2,10 +2,12 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
 import toast, { Toaster } from "react-hot-toast";
+import ChangePassword from "./ChangePassword";
 
 const EditUserInfo = ({ open, setOpen }) => {
   const user = UseLoggedUser();
   const { setUser } = useContext(AuthContext);
+  const [changePassOpen, setChangePassOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     username: user.username || "",
@@ -15,7 +17,7 @@ const EditUserInfo = ({ open, setOpen }) => {
   });
 
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // use when use backend
 
   const validate = () => {
     const newErrors = {};
@@ -57,34 +59,7 @@ const EditUserInfo = ({ open, setOpen }) => {
       ...formData,
     }));
     setOpen(false);
-    toast.success("done");
-    // setLoading(true);
-    // const promise = new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     // fetch("http://localhost:8080/api/v1/user/update", { ... })
-    //     setUser(formData);
-    //     resolve("Profile updated successfully!");
-    //   }, 300);
-    // });
-
-    // toast.promise(promise, {
-    //   loading: "Saving changes...",
-    //   success: (msg) => msg,
-    //   error: "Failed to update profile",
-    // });
-
-    // try {
-    //   await promise;
-    //   setOpen(false);
-    // } catch (err) {
-    //   console.error(err);
-    // } finally {
-    //   setLoading(false);
-    // }
-  };
-
-  const handleResetPassword = () => {
-    toast.success(`A reset link has been sent to ${formData.email}`);
+    toast.success("Profile updated successfully!");
   };
 
   return (
@@ -158,7 +133,7 @@ const EditUserInfo = ({ open, setOpen }) => {
                 />
                 <button
                   type="button"
-                  onClick={handleResetPassword}
+                  onClick={() => setChangePassOpen(true)}
                   className="px-3 py-1 bg-[#FD7E14] text-white rounded-lg hover:bg-[#e86f0d] transition"
                 >
                   Reset
@@ -200,6 +175,7 @@ const EditUserInfo = ({ open, setOpen }) => {
             </div>
           </form>
         </div>
+        <ChangePassword open={changePassOpen} setOpen={setChangePassOpen} />
       </div>
     )
   );

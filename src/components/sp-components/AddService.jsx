@@ -1,125 +1,185 @@
-import React from "react";
-import { FaPlus } from "react-icons/fa";
+import React, { useContext, useState } from "react";
+import toast from "react-hot-toast";
+import { SPContext } from "../../contexts/SPContext";
 
-const AddService = ({ open, setOpen }) => {
+function AddService({ open, setOpen }) {
+  const { setServices } = useContext(SPContext);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    description: "",
+    notes: "",
+    photo: null,
+  });
+
+  const [errors, setErrors] = useState({});
+
+  // handle change
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "photo" && files[0]) {
+      const file = files[0];
+      setFormData((prev) => ({
+        ...prev,
+        photo: URL.createObjectURL(file), // preview only
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  // validation
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = "Service name is required.";
+    if (!formData.price) newErrors.price = "Price is required.";
+    if (!formData.description.trim())
+      newErrors.description = "Description is required.";
+    if (!formData.photo) newErrors.photo = "Photo is required.";
+    return newErrors;
+  };
+
+  // reset
+  function reset() {
+    setFormData({
+      name: "",
+      price: "",
+      description: "",
+      notes: "",
+      photo: null,
+    });
+    setErrors({});
+    setOpen(false);
+  }
+
+  // submit handler
+  const handleAddService = (e) => {
+    e.preventDefault();
+    const newErrors = validate();
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
+    setServices((prev) => [...prev, formData]);
+
+    toast.success("Service Added Successfully!");
+    reset();
+  };
+
+  if (!open) return null;
+
   return (
-    open && (
-      <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-2">
-        <div
-          className="
-            w-full max-w-[95%] md:max-w-4xl 
-            bg-white rounded-2xl shadow-lg 
-            max-h-[90vh] 
-            overflow-y-auto
-            p-5 md:p-8
-          "
+    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 overflow-y-auto px-2">
+      <div className="w-full max-w-3xl mx-4 my-6 bg-[#F8F9FA] shadow-lg rounded-2xl p-6">
+        <h2 className="text-xl font-semibold text-[#2F4156] mb-4 text-center">
+          Add New Service
+        </h2>
+
+        <form
+          onSubmit={handleAddService}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
-          {/* Title */}
-          <h2 className="text-xl md:text-2xl font-bold mb-6 flex items-center gap-2 text-[#2F4156]">
-            Add New Service
-          </h2>
+          {/* Service Name */}
+          <div>
+            <label className="block text-[#2F4156] font-medium text-sm">
+              Service Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Service name"
+              className="w-full rounded-lg text-[#2f415677] bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14] focus:text-[#2f4156] outline-none"
+            />
+            <p className="text-red-500 text-xs h-4">{errors.name}</p>
+          </div>
 
-          {/* Form */}
-          <form className="space-y-5 text-sm md:text-base">
-            {/* Row 0: Service Photo */}
-            <div>
-              <label className="block text-sm font-medium mb-1 text-[#2F4156]">
-                Service Photo
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                className="w-full border border-[#2f415677] rounded-lg px-3 py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Upload a photo (JPG, PNG, or JPEG)
-              </p>
-            </div>
+          {/* Price */}
+          <div>
+            <label className="block text-[#2F4156] font-medium text-sm">
+              Price ($)
+            </label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="Enter price"
+              className="w-full rounded-lg text-[#2f415677] focus:text-[#2f4156]  bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14] outline-none"
+            />
+            <p className="text-red-500 text-xs h-4">{errors.price}</p>
+          </div>
 
-            {/* Row 1: Service Name + Price + Rate */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              <div>
-                <label className="block text-sm font-medium mb-1 text-[#2F4156]">
-                  Service Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter service name"
-                  className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-                />
-              </div>
+          {/* Description */}
+          <div className="md:col-span-2">
+            <label className="block text-[#2F4156] font-medium text-sm">
+              Description
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Enter description"
+              rows="2"
+              className="w-full rounded-lg text-[#2f415677] focus:text-[#2f4156]  bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14] outline-none"
+            ></textarea>
+            <p className="text-red-500 text-xs h-4">{errors.description}</p>
+          </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-1 text-[#2F4156]">
-                  Price ($)
-                </label>
-                <input
-                  type="number"
-                  placeholder="Enter price"
-                  className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-                />
-              </div>
+          {/* Notes */}
+          <div className="md:col-span-2">
+            <label className="block text-[#2F4156] font-medium text-sm">
+              Notes
+            </label>
+            <textarea
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              placeholder="Additional notes (optional)"
+              rows="2"
+              className="w-full rounded-lg text-[#2f415677] focus:text-[#2f4156]  bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14] outline-none"
+            ></textarea>
+          </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-1 text-[#2F4156]">
-                  Rate (1–5)
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="5"
-                  placeholder="Enter rate"
-                  className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-                />
-              </div>
-            </div>
+          {/* Photo */}
+          <div className="md:col-span-2">
+            <label className="block text-[#2F4156] font-medium text-sm">
+              Photo
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              name="photo"
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg cursor-pointer focus:ring-1 focus:ring-[#FD7E14]"
+            />
+            <p className="text-red-500 text-xs h-4">{errors.photo}</p>
+          </div>
 
-            {/* Row 2: Description + Notes */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm font-medium mb-1 text-[#2F4156]">
-                  Description
-                </label>
-                <textarea
-                  rows={3}
-                  placeholder="Enter description"
-                  className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-                ></textarea>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1 text-[#2F4156]">
-                  Notes
-                </label>
-                <textarea
-                  rows={3}
-                  placeholder="Additional notes (optional)"
-                  className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-                ></textarea>
-              </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex flex-col-reverse md:flex-row md:justify-end gap-3 pt-4">
-              <button
-                type="button"
-                className="bg-red-500 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-red-600 transition"
-                onClick={() => setOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-2.5 bg-[#FD7E14] text-white rounded-lg font-medium hover:bg-[#e56f0f] transition"
-              >
-                Save
-              </button>
-            </div>
-          </form>
-        </div>
+          {/* Buttons */}
+          <div className="md:col-span-2 flex flex-col-reverse sm:flex-row justify-end gap-3 pt-2">
+            <button
+              type="button"
+              className="w-full sm:w-fit cursor-pointer px-5 py-2 rounded-lg bg-[#ff383be0] text-white hover:bg-[#ff383b]"
+              onClick={reset}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="w-full sm:w-fit cursor-pointer px-5 py-2 rounded-lg text-white bg-[#FD7E14] hover:bg-[#e56f0f]"
+            >
+              Add Service
+            </button>
+          </div>
+        </form>
       </div>
-    )
+    </div>
   );
-};
+}
 
 export default AddService;

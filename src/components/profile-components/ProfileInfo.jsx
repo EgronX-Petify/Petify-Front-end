@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import EditProfile from "./EditProfile";
 import { UserPetsContext } from "../../contexts/UserPetsContext";
 import UseUserPets from "../../hooks/UseUserPets";
 import swal from "sweetalert";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const ProfileInfo = ({ pet }) => {
   const [open, setOpen] = useState(false);
@@ -35,7 +34,7 @@ const ProfileInfo = ({ pet }) => {
       if (willDelete) {
         setPets(pets.filter((p) => p.id !== id));
         toast("Removed", {
-          icon: "👍",
+          icon: "✅",
           duration: "300",
         });
       }

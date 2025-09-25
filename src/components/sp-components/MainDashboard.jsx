@@ -9,8 +9,10 @@ import {
   FaPhone,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import UseSPServices from "../../hooks/UseSPServices";
 
 const MainDashboard = () => {
+  const services = UseSPServices();
   return (
     <main className="flex-1 p-6">
       <h1 className="text-3xl font-bold text-[#2F4156] mb-6">
@@ -28,9 +30,11 @@ const MainDashboard = () => {
           </div>
 
           <ul className="space-y-2 text-gray-600">
-            <li className="flex justify-between">Grooming</li>
-            <li className="flex justify-between">Vet Consultation</li>
-            <li className="flex justify-between">Training</li>
+            {services.map((s, id) => (
+              <li className="flex justify-between" key={id}>
+                {s.name}
+              </li>
+            ))}
           </ul>
         </Link>
 

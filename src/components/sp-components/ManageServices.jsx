@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   FaClipboardList,
   FaBoxOpen,
@@ -16,10 +16,47 @@ import Return from "./Return";
 import UpdateServices from "./UpdateServices";
 import { MdAdd } from "react-icons/md";
 import AddService from "./AddService";
+import toast from "react-hot-toast";
+import UseSPServices from "../../hooks/UseSPServices";
+import ServiceItem from "./ServiceItem";
+import { SPContext } from "../../contexts/SPContext";
 
 const ManageServices = () => {
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const services = UseSPServices();
+  const { setServices } = useContext(SPContext);
+
+  function handleRemoveService(id) {
+    swal({
+      text: "Are you sure you want to remove this service?",
+      buttons: {
+        cancel: {
+          text: "Cancel",
+          value: false,
+          visible: true,
+          className:
+            "bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded",
+        },
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className:
+            "bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded",
+        },
+      },
+      dangerMode: true,
+    }).then((willRemove) => {
+      if (willRemove) {
+        setServices(services.filter((service) => service.id !== id));
+        toast("Removed", {
+          icon: "✅",
+          duration: "300",
+        });
+      }
+    });
+  }
   return (
     <div className="bg-[#F8F9FA] p-5 rounded-2xl shadow-md w-full min-h-screen">
       <Return showLabel={true} />
@@ -27,49 +64,14 @@ const ManageServices = () => {
         <FaClipboardList className="text-white" /> My Services
       </h2>
       <ul className="space-y-2 text-gray-600">
-        <li className="flex justify-between bg-white p-3 rounded-lg">
-          Grooming
-          <p>price</p>
-          <div className="flex gap-2">
-            <button
-              className="cursor-pointer bg-green-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-green-600"
-              onClick={() => setEditOpen(true)}
-            >
-              <MdOutlineModeEditOutline /> Edit
-            </button>
-            <button className="cursor-pointer bg-red-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-red-600">
-              <FaTimes /> Remove
-            </button>
-          </div>
-        </li>
-        <li className="flex justify-between bg-white p-3 rounded-lg">
-          Vet Consultation{" "}
-          <div className="flex gap-2">
-            <button
-              className="cursor-pointer bg-green-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-green-600"
-              onClick={() => setEditOpen(true)}
-            >
-              <MdOutlineModeEditOutline /> Edit
-            </button>
-            <button className="cursor-pointer bg-red-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-red-600">
-              <FaTimes /> Remove
-            </button>
-          </div>
-        </li>
-        <li className="flex justify-between bg-white p-3 rounded-lg">
-          Training{" "}
-          <div className="flex gap-2">
-            <button
-              className="cursor-pointer bg-green-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-green-600"
-              onClick={() => setEditOpen(true)}
-            >
-              <MdOutlineModeEditOutline /> Edit
-            </button>
-            <button className="cursor-pointer bg-red-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-red-600">
-              <FaTimes /> Remove
-            </button>
-          </div>
-        </li>
+        {services.map((service) => (
+          <ServiceItem
+            key={service.id}
+            service={service}
+            setEditOpen={setEditOpen}
+            handleRemoveService={handleRemoveService}
+          />
+        ))}
       </ul>
       <div className="flex justify-center mt-10">
         <button

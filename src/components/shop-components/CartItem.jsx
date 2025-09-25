@@ -39,11 +39,14 @@ const CartItem = ({ item }) => {
     });
   }
   function increaseQuantity(id) {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id == id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+    const stock = item.stock;
+    item.quantity < stock
+      ? setCartItems(
+          cartItems.map((item) =>
+            item.id == id ? { ...item, quantity: item.quantity + 1 } : item
+          )
+        )
+      : toast.error(`Only ${item.stock} items available in stock!`);
   }
 
   function decreaseQuantity(id) {
@@ -62,7 +65,7 @@ const CartItem = ({ item }) => {
       <div className="flex items-center gap-3 flex-1">
         {/* Image on the right in mobile */}
         <img
-          src={item?.photos[0]}
+          src={item?.images[0]}
           alt={item?.name}
           className="w-14 h-14 md:w-20 md:h-20 object-cover rounded-lg order-2 md:order-1"
         />

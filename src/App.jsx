@@ -12,7 +12,6 @@ import NotFound from "./pages/NotFound";
 
 function App() {
   const role = UseRole();
-  console.log(role);
 
   const getRoutes = () => {
     switch (role) {
@@ -46,7 +45,7 @@ function App() {
       </Routes>
 
       <Toaster position="top-center" />
-      <AdminFooter />
+      {role === "petOwner" ? <Footer /> : <AdminFooter />}
     </>
   );
 }

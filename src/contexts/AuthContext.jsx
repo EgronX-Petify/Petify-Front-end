@@ -5,12 +5,12 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState("petOwner");
+  const [role, setRole] = useState("serviceProvider");
 
   useEffect(() => {
     const loggedUser = localStorage.getItem("logged user");
     if (loggedUser) {
-      setRole("petOwner");
+      setRole("serviceProvider");
       const logggedUserData = {
         photo: "https://i.pravatar.cc/150?img=12",
         username: "hello",
@@ -36,11 +36,14 @@ const AuthProvider = ({ children }) => {
   };
 
   const login = async (formData) => {
-    const { data } = await authApi.login(formData);
-    console.log(data);
-    setUser(data.user);
-    localStorage.setItem("logged user", JSON.stringify(data.user));
-    localStorage.setItem("token", data.token);
+    try {
+      const { data } = await authApi.login(formData);
+      setUser(formData);
+      localStorage.setItem("logged user", JSON.stringify(formData)); // change to data when beckend return user data
+      localStorage.setItem("token", data.token);
+    } catch (err) {
+      throw err;
+    }
   };
 
   const forgotPassword = async (email) => {

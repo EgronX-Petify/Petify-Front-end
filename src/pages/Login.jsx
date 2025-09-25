@@ -2,8 +2,8 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ForgotPassword from "../components/sign-components/ForgotPassword";
 import UseLogged from "../hooks/UseLogged";
-import { login } from "../APIs/authAPI";
 import toast from "react-hot-toast";
+import UseAuth from "../hooks/UseAuth";
 
 const Login = () => {
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
@@ -22,30 +22,25 @@ const Login = () => {
     });
   };
 
-  const handleLogin = (e) => {
+  const { login } = UseAuth();
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
-    localStorage.setItem("logged user", JSON.stringify(formData));
-    navigate("/");
+
+    try {
+      await toast.promise(login(formData), {
+        loading: "Login In... ⏳",
+        success: "Logged in successfully! ✅",
+        error: (err) => err.response?.data?.message || "Login failed ❌",
+      });
+      navigate("/");
+    } catch (err) {
+      console.error("Login failed:", err);
+    } finally {
+      setLoading(false);
+    }
   };
-
-
-  // use it when the backend works
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setError("");
-  //   const loginPromise = login(formData);
-  //   toast.promise(loginPromise, {
-  //     loading: "Login In... ⏳",
-  //     success: "Logged in successfully!",
-  //     error: (err) => err.response?.data?.message || "Login failed ❌",
-  //   });
-
-  //   try {
-  //     await loginPromise;
-  //     navigate("/");
-  //   } catch (err) {}
-  // };
 
   return (
     <div className="my-[30px] flex flex-col md:flex-row justify-evenly items-center min-h-[600px] px-[20px] md:px-[30px] gap-8">
@@ -66,9 +61,9 @@ const Login = () => {
               <input
                 type="email"
                 id="email"
-                value={formData.username}
+                value={formData.email}
                 onChange={handleChange}
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 className="w-full px-4 py-2 border-[1px] border-solid border-[#2f415677] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FD7E14] focus:border-[#FD7E14]"
               />
             </div>

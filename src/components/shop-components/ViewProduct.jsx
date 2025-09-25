@@ -12,7 +12,7 @@ import { ProductsContext } from "../../contexts/ProductsContext";
 import Rating from "../Rating";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
 import LoadingSpinner from "../LoadingSpinner";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const ViewProduct = () => {
   const { id } = useParams();
@@ -51,9 +51,8 @@ const ViewProduct = () => {
       thisCartItem
         ? increaseQuantity(id)
         : setCartItems([...cartItems, cartItem]);
-        toast.success("Added To Cart");
+      toast.success("Added To Cart");
     }
-    
   }
 
   function updateRating(baseRating) {
@@ -75,9 +74,9 @@ const ViewProduct = () => {
         <LoadingSpinner text="Product is Loadig" />
       ) : (
         <div className="grid md:grid-cols-2 gap-8">
-          {!product?.photos?.length ? (
+          {!product?.images?.length ? (
             <p className="text-gray-500 text-center">
-              No product photos available
+              No product images available
             </p>
           ) : (
             <div className="w-full h-80 overflow-hidden rounded-2xl shadow-md mb-4">
@@ -89,7 +88,7 @@ const ViewProduct = () => {
                 loop={true}
                 className="rounded-xl"
               >
-                {product?.photos?.map((photo, idx) => (
+                {product?.images?.map((photo, idx) => (
                   <SwiperSlide key={idx}>
                     <img
                       src={photo}
@@ -106,21 +105,21 @@ const ViewProduct = () => {
             <h2 className="text-3xl font-bold text-[#2F4156] mb-4">
               {product?.name}
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-600 mb-4">
               {product?.description || "No description available."}
             </p>
-            <p className="text-gray-600 mb-4">{product?.description}</p>
             <span className="text-2xl font-semibold text-[#FD7E14] mb-6">
               ${product?.price}
             </span>
 
-            {/* Rating */}
-            <div className="mb-6">
-              <Rating
-                value={userRating || product?.rating}
-                onChange={(val) => setUserRating(val)}
-              />
-            </div>
+            {product?.rating && (
+              <div className="mb-6">
+                <Rating
+                  value={userRating || product?.rating}
+                  onChange={(val) => setUserRating(val)}
+                />
+              </div>
+            )}
 
             <div className="flex gap-5">
               {/* Add to Cart */}
@@ -131,7 +130,7 @@ const ViewProduct = () => {
                 <MdAddShoppingCart size={20} />
                 Add to Cart
               </button>
-              
+
               <button
                 onClick={() => handleRate(product.id)}
                 className={
@@ -144,7 +143,6 @@ const ViewProduct = () => {
               </button>
             </div>
           </div>
-          <Toaster position="top-center" reverseOrder={false} />
         </div>
       )}
     </div>
