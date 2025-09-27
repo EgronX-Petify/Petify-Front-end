@@ -5,12 +5,12 @@ import { Outlet } from "react-router-dom";
 
 const SPDashboard = () => {
   return (
-    <>
-      <div className="min-h-screen flex bg-gray-100">
+  
+      <div className="min-h-[92vh] flex bg-gray-100">
         <DashboardSidebar />
         <Outlet />
       </div>
-    </>
+    
   );
 };
 

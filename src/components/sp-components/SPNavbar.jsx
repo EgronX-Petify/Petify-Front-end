@@ -25,47 +25,7 @@ const SPNavbar = () => {
         {loggedUser && (
           <>
             <Notifications />
-            <div className="hidden md:block cursor-pointer dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="User Avatar"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
-                </div>
-              </div>
-              <ul
-                tabIndex={0}
-                className="menu dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
-              >
-                <li>
-                  <Link to="/sp-profile" className="justify-between">
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/" className="justify-between">
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/login"
-                    className="text-[#FF383C]"
-                    onClick={() => {
-                      setIsOpen(false);
-                      logout();
-                    }}
-                  >
-                    Logout
-                  </Link>
-                </li>
-              </ul>
-            </div>
+
           </>
         )}
       </div>
@@ -86,7 +46,7 @@ const SPNavbar = () => {
         <div className="absolute top-[59px] right-0 w-[50%]  px-3 text-[#2F4156] bg-[#FFFFFF] shadow-lg rounded-b-2xl flex flex-col items-center py-4 space-y-4 md:hidden z-50 ">
           {loggedUser && (
             <>
-              <Link to="/sp-profile" onClick={() => setIsOpen(false)}>
+              <Link to="/profile" onClick={() => setIsOpen(false)}>
                 Profile
               </Link>
               <Link to="/" onClick={() => setIsOpen(false)}>

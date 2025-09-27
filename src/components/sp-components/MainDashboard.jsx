@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   FaClipboardList,
   FaBoxOpen,
@@ -10,9 +10,53 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import UseSPServices from "../../hooks/UseSPServices";
+import { SPContext } from "../../contexts/SPContext";
+import toast from "react-hot-toast";
+import swal from "sweetalert";
 
 const MainDashboard = () => {
   const services = UseSPServices();
+  const { products, appointments, setAppointments } = useContext(SPContext);
+  const now = new Date();
+  const upcoming = appointments.filter(
+    (appt) => new Date(`${appt.date} ${appt.time}`) > now && !appt.done
+  );
+
+  function makeApptDone(id) {
+    swal({
+      text: "Are you sure you want to make this appointment done?",
+      buttons: {
+        cancel: {
+          text: "Cancel",
+          value: false,
+          visible: true,
+          className:
+            "bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded",
+        },
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className:
+            "bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded",
+        },
+      },
+      dangerMode: true,
+    }).then((willDone) => {
+      if (willDone) {
+        setAppointments(
+          appointments.map((appt) =>
+            appt.id === id ? { ...appt, done: true } : appt
+          )
+        );
+        toast("This appointment marked as Done", {
+          icon: "✅",
+          duration: "300",
+        });
+      }
+    });
+  }
+
   return (
     <main className="flex-1 p-6">
       <h1 className="text-3xl font-bold text-[#2F4156] mb-6">
@@ -21,13 +65,15 @@ const MainDashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Services */}
-        <Link to="/services" className="bg-white p-4 rounded-2xl shadow-md">
-          <div className="flex justify-between">
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
-              <FaClipboardList /> My Services
-            </h2>
-            <FaEdit className="text-[#FD7E14] cursor-pointer text-xl" />
-          </div>
+        <div className="bg-white p-4 rounded-2xl shadow-md">
+          <Link to="/services">
+            <div className="flex justify-between">
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
+                <FaClipboardList /> My Services
+              </h2>
+              <FaEdit className="text-[#FD7E14] cursor-pointer text-xl" />
+            </div>
+          </Link>
 
           <ul className="space-y-2 text-gray-600">
             {services.map((s, id) => (
@@ -36,81 +82,60 @@ const MainDashboard = () => {
               </li>
             ))}
           </ul>
-        </Link>
+        </div>
 
         {/* Appointments */}
-        <Link to="/appointments" className="bg-white p-4 rounded-2xl shadow-md">
-          <div className="flex justify-between">
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
-              <FaCalendarCheck /> Upcoming Appointments
-            </h2>
-            <FaEdit className="text-[#FD7E14] cursor-pointer text-xl" />
-          </div>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">John Doe - Grooming</span>
-              <button className="flex items-center gap-1 text-green-600">
-                <FaCheckCircle /> Mark Done
-              </button>
+        <div className="bg-white p-4 rounded-2xl shadow-md">
+          <Link to="/appointments">
+            <div className="flex justify-between">
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
+                <FaCalendarCheck /> Upcoming Appointments
+              </h2>
+              <FaEdit className="text-[#FD7E14] cursor-pointer text-xl" />
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Sarah Ali - Vet Check</span>
-              <button className="flex items-center gap-1 text-green-600">
-                <FaCheckCircle /> Mark Done
-              </button>
+          </Link>
+          {upcoming.length > 0 ? (
+            <div className="space-y-3">
+              {upcoming.map((up) => (
+                <div className="flex justify-between items-center" key={up.id}>
+                  <span className="text-gray-600">{`${up.client} - ${up.service}`}</span>
+                  <button
+                    className="flex items-center gap-1 text-green-600 hover:underline"
+                    onClick={() => makeApptDone(up.id)}
+                  >
+                    <FaCheckCircle /> Mark Done
+                  </button>
+                </div>
+              ))}
             </div>
-          </div>
-        </Link>
+          ) : (
+            <p className="py-3 px-2 text-gray-500 text-xl">
+              No Upcoming Appointments
+            </p>
+          )}
+        </div>
 
         {/* Inventory */}
-        <Link to="/products" className="bg-white p-4 rounded-2xl shadow-md">
-          <div className="flex justify-between">
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
-              <FaBoxOpen /> Product Inventory
-            </h2>
-            <FaEdit className="text-[#FD7E14] cursor-pointer text-xl" />
-          </div>
+        <div className="bg-white p-4 rounded-2xl shadow-md">
+          <Link to="/products">
+            <div className="flex justify-between">
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
+                <FaBoxOpen /> Product Inventory
+              </h2>
+              <FaEdit className="text-[#FD7E14] cursor-pointer text-xl" />
+            </div>
+          </Link>
           <ul className="space-y-2 text-gray-600">
-            <li className="flex justify-between">
-              Dog Shampoo{" "}
-              <span className="text-sm text-gray-400">12 in stock</span>
-            </li>
-            <li className="flex justify-between">
-              Cat Food <span className="text-sm text-gray-400">8 in stock</span>
-            </li>
-            <li className="flex justify-between">
-              Pet Toys{" "}
-              <span className="text-sm text-gray-400">20 in stock</span>
-            </li>
+            {products.slice(0, 3).map((product, index) => (
+              <li className="flex justify-between" key={product.id}>
+                {product.name}
+                <span className="text-sm text-gray-400">{`${product.stock} in stock`}</span>
+              </li>
+            ))}
           </ul>
-        </Link>
-
-        {/* Clients */}
-        <div className="bg-white p-4 rounded-2xl shadow-md md:col-span-2 xl:col-span-3">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#2F4156]">
-            <FaUserMd /> Clients
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="p-3 border rounded-lg flex justify-between items-center">
-              <span className="text-gray-600">John Doe</span>
-              <button className="flex items-center gap-1 text-blue-500">
-                <FaPhone /> Contact
-              </button>
-            </div>
-            <div className="p-3 border rounded-lg flex justify-between items-center">
-              <span className="text-gray-600">Sarah Ali</span>
-              <button className="flex items-center gap-1 text-blue-500">
-                <FaPhone /> Contact
-              </button>
-            </div>
-            <div className="p-3 border rounded-lg flex justify-between items-center">
-              <span className="text-gray-600">Ahmed Hassan</span>
-              <button className="flex items-center gap-1 text-blue-500">
-                <FaPhone /> Contact
-              </button>
-            </div>
-          </div>
         </div>
+
+
       </div>
     </main>
   );

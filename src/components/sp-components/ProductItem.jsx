@@ -5,12 +5,52 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useContext, useEffect, useState } from "react";
+import { SPContext } from "../../contexts/SPContext";
+import toast from "react-hot-toast";
+import swal from "sweetalert";
 
-const ProductItem = ({ product, isMobile }) => {
+const ProductItem = ({ product, isMobile, setEditOpen }) => {
+  const { setSelectedProduct, products, setProducts } = useContext(SPContext);
+
+  function handleDelete(id) {
+    swal({
+      text: "Are you sure you want to delete this pet?",
+      buttons: {
+        cancel: {
+          text: "Cancel",
+          value: false,
+          visible: true,
+          className:
+            "bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded",
+        },
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className:
+            "bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded",
+        },
+      },
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        setProducts(products.filter((p) => p.id !== id));
+        toast("Removed", {
+          icon: "✅",
+          duration: "300",
+        });
+      }
+    });
+  }
+  function handleEdit(product) {
+    setSelectedProduct(product);
+    setEditOpen(true);
+  }
+
   const discountedPrice = product.discount
     ? (product.price - (product.price * product.discount) / 100).toFixed(2)
     : product.price;
-
 
   const images = Array.isArray(product.photos)
     ? product.photos
@@ -79,7 +119,7 @@ const ProductItem = ({ product, isMobile }) => {
           </button>
           <button
             className="flex-1 bg-red-500 text-white py-2 text-sm rounded-md flex items-center justify-center gap-1 hover:bg-red-600"
-            onClick={() => onRemove(product)}
+            onClick={() => handleDelete(product.id)}
           >
             <FaTimes /> Remove
           </button>
@@ -89,67 +129,71 @@ const ProductItem = ({ product, isMobile }) => {
   }
 
   return (
-    <tr className="border-b border-[#2f415677] hover:bg-gray-50 transition">
-      <td className="p-3 flex items-center gap-3">
-        {/* Slider with smaller images */}
-        <div className="w-28 h-20">
-          <Swiper
-            modules={[Navigation, Pagination]}
-            navigation
-            pagination={{ clickable: true }}
-            spaceBetween={5}
-            slidesPerView={1}
-            className="w-28 h-20 rounded-md overflow-hidden"
-          >
-            {images.map((img, idx) => (
-              <SwiperSlide key={idx}>
-                <img
-                  src={img}
-                  alt={`${product.name}-${idx}`}
-                  className="w-full h-20 object-cover"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+    <>
+      <tr className="border-b border-[#2f415677] hover:bg-gray-50 transition">
+        <td className="p-3 flex items-center gap-3">
+          {/* Slider with smaller images */}
+          <div className="w-28 h-20">
+            <Swiper
+              modules={[Navigation, Pagination]}
+              navigation
+              pagination={{ clickable: true }}
+              spaceBetween={5}
+              slidesPerView={1}
+              className="w-28 h-20 rounded-md overflow-hidden"
+            >
+              {images.map((img, idx) => (
+                <SwiperSlide key={idx}>
+                  <img
+                    src={img}
+                    alt={`${product.name}-${idx}`}
+                    className="w-full h-20 object-cover"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
 
-        {/* Info */}
-        <div>
-          <p className="font-medium">{product.name}</p>
-          <p className="text-xs text-gray-500">{product.note}</p>
-          <p className="text-xs text-gray-600">{product.description}</p>
-        </div>
-      </td>
-      <td className="p-3">
-        {product.discount ? (
-          <div className="flex flex-col">
-            <span className="line-through text-gray-400 text-sm">
+          {/* Info */}
+          <div>
+            <p className="font-medium">{product.name}</p>
+            <p className="text-xs text-gray-500">{product.note}</p>
+            <p className="text-xs text-gray-600">{product.description}</p>
+          </div>
+        </td>
+        <td className="p-3">
+          {product.discount ? (
+            <div className="flex flex-col">
+              <span className="line-through text-gray-400 text-sm">
+                ${product.price}
+              </span>
+              <span className="text-[#FD7E14] font-semibold">
+                ${discountedPrice}
+              </span>
+            </div>
+          ) : (
+            <span className="text-[#FD7E14] font-semibold">
               ${product.price}
             </span>
-            <span className="text-[#FD7E14] font-semibold">
-              ${discountedPrice}
-            </span>
-          </div>
-        ) : (
-          <span className="text-[#FD7E14] font-semibold">${product.price}</span>
-        )}
-      </td>
-      <td className="p-3">{product.stock}</td>
-      <td className="p-3 flex justify-center gap-2">
-        <button
-          className="cursor-pointer bg-[#fd7d14db] text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-[#FD7E14]"
-          onClick={() => onEdit(product)}
-        >
-          <MdOutlineModeEditOutline /> Edit
-        </button>
-        <button
-          className="cursor-pointer bg-red-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-red-600"
-          onClick={() => onRemove(product)}
-        >
-          <FaTimes /> Remove
-        </button>
-      </td>
-    </tr>
+          )}
+        </td>
+        <td className="p-3">{product.stock}</td>
+        <td className="p-3 flex justify-center gap-2">
+          <button
+            className="cursor-pointer bg-[#fd7d14db] text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-[#FD7E14]"
+            onClick={() => handleEdit(product)}
+          >
+            <MdOutlineModeEditOutline /> Edit
+          </button>
+          <button
+            className="cursor-pointer bg-red-500 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-red-600"
+            onClick={() => handleDelete(product.id)}
+          >
+            <FaTimes /> Remove
+          </button>
+        </td>
+      </tr>
+    </>
   );
 };
 

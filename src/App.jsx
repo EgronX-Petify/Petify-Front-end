@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import UseRole from "./hooks/UseRole";
-import { allUsers, petOwner, serviceProvider, admin } from "./routesConfig";
+import { petOwner, serviceProvider, admin } from "./routesConfig";
 import SPNavbar from "./components/sp-components/SPNavbar";
 import AdminNavbar from "./components/admin-components/AdminNavbar";
 import AdminFooter from "./components/admin-components/AdminFooter";
@@ -16,13 +16,13 @@ function App() {
   const getRoutes = () => {
     switch (role) {
       case "petOwner":
-        return [...allUsers, ...petOwner];
+        return petOwner;
       case "serviceProvider":
-        return [...allUsers, ...serviceProvider];
+        return serviceProvider;
       case "admin":
-        return [...allUsers, ...admin];
+        return admin;
       default:
-        return allUsers;
+        return petOwner;
     }
   };
 

@@ -3,6 +3,8 @@ import UpcomingAppointments from "./UpcomingAppointments";
 import PastAppointments from "./PastAppointments";
 import RescheduleAppointment from "../sp-components/RescheduleAppointment";
 import UseAppointments from "../../hooks/UseAppointments";
+import { AppointmentsContext } from "../../contexts/AppointmentsContext";
+import UseSelectedAppointment from "../../hooks/UseSelectedAppointment";
 
 const Appointments = () => {
   const appointments = UseAppointments();
@@ -31,7 +33,6 @@ const Appointments = () => {
 
       {/* Past */}
       <PastAppointments appointments={past} />
-      <RescheduleAppointment />
     </div>
   );
 };

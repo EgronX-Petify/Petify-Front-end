@@ -4,11 +4,14 @@ import UseAppointments from "../../hooks/UseAppointments";
 import swal from "sweetalert";
 import RescheduleAppointment from "../sp-components/RescheduleAppointment";
 import toast, { Toaster } from "react-hot-toast";
+import UseSelectedAppointment from "../../hooks/UseSelectedAppointment";
 
 const AppointmentTemp = ({ appt, show = false }) => {
   const { setAppointments } = useContext(AppointmentsContext);
   const { setSelectedAppointment } = useContext(AppointmentsContext);
   const appointments = UseAppointments();
+  const appointment = UseSelectedAppointment();
+
   const [rescheduleOpen, setRescheduleOpen] = useState(false);
 
   function handleCancelAppointment(id) {
@@ -77,6 +80,10 @@ const AppointmentTemp = ({ appt, show = false }) => {
       <RescheduleAppointment
         open={rescheduleOpen}
         setOpen={setRescheduleOpen}
+        appointments={appointments}
+        appointment={appointment}
+        setAppointments={setAppointments}
+        setSelectedAppointment={setSelectedAppointment}
       />
     </div>
   );

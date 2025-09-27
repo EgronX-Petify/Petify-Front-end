@@ -5,12 +5,12 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState("serviceProvider");
+  const [role, setRole] = useState("admin");
 
   useEffect(() => {
     const loggedUser = localStorage.getItem("logged user");
     if (loggedUser) {
-      setRole("serviceProvider");
+      setRole("admin");
       const logggedUserData = {
         photo: "https://i.pravatar.cc/150?img=12",
         username: "hello",
@@ -57,7 +57,7 @@ const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
-    setRole("allUsers");
+    setRole("petOwner");
     localStorage.removeItem("logged user");
     localStorage.removeItem("token");
   };

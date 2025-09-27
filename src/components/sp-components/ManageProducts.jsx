@@ -38,6 +38,7 @@ const ManageProducts = () => {
                 key={p.id}
                 product={p}
                 isMobile={false}
+                setEditOpen={setEditOpen}
               />
             ))}
           </tbody>
@@ -60,6 +61,7 @@ const ManageProducts = () => {
             key={p.id}
             product={p}
             isMobile={true}
+            setEditOpen={setEditOpen}
           />
         ))}
 

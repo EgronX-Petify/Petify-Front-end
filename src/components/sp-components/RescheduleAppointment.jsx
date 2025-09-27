@@ -1,22 +1,20 @@
 import React, { useContext, useState } from "react";
 import { FaCalendarAlt, FaClock, FaRedo } from "react-icons/fa";
-import { AppointmentsContext } from "../../contexts/AppointmentsContext";
-import UseAppointments from "../../hooks/UseAppointments";
-import UseSelectedAppointment from "../../hooks/UseSelectedAppointment";
 import toast from "react-hot-toast";
 
-const RescheduleAppointment = ({ open, setOpen }) => {
-  const { setAppointments } = useContext(AppointmentsContext);
-  const { setSelectedAppointment } = useContext(AppointmentsContext);
-  const appointments = UseAppointments();
-  const appointment = UseSelectedAppointment();
+const RescheduleAppointment = ({
+  open,
+  setOpen,
+  setAppointments,
+  setSelectedAppointment,
+  appointments,
+  appointment,
+}) => {
   const id = appointment?.id;
 
- 
   const [formData, setFormData] = useState({ date: "", time: "" });
   const [errors, setErrors] = useState({ date: "", time: "" });
 
- 
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -24,7 +22,7 @@ const RescheduleAppointment = ({ open, setOpen }) => {
     }));
     setErrors((prev) => ({
       ...prev,
-      [e.target.name]: "", 
+      [e.target.name]: "",
     }));
   };
 
@@ -52,7 +50,12 @@ const RescheduleAppointment = ({ open, setOpen }) => {
     return valid;
   };
 
-
+  function reset() {
+    setSelectedAppointment(null);
+    setFormData({ date: "", time: "" });
+    setErrors({ date: "", time: "" });
+    setOpen(false);
+  }
   const handleRescheduleAppointment = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -84,8 +87,7 @@ const RescheduleAppointment = ({ open, setOpen }) => {
               : appt
           )
         );
-        setSelectedAppointment(null);
-        setOpen(false);
+        reset();
         toast.success("Appointment Rescheduled Successfully!");
       }
     });
@@ -154,7 +156,7 @@ const RescheduleAppointment = ({ open, setOpen }) => {
               <button
                 type="button"
                 className="sm:w-auto bg-red-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-red-600 transition"
-                onClick={() => setOpen(false)}
+                onClick={() => reset()}
               >
                 Cancel
               </button>

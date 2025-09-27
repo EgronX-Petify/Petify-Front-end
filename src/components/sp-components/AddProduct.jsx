@@ -1,25 +1,34 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import toast from "react-hot-toast";
+import { SPContext } from "../../contexts/SPContext";
 
 const AddProduct = ({ open, setOpen }) => {
   const [formData, setFormData] = useState({
+    id: Date.now(),
     name: "",
-    desc: "",
     price: "",
+    description: "",
     notes: "",
-    discounts: "",
+    discount: "",
     stock: "",
-    rate: "",
   });
 
   const [images, setImages] = useState([0]); // dynamic image inputs
   const [files, setFiles] = useState({}); // track uploaded files
+  const [errors, setErrors] = useState({});
+  const { setProducts } = useContext(SPContext);
 
   const handleChange = (e) => {
     const { name, value, type, files: inputFiles } = e.target;
+
     if (type === "file") {
-      setFiles((prev) => ({
+      const urls = Array.from(inputFiles).map((file) =>
+        URL.createObjectURL(file)
+      );
+
+      setFormData((prev) => ({
         ...prev,
-        [name]: inputFiles[0],
+        photos: [...(prev.photos || []), ...urls], // ✅ تخزين الـ urls في photos
       }));
     } else {
       setFormData((prev) => ({
@@ -42,9 +51,49 @@ const AddProduct = ({ open, setOpen }) => {
     });
   };
 
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = "Product name is required";
+    if (!formData.price || formData.price <= 0)
+      newErrors.price = "Price must be greater than 0";
+    if (!formData.desc.trim()) newErrors.desc = "Description is required";
+    if (formData.stock === "" || formData.stock < 0)
+      newErrors.stock = "Stock must be 0 or greater";
+    if (
+      formData.discount === "" ||
+      formData.discount < 0 ||
+      formData.discount > 100
+    )
+      newErrors.discount = "Discount must be between 0 and 100";
+
+    if (!formData.photos || formData.photos.length === 0)
+      newErrors.photos = "At least one product image is required";
+    return newErrors;
+  };
+
+  function reset() {
+    setFormData({
+      id: "",
+      name: "",
+      desc: "",
+      price: "",
+      notes: "",
+      discount: "",
+      stock: "",
+    });
+    setFiles({})
+    setErrors({});
+    setOpen(false);
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Product Data:", { ...formData, images: files });
+    const newErrors = validate();
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
+    setProducts((prev) => [...prev, formData]);
+    reset();
+    toast.success("Product added successfully!");
   };
 
   return (
@@ -63,7 +112,7 @@ const AddProduct = ({ open, setOpen }) => {
             Add New Product
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Row 1: Name + Price */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div>
@@ -76,8 +125,10 @@ const AddProduct = ({ open, setOpen }) => {
                   value={formData.name}
                   onChange={handleChange}
                   className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-                  required
                 />
+                <p className="text-red-500 text-xs h-5 mt-1">
+                  {errors.name || ""}
+                </p>
               </div>
 
               <div>
@@ -90,8 +141,10 @@ const AddProduct = ({ open, setOpen }) => {
                   value={formData.price}
                   onChange={handleChange}
                   className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-                  required
                 />
+                <p className="text-red-500 text-xs h-5 mt-1">
+                  {errors.price || ""}
+                </p>
               </div>
             </div>
 
@@ -107,6 +160,9 @@ const AddProduct = ({ open, setOpen }) => {
                 className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
                 rows="3"
               />
+              <p className="text-red-500 text-xs h-5 mt-1">
+                {errors.desc || ""}
+              </p>
             </div>
 
             {/* Row 3: Images + Stock */}
@@ -136,6 +192,9 @@ const AddProduct = ({ open, setOpen }) => {
                     )}
                   </div>
                 ))}
+                <p className="text-red-500 text-xs h-5 mt-1">
+                  {errors.photos || ""}
+                </p>
 
                 <button
                   type="button"
@@ -157,10 +216,13 @@ const AddProduct = ({ open, setOpen }) => {
                   onChange={handleChange}
                   className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
                 />
+                <p className="text-red-500 text-xs h-5 mt-1">
+                  {errors.stock || ""}
+                </p>
               </div>
             </div>
 
-            {/* Row 4: Discounts + Notes */}
+            {/* Row 4: Discount + Notes */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div>
                 <label className="block text-sm font-medium mb-1 text-[#2F4156]">
@@ -168,11 +230,14 @@ const AddProduct = ({ open, setOpen }) => {
                 </label>
                 <input
                   type="number"
-                  name="discounts"
-                  value={formData.discounts}
+                  name="discount"
+                  value={formData.discount}
                   onChange={handleChange}
                   className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
                 />
+                <p className="text-red-500 text-xs h-5 mt-1">
+                  {errors.discount || ""}
+                </p>
               </div>
 
               <div>
@@ -189,29 +254,12 @@ const AddProduct = ({ open, setOpen }) => {
               </div>
             </div>
 
-            {/* Row 5: Rate */}
-            <div>
-              <label className="block text-sm font-medium mb-1 text-[#2F4156]">
-                Rate (1–5)
-              </label>
-              <input
-                type="number"
-                name="rate"
-                value={formData.rate}
-                onChange={handleChange}
-                min="1"
-                max="5"
-                step="0.1"
-                className="w-full md:w-1/3 border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
-              />
-            </div>
-
             {/* Buttons */}
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-2">
               <button
                 type="button"
                 className="w-full md:w-auto bg-red-500 text-white px-3 py-2 rounded-lg font-medium hover:bg-red-600 transition"
-                onClick={() => setOpen(false)}
+                onClick={() => reset()}
               >
                 Cancel
               </button>

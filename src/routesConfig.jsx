@@ -30,13 +30,10 @@ import ProductsTable from "./components/admin-components/ProductsTable";
 import ServicesTable from "./components/admin-components/ServicesTable";
 import { Navigate } from "react-router-dom";
 
-export const allUsers = [
+export const petOwner = [
   { path: "/signup", element: <Signup /> },
   { path: "/login", element: <Login /> },
   { path: "/reset-password", element: <ResetPassword /> },
-];
-
-export const petOwner = [
   { path: "/", element: <Home /> },
   { path: "/shop", element: <Shop /> },
   { path: "/shop/view-product/:id", element: <ViewProduct /> },
@@ -62,6 +59,9 @@ export const petOwner = [
 ];
 
 export const serviceProvider = [
+  { path: "/signup", element: <Signup /> },
+  { path: "/login", element: <Login /> },
+  { path: "/reset-password", element: <ResetPassword /> },
   {
     path: "/",
     element: <SPDashboard />,
@@ -70,12 +70,16 @@ export const serviceProvider = [
       { path: "services", element: <ManageServices /> },
       { path: "appointments", element: <ManageAppointments /> },
       { path: "products", element: <ManageProducts /> },
+      { path: "profile", element: <ServiceProviderProfile /> },
     ],
   },
-  { path: "/sp-profile", element: <ServiceProviderProfile /> },
+  // { path: "/sp-profile", element: <ServiceProviderProfile /> },
 ];
 
 export const admin = [
+  { path: "/signup", element: <Signup /> },
+  { path: "/login", element: <Login /> },
+  { path: "/reset-password", element: <ResetPassword /> },
   {
     path: "/",
     element: <AdminDashboard />,
