@@ -5,12 +5,12 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState("admin");
+  const [role, setRole] = useState("petOwner");
 
   useEffect(() => {
     const loggedUser = localStorage.getItem("logged user");
     if (loggedUser) {
-      setRole("admin");
+      setRole("petOwner");
       const logggedUserData = {
         photo: "https://i.pravatar.cc/150?img=12",
         username: "hello",
@@ -41,6 +41,7 @@ const AuthProvider = ({ children }) => {
       setUser(formData);
       localStorage.setItem("logged user", JSON.stringify(formData)); // change to data when beckend return user data
       localStorage.setItem("token", data.token);
+      return data;
     } catch (err) {
       throw err;
     }

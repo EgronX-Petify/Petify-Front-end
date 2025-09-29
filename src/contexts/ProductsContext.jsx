@@ -22,6 +22,42 @@ const ProductsProvider = ({ children }) => {
         "https://example.com/images/dog-kibble-back.jpg",
       ],
     },
+    {
+      id: 201,
+      sellerId: 5001,
+      name: "Premium Dog Kibble",
+      description:
+        "Grain-free premium dog kibble made with real chicken and sweet potatoes. Suitable for all breeds.",
+      notes: "Store in a cool, dry place after opening",
+      price: 39.99,
+      discount: 5,
+      final_price: 37.99,
+      stock: 10,
+      category: "Pet Food",
+      tags: ["dog", "food", "grain-free", "chicken", "healthy"],
+      images: [
+        "https://example.com/images/dog-kibble-front.jpg",
+        "https://example.com/images/dog-kibble-back.jpg",
+      ],
+    },
+    {
+      id: 301,
+      sellerId: 5001,
+      name: "Premium Dog Kibble",
+      description:
+        "Grain-free premium dog kibble made with real chicken and sweet potatoes. Suitable for all breeds.",
+      notes: "Store in a cool, dry place after opening",
+      price: 39.99,
+      discount: 5,
+      final_price: 37.99,
+      stock: 10,
+      category: "Pet Food",
+      tags: ["dog", "food", "grain-free", "chicken", "healthy"],
+      images: [
+        "https://example.com/images/dog-kibble-front.jpg",
+        "https://example.com/images/dog-kibble-back.jpg",
+      ],
+    },
   ]);
   // useEffect(() => {
   //   const allProducts = getAllProducts();
@@ -274,7 +310,6 @@ const ProductsProvider = ({ children }) => {
   //     ]);
   //   }
   // }, [products]);
-
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cartItems, setCartItems] = useState([]);

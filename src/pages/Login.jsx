@@ -23,17 +23,18 @@ const Login = () => {
   };
 
   const { login } = UseAuth();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
     try {
-      await toast.promise(login(formData), {
+      const data = await toast.promise(login(formData), {
         loading: "Login In... ⏳",
         success: "Logged in successfully! ✅",
         error: (err) => err.response?.data?.message || "Login failed ❌",
       });
+      console.log(data);
       navigate("/");
     } catch (err) {
       console.error("Login failed:", err);

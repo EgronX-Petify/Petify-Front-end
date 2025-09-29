@@ -56,6 +56,7 @@ const AppointmentTemp = ({ appt, show = false }) => {
           {appt?.date} • {appt?.time}
         </p>
         <p className="text-sm text-gray-500">{`for ${appt?.pet} `}</p>
+        {appt.emergency && <p className="text-sm text-red-700">Emergency</p>}
       </div>
       {show && (
         <div className="flex flex-col gap-2">

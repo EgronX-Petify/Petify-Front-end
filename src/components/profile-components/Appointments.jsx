@@ -19,7 +19,6 @@ const Appointments = () => {
     (appt) => new Date(`${appt.date} ${appt.time}`) <= now
   );
 
-  
   // const [rescheduleOpen, setRescheduleOpen] = false;
 
   return (
