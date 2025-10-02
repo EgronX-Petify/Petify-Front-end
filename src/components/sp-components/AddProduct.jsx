@@ -1,16 +1,20 @@
 import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { SPContext } from "../../contexts/SPContext";
+import UseLoggedUser from "../../hooks/UseLoggedUser";
+import {ProductsContext} from "../../contexts/ProductsContext";
 
 const AddProduct = ({ open, setOpen }) => {
+  const user = UseLoggedUser();
+  const { createProduct } = useContext(ProductsContext);
   const [formData, setFormData] = useState({
-    id: Date.now(),
     name: "",
     price: "",
     description: "",
     notes: "",
     discount: "",
     stock: "",
+    category: "",
   });
 
   const [images, setImages] = useState([0]); // dynamic image inputs
@@ -56,7 +60,8 @@ const AddProduct = ({ open, setOpen }) => {
     if (!formData.name.trim()) newErrors.name = "Product name is required";
     if (!formData.price || formData.price <= 0)
       newErrors.price = "Price must be greater than 0";
-    if (!formData.desc.trim()) newErrors.desc = "Description is required";
+    if (!formData.description.trim())
+      newErrors.description = "descriptionription is required";
     if (formData.stock === "" || formData.stock < 0)
       newErrors.stock = "Stock must be 0 or greater";
     if (
@@ -73,27 +78,34 @@ const AddProduct = ({ open, setOpen }) => {
 
   function reset() {
     setFormData({
-      id: "",
       name: "",
-      desc: "",
+      description: "",
       price: "",
       notes: "",
       discount: "",
       stock: "",
+      category: "",
     });
-    setFiles({})
+    setFiles({});
     setErrors({});
     setOpen(false);
   }
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validate();
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    setProducts((prev) => [...prev, formData]);
+    const payload = { ...formData, sellerId: user?.id };
+    try {
+      const { data } = await createProduct(payload);
+      console.log(data);
+      toast.success("Product added successfully!");
+    } catch (error) {
+      console.log(error.response);
+    }
     reset();
-    toast.success("Product added successfully!");
   };
 
   return (
@@ -148,20 +160,20 @@ const AddProduct = ({ open, setOpen }) => {
               </div>
             </div>
 
-            {/* Row 2: Description */}
+            {/* Row 2: descriptionription */}
             <div>
               <label className="block text-sm font-medium mb-1 text-[#2F4156]">
                 Description
               </label>
               <textarea
-                name="desc"
-                value={formData.desc}
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
                 className="w-full border border-[#2f415677] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FD7E14]"
                 rows="3"
               />
               <p className="text-red-500 text-xs h-5 mt-1">
-                {errors.desc || ""}
+                {errors.description || ""}
               </p>
             </div>
 

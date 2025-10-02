@@ -1,21 +1,50 @@
-import React from "react";
+import React, { useContext } from "react";
 import StatsCard from "./StatsCard";
+import { ProductsContext } from "../../contexts/ProductsContext";
+import { ServicesContext } from "../../contexts/ServicesContext";
+import { UsersContext } from "../../contexts/UsersContext";
 
 const DashboardStats = () => {
-  // dummy stats (you’ll replace with real API later)
+  const { productsCount } = useContext(ProductsContext);
+  const { servicesCount } = useContext(ServicesContext);
+  const { usersCount } = useContext(UsersContext);
   const stats = {
-    users: 120,
-    products: 45,
-    services: 30,
-    verifiedSP: 18,
+    usersCount,
+    productsCount,
+    servicesCount,
   };
-
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <StatsCard type="users" label="Total Users" value={stats.users} />
-      <StatsCard type="products" label="Total Products" value={stats.products} />
-      <StatsCard type="services" label="Total Services" value={stats.services} />
-      <StatsCard type="verified" label="Verified SP" value={stats.verifiedSP} />
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+      <StatsCard
+        type="all"
+        label="Total Users"
+        value={stats.usersCount.totalUsers || 0}
+      />
+      <StatsCard
+        type="active"
+        label="Active Users"
+        value={stats.usersCount.activeUsers || 0}
+      />
+      <StatsCard
+        type="pending"
+        label="Pending Users"
+        value={stats.usersCount.pendingUsers || 0}
+      />
+      <StatsCard
+        type="banned"
+        label="Banned Users"
+        value={stats.usersCount.bannedUsers || 0}
+      />
+      <StatsCard
+        type="products"
+        label="Total Products"
+        value={stats.productsCount || 0}
+      />
+      <StatsCard
+        type="services"
+        label="Total Services"
+        value={stats.servicesCount || 0}
+      />
     </div>
   );
 };

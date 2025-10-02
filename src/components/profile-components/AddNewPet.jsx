@@ -3,14 +3,14 @@ import toast from "react-hot-toast";
 import { UserPetsContext } from "../../contexts/UserPetsContext";
 
 function AddNewPet({ open, setOpen }) {
-  const { setPets } = useContext(UserPetsContext);
+  const { setPets, createPet } = useContext(UserPetsContext);
 
   const [formData, setFormData] = useState({
     name: "",
     species: "",
     breed: "",
     gender: "",
-    dob: "",
+    dateOfBirth: "",
     medicalHistory: "",
     vaccinations: [],
     photo: null,
@@ -38,7 +38,9 @@ function AddNewPet({ open, setOpen }) {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "Name is required.";
     if (!formData.species.trim()) newErrors.species = "Species is required.";
-    if (!formData.dob) newErrors.dob = "Date of birth is required.";
+    if (!formData.breed.trim()) newErrors.breed = "Breed is required.";
+    if (!formData.dateOfBirth)
+      newErrors.dateOfBirth = "Date of birth is required.";
     if (!formData.gender) newErrors.gender = "Gender is required.";
     if (!formData.photo) newErrors.photo = "Photo is required.";
     if (formData.vaccinations.some((v) => !v)) {
@@ -71,7 +73,7 @@ function AddNewPet({ open, setOpen }) {
       species: "",
       breed: "",
       gender: "",
-      dob: "",
+      dateOfBirth: "",
       medicalHistory: "",
       vaccinations: [],
       photo: null,
@@ -80,16 +82,27 @@ function AddNewPet({ open, setOpen }) {
     setOpen(false);
   }
 
-  const handleAddNewPet = (e) => {
+  const handleAddNewPet = async (e) => {
     e.preventDefault();
     const newErrors = validate();
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    setPets((prev) => [...prev, formData]);
-
-    toast.success("Pet Added Successfully!");
-    reset();
+    const payload = {
+      name: formData.name,
+      species: formData.species,
+      breed: formData.breed,
+      gender: formData.gender,
+      dateOfBirth: formData.dateOfBirth,
+    };
+    try {
+      const { data } = await createPet(payload);
+      toast.success("Pet Added Successfully!");
+    } catch (error) {
+      console.log(error.response);
+    } finally {
+      reset();
+    }
   };
 
   if (!open) return null;
@@ -150,6 +163,7 @@ function AddNewPet({ open, setOpen }) {
               placeholder="Golden Retriever, Persian..."
               className="w-full rounded-lg text-[#2f415677] bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14] outline-none"
             />
+            <p className="text-red-500 text-xs h-4">{errors.breed}</p>
           </div>
 
           {/* Gender */}
@@ -169,19 +183,19 @@ function AddNewPet({ open, setOpen }) {
             </select>
           </div>
 
-          {/* DOB */}
+          {/* dateOfBirth */}
           <div>
             <label className="block text-[#2F4156] font-medium text-sm">
               Date of Birth
             </label>
             <input
               type="date"
-              name="dob"
-              value={formData.dob}
+              name="dateOfBirth"
+              value={formData.dateOfBirth}
               onChange={handleChange}
               className="w-full rounded-lg text-[#2f415677] bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14] outline-none"
             />
-            <p className="text-red-500 text-xs h-4">{errors.dob}</p>
+            <p className="text-red-500 text-xs h-4">{errors.dateOfBirth}</p>
           </div>
 
           {/* Medical History */}

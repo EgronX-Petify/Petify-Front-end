@@ -2,29 +2,36 @@ import React, { useContext, useState } from "react";
 import Vet from "./Vet";
 import EmergencyCall from "./EmergencyCall";
 import UseVets from "../../hooks/UseVets";
+import { VetsContext } from "../../contexts/VetsContext";
+import LoadingSpinner from "../LoadingSpinner";
 
 const PAGECOUNT = 6;
 
 const Available = () => {
   const vets = UseVets();
-
- 
   const [emergencyOpen, setEmergencyOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const { loading } = useContext(VetsContext);
   const vetsPerPage = PAGECOUNT;
 
-  const filteredVets = vets.filter((vet) =>
+  const filteredVets = vets?.filter((vet) =>
     vet.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLast = currentPage * vetsPerPage;
   const indexOfFirst = indexOfLast - vetsPerPage;
-  const currentVets = filteredVets.slice(indexOfFirst, indexOfLast);
+  const currentVets = filteredVets?.slice(indexOfFirst, indexOfLast);
 
-  const totalPages = Math.ceil(filteredVets.length / vetsPerPage);
+  const totalPages = Math.ceil(filteredVets?.length / vetsPerPage);
 
-  return (
+  return vets?.length === 0 ? (
+    <p className="col-span-full text-center bg-white text-gray-500 min-h-14 py-5">
+      No vets available
+    </p>
+  ) : loading ? (
+    <LoadingSpinner text="Services are loading..." />
+  ) : (
     <div className="flex flex-col gap-4 items-center py-10 px-4">
       <div className="text-[#2F4156] font-bold text-3xl capitalize text-center">
         Available Vets
@@ -60,10 +67,8 @@ const Available = () => {
       </label>
 
       <div className="flex gap-5 flex-wrap justify-center bg-[#F8F9FA] w-full md:w-[80%] rounded-[15px] p-5 md:p-7">
-        {currentVets.length > 0 ? (
-          currentVets.map((vet, index) => (
-            <Vet key={index} vet={vet}  />
-          ))
+        {currentVets?.length > 0 ? (
+          currentVets?.map((vet, index) => <Vet key={index} vet={vet} />)
         ) : (
           <p className="col-span-full text-center text-gray-500 min-h-14">
             No vets found
@@ -80,7 +85,7 @@ const Available = () => {
         </div>
       </div>
 
-      {filteredVets.length > 0 && (
+      {filteredVets?.length > 0 && (
         <div className="flex justify-center items-center gap-4 mt-6">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

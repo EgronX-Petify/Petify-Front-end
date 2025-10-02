@@ -1,8 +1,42 @@
-import React, { Children, createContext, useState } from "react";
+import React, { Children, createContext, useEffect, useState } from "react";
+import * as vetsApi from "../APIs/servicesAPI";
 
 const VetsContext = createContext();
 const VetsProvider = ({ children }) => {
-  const [vets, setVets] = useState([
+  const [vets, setVets] = useState();
+
+  const[loading,setLoadig] = useState(false)
+  const [selectedVet, setSelectedVet] = useState(null);
+
+  useEffect(() => {
+    const fetchVets = async () => {
+      setLoadig(true);
+      try {
+        const { data } = await vetsApi.getAllVets();
+        setVets(data);
+        // console.log("services", data);
+      } catch (error) {
+        // console.log("services error", error.response);
+      } finally {
+        setLoadig(false);
+      }
+    };
+    fetchVets();
+  }, []);
+
+  return (
+    <VetsContext.Provider
+      value={{ vets, setVets, selectedVet, setSelectedVet, loading,setLoadig }}
+    >
+      {children}
+    </VetsContext.Provider>
+  );
+};
+
+export default VetsProvider;
+export { VetsContext };
+
+/*[
     {
       id: 1,
       name: "Aleet Vet Center",
@@ -270,18 +304,4 @@ const VetsProvider = ({ children }) => {
         { day: "Sunday", times: ["Closed"] },
       ],
     },
-  ]);
-
-  const [selectedVet, setSelectedVet] = useState(null);
-
-  return (
-    <VetsContext.Provider
-      value={{ vets, setVets, selectedVet, setSelectedVet }}
-    >
-      {children}
-    </VetsContext.Provider>
-  );
-};
-
-export default VetsProvider;
-export { VetsContext };
+  ] */

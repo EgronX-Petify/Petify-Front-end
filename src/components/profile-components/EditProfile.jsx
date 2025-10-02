@@ -3,11 +3,13 @@ import UseSelectedPet from "../../hooks/UseSelectedPet";
 import { UserPetsContext } from "../../contexts/UserPetsContext";
 import toast from "react-hot-toast";
 import UseUserPets from "../../hooks/UseUserPets";
+import { confirmMessage } from "../../utils/confirmMessage";
+import { toastPromise } from "../../utils/toastPromise";
 
 const EditProfile = ({ open, setOpen }) => {
   const pet = UseSelectedPet();
   const pets = UseUserPets();
-  const { setPets } = useContext(UserPetsContext);
+  const { editPet, setSelectedPet, setPets } = useContext(UserPetsContext);
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
 
@@ -17,7 +19,7 @@ const EditProfile = ({ open, setOpen }) => {
       species: pet?.species || "",
       breed: pet?.breed || "",
       gender: pet?.gender || "",
-      dob: pet?.dob || "",
+      dateOfBirth: pet?.dateOfBirth || "",
       medicalHistory: pet?.medicalHistory || "",
       vaccinations: pet?.vaccinations || [],
       photo: pet?.photo || null,
@@ -29,7 +31,8 @@ const EditProfile = ({ open, setOpen }) => {
     if (!formData.name?.trim()) newErrors.name = "Name is required";
     if (!formData.species?.trim()) newErrors.species = "Species is required";
     if (!formData.gender?.trim()) newErrors.gender = "Gender is required";
-    if (!formData.dob) newErrors.dob = "Date of birth is required";
+    if (!formData.dateOfBirth)
+      newErrors.dateOfBirth = "Date of birth is required";
     return newErrors;
   };
 
@@ -68,7 +71,7 @@ const EditProfile = ({ open, setOpen }) => {
       species: "",
       breed: "",
       gender: "",
-      dob: "",
+      dateOfBirth: "",
       medicalHistory: "",
       vaccinations: [],
       photo: null,
@@ -82,15 +85,33 @@ const EditProfile = ({ open, setOpen }) => {
     setFormData((prev) => ({ ...prev, vaccinations: updated }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validate();
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
-    const updatedPet = { ...pet, ...formData };
-    console.log(updatedPet);
-    setPets(pets.map((p) => (p.id == pet.id ? updatedPet : p)));
-    toast.success("done");
+
+    const willUpdate = await confirmMessage({
+      text: "Are you sure you want to update your pet profile?",
+      confirmText: "Yes",
+      cancelText: "Cancel",
+    });
+
+    if (willUpdate) {
+      const payload = {
+        name: formData.name,
+        species: formData.species,
+        breed: formData.breed,
+        gender: formData.gender,
+        dateOfBirth: formData.dateOfBirth,
+      };
+      toastPromise(editPet(pet?.id, payload), {
+        loading: "Updating Pet Profile... ⏳",
+        success: "Pet Profile updated successfully!",
+        error: (err) =>
+          err.response?.data?.message || "Updating profile failed ❌",
+      });
+    }
     reset();
   };
 
@@ -171,20 +192,20 @@ const EditProfile = ({ open, setOpen }) => {
               <p className="text-red-500 text-xs h-4">{errors.gender}</p>
             </div>
 
-            {/* DOB */}
+            {/* dateOfBirth */}
             <div>
               <label className="block text-[#2F4156] font-medium text-sm">
                 Date of Birth
               </label>
               <input
                 type="date"
-                name="dob"
-                placeholder={pet?.dob || "Birthday"}
-                value={formData?.dob || ""}
+                name="dateOfBirth"
+                placeholder={pet?.dateOfBirth || "Birthday"}
+                value={formData?.dateOfBirth || ""}
                 onChange={handleChange}
                 className="w-full rounded-lg text-[#2f415677] bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14]"
               />
-              <p className="text-red-500 text-xs h-4">{errors.dob}</p>
+              <p className="text-red-500 text-xs h-4">{errors.dateOfBirth}</p>
             </div>
 
             {/* Photo */}

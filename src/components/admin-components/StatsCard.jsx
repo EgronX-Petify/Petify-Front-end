@@ -1,11 +1,20 @@
 import React from "react";
-import { FaUsers, FaBox, FaTools, FaCheckCircle } from "react-icons/fa";
+import {
+  FaUsers,
+  FaCheckCircle,
+  FaBox,
+  FaTools,
+  FaHourglassHalf,
+  FaBan,
+} from "react-icons/fa";
 
 const icons = {
-  users: <FaUsers className="w-6 h-6 text-[#FD7E14]" />,
+  all: <FaUsers className="w-6 h-6 text-[#FD7E14]" />,
+  active: <FaCheckCircle className="w-6 h-6 text-[#FD7E14]" />,
   products: <FaBox className="w-6 h-6 text-[#FD7E14]" />,
   services: <FaTools className="w-6 h-6 text-[#FD7E14]" />,
-  verified: <FaCheckCircle className="w-6 h-6 text-[#FD7E14]" />,
+  pending: <FaHourglassHalf className="w-6 h-6 text-[#FD7E14]" />,
+  banned: <FaBan className="w-6 h-6 text-[#FD7E14]" />,
 };
 
 const StatsCard = ({ type, label, value }) => {

@@ -12,26 +12,33 @@ import VetsProvider from "./contexts/VetsContext.jsx";
 import UserPetsProvider from "./contexts/UserPetsContext.jsx";
 import OrdersProvider from "./contexts/OrdersContext.jsx";
 import SPProvider from "./contexts/SPContext.jsx";
+import ProfileProvider from "./contexts/ProfileContext.jsx";
+import UsersProvider from "./contexts/UsersContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <ProductsProvider>
-          <ServicesProvider>
-            <AppointmentsProvider>
-              <VetsProvider>
-                <UserPetsProvider>
-                  <OrdersProvider>
-                    <SPProvider>
-                      <App />
-                    </SPProvider>
-                  </OrdersProvider>
-                </UserPetsProvider>
-              </VetsProvider>
-            </AppointmentsProvider>
-          </ServicesProvider>
-        </ProductsProvider>
+        <ProfileProvider>
+          <ProductsProvider>
+            <ServicesProvider>
+              <AppointmentsProvider>
+                <VetsProvider>
+                  <UserPetsProvider>
+                    <OrdersProvider>
+                      <SPProvider>
+                        <UsersProvider>
+                        
+                          <App />
+                        </UsersProvider>
+                      </SPProvider>
+                    </OrdersProvider>
+                  </UserPetsProvider>
+                </VetsProvider>
+              </AppointmentsProvider>
+            </ServicesProvider>
+          </ProductsProvider>
+        </ProfileProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

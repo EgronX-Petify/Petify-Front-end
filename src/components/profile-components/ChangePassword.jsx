@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import swal from "sweetalert";
 import { changePassword } from "../../APIs/authAPI";
+import { toastPromise } from "../../utils/toastPromise";
+import { confirmMessage } from "../../utils/confirmMessage";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const ChangePassword = ({ open, setOpen }) => {
   const [formData, setFormData] = useState({
@@ -39,40 +42,24 @@ const ChangePassword = ({ open, setOpen }) => {
     setOpen(false);
   }
 
-  const handleChangePassword = () => {
+  const { changePassword } = useContext(AuthContext);
+  const handleChangePassword = async () => {
     if (!validate()) return;
 
-    swal({
+    const willReset = await confirmMessage({
       text: "Are you sure you want to change your password?",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: false,
-          visible: true,
-          className:
-            "bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded",
-        },
-        confirm: {
-          text: "Yes",
-          value: true,
-          visible: true,
-          className:
-            "bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded",
-        },
-      },
-      dangerMode: true,
-    }).then((willReset) => {
-      if (willReset) {
-        const changePromise = changePassword(formData);
-        console.log(changePromise);
-        toast.promise(changePromise, {
-          loading: "Reseting password... ⏳",
-          success: "Password changed successfully ✅",
-          error: (err) =>
-            err.response?.data?.message || "Changing password failed ❌",
-        });
-      }
+      confirmText: "Yes",
+      cancelText: "Cancel",
     });
+
+    if (willReset) {
+      toastPromise(changePassword(formData), {
+        loading: "Reseting password... ⏳",
+        success: "Password changed successfully ✅",
+        error: (err) =>
+          err.response?.data?.message || "Changing password failed ❌",
+      });
+    }
     reset();
   };
 

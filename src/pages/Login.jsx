@@ -4,6 +4,7 @@ import ForgotPassword from "../components/sign-components/ForgotPassword";
 import UseLogged from "../hooks/UseLogged";
 import toast from "react-hot-toast";
 import UseAuth from "../hooks/UseAuth";
+import { toastPromise } from "../utils/toastPromise";
 
 const Login = () => {
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
@@ -29,12 +30,11 @@ const Login = () => {
     setLoading(true);
     setError("");
     try {
-      const data = await toast.promise(login(formData), {
+      const data = await toastPromise(login(formData), {
         loading: "Login In... ⏳",
         success: "Logged in successfully! ✅",
         error: (err) => err.response?.data?.message || "Login failed ❌",
       });
-      console.log(data);
       navigate("/");
     } catch (err) {
       console.error("Login failed:", err);

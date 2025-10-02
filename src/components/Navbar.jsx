@@ -8,6 +8,7 @@ import Notifications from "./Notifications";
 import UseLogout from "../hooks/UseLogout";
 import UseLoggedUser from "../hooks/UseLoggedUser";
 import UseCartCount from "../hooks/UseCartCount";
+import avatar from "../../public/download (4).jpg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -119,10 +120,7 @@ const Navbar = () => {
                 className="btn btn-ghost btn-circle avatar"
               >
                 <div className="w-10 rounded-full">
-                  <img
-                    alt="User Avatar"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
+                  <img alt="User Avatar" src={avatar} />
                 </div>
               </div>
               <ul

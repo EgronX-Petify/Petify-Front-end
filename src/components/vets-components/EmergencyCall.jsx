@@ -3,6 +3,7 @@ import { MdCancelPresentation } from "react-icons/md";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
 import { AppointmentsContext } from "../../contexts/AppointmentsContext";
 import UseAppointments from "../../hooks/UseAppointments";
+import toast from "react-hot-toast";
 
 const EmergencyCall = ({ open, setOpen }) => {
   const user = UseLoggedUser();
@@ -10,7 +11,6 @@ const EmergencyCall = ({ open, setOpen }) => {
   const [formData, setFormData] = useState({});
   const appointments = UseAppointments();
   const [errors, setErrors] = useState({});
-  // console.log(appointments);
 
   useEffect(() => {
     setFormData({
@@ -113,13 +113,12 @@ const EmergencyCall = ({ open, setOpen }) => {
       return;
     }
     setAppointments((prev) => [...prev, appt]);
-    console.log("🚨 Emergency Booking Submitted:", formData);
-    alert("🚨 Emergency booking submitted successfully!");
+    toast.success("Emergency booking submitted successfully!");
     reset();
   };
 
   const handleCallNow = () => {
-    window.location.href = `tel:${formData.phone}`;
+    //
   };
 
   return (

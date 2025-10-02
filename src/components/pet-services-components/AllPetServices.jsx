@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PetService from "./PetService";
 import ServiceFilters from "./ServiceFilters";
 import ServiceBook from "./ServiceBook";
 import UseServices from "../../hooks/UseServices";
 import toast, { Toaster } from "react-hot-toast";
+import { ServicesContext } from "../../contexts/ServicesContext";
+import LoadingSpinner from "../LoadingSpinner";
 
 const PAGECOUNT = 10;
 const AllPetServices = () => {
   const petServices = UseServices();
   const [openBook, setOpenBook] = useState(false);
-  const [bookFlag, setBookFlag] = useState(false);
-
-  function showSucessBookAlert() {
-    toast.success("Service Booked Successfully!");
-  }
+  const { loading } = useContext(ServicesContext);
 
   // unique filter options
-  const categories = [...new Set(petServices.map((s) => s.category))];
-  const prices = [...new Set(petServices.map((s) => s.priceRange))];
+  const categories = [...new Set(petServices?.map((s) => s.category))];
+  const prices = [...new Set(petServices?.map((s) => s.priceRange))];
   const ratings = [5, 4, 3, 2, 1];
 
   const [showFilters, setShowFilters] = useState(false);
@@ -31,8 +29,8 @@ const AllPetServices = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategories(
-      selectedCategories.includes(category)
-        ? selectedCategories.filter((categ) => categ != category)
+      selectedCategories?.includes(category)
+        ? selectedCategories?.filter((categ) => categ != category)
         : [...selectedCategories, category]
     );
     setCurrentPage(1);
@@ -40,8 +38,8 @@ const AllPetServices = () => {
 
   const handlePriceChange = (price) => {
     setSelectedPrices(
-      selectedPrices.includes(price)
-        ? selectedPrices.filter((p) => p != price)
+      selectedPrices?.includes(price)
+        ? selectedPrices?.filter((p) => p != price)
         : [...selectedPrices, price]
     );
     setCurrentPage(1);
@@ -49,28 +47,28 @@ const AllPetServices = () => {
 
   const handleRatingChange = (rating) => {
     setSelectedRatings(
-      selectedRatings.includes(rating)
-        ? selectedRatings.filter((r) => r != rating)
+      selectedRatings?.includes(rating)
+        ? selectedRatings?.filter((r) => r != rating)
         : [...selectedRatings, rating]
     );
     setCurrentPage(1);
   };
 
   // Apply filters
-  const filteredServices = petServices.filter((service) => {
+  const filteredServices = petServices?.filter((service) => {
     const categoryMatch =
-      selectedCategories.length > 0
-        ? selectedCategories.includes(service.category)
+      selectedCategories?.length > 0
+        ? selectedCategories?.includes(service.category)
         : service;
 
     const priceMatch =
-      selectedPrices.length > 0
-        ? selectedPrices.includes(service.priceRange)
+      selectedPrices?.length > 0
+        ? selectedPrices?.includes(service.priceRange)
         : service;
 
     const ratingMatch =
-      selectedRatings.length > 0
-        ? selectedRatings.includes(service.rating)
+      selectedRatings?.length > 0
+        ? selectedRatings?.includes(service.rating)
         : service;
 
     return categoryMatch && priceMatch && ratingMatch;
@@ -79,17 +77,23 @@ const AllPetServices = () => {
   // Pagination logic
   const indexOfLast = currentPage * servicesPerPage;
   const indexOfFirst = indexOfLast - servicesPerPage;
-  const currentServices = filteredServices.slice(indexOfFirst, indexOfLast);
+  const currentServices = filteredServices?.slice(indexOfFirst, indexOfLast);
 
-  const totalPages = Math.ceil(filteredServices.length / servicesPerPage);
+  const totalPages = Math.ceil(filteredServices?.length / servicesPerPage);
 
   const [searchTerm, setSearchTerm] = useState("");
   // search by name
-  const searchedServices = currentServices.filter((service) =>
+  const searchedServices = currentServices?.filter((service) =>
     service.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  return (
+  return petServices?.length === 0 ? (
+    <p className="col-span-full text-center bg-white text-gray-500 min-h-14 py-5">
+      No services
+    </p>
+  ) : loading ? (
+    <LoadingSpinner text="Services are loading..." />
+  ) : (
     <div className="p-4 md:p-10">
       <div className="flex justify-between items-center mb-4 md:hidden">
         <h2 className="text-2xl font-bold text-[#2F4156]">Products</h2>
@@ -147,8 +151,8 @@ const AllPetServices = () => {
             />
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {searchedServices.length > 0 ? (
-              searchedServices.map((service, id) => (
+            {searchedServices?.length > 0 ? (
+              searchedServices?.map((service, id) => (
                 <PetService key={id} service={service} setOpen={setOpenBook} />
               ))
             ) : (
@@ -158,7 +162,7 @@ const AllPetServices = () => {
             )}
           </div>
 
-          {searchedServices.length > 0 && (
+          {searchedServices?.length > 0 && (
             <div className="flex justify-center items-center gap-4 mt-6">
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -183,12 +187,7 @@ const AllPetServices = () => {
           )}
         </main>
       </div>
-      <Toaster position="top-center" reverseOrder={false} />
-      <ServiceBook
-        open={openBook}
-        setOpen={setOpenBook}
-        showSucessBookAlert={showSucessBookAlert}
-      />
+      <ServiceBook open={openBook} setOpen={setOpenBook} />
     </div>
   );
 };

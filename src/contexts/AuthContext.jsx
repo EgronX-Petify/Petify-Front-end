@@ -1,45 +1,36 @@
 import React, { createContext, useEffect, useState } from "react";
 import * as authApi from "../APIs/authAPI";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [role, setRole] = useState("petOwner");
+  const navigate = useNavigate();
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("logged user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  useEffect(() => {
-    const loggedUser = localStorage.getItem("logged user");
-    if (loggedUser) {
-      setRole("petOwner");
-      const logggedUserData = {
-        photo: "https://i.pravatar.cc/150?img=12",
-        username: "hello",
-        email: JSON.parse(loggedUser)?.email,
-        password: JSON.parse(loggedUser)?.password,
-        phone: "+20123456789",
-        pets: [
-          { name: "Max", species: "Dog" },
-          { name: "Luna", species: "Cat" },
-        ],
-      };
-      setUser(logggedUserData);
-    }
-  }, []);
+  const [token, setToken] = useState(null);
+  const [role, setRole] = useState(user?.role || "PET_OWNER"); // SWEVICE_PROVIDER, PET_OWNER, ADMIN
 
   const signup = async (formData) => {
-    const { data } = await authApi.signup(formData);
-    return data;
-    // if bk return data of user
-    // setUser(data.user);
-    // localStorage.setItem("logged user", JSON.stringify(data.user));
-    // localStorage.setItem("token", data.token);
+    try {
+      const { data } = await authApi.signup(formData);
+      return data;
+    } catch (err) {
+      throw err;
+    }
   };
 
   const login = async (formData) => {
     try {
       const { data } = await authApi.login(formData);
-      setUser(formData);
-      localStorage.setItem("logged user", JSON.stringify(formData)); // change to data when beckend return user data
+      localStorage.setItem("logged user", JSON.stringify(data.user));
+      setUser(data.user);
+      setRole(data.user.role);
+      setToken(data.token);
       localStorage.setItem("token", data.token);
       return data;
     } catch (err) {
@@ -51,17 +42,43 @@ const AuthProvider = ({ children }) => {
     const { data } = await authApi.forgotPassword(email);
     return data;
   };
+
   const changePassword = async (userData) => {
     const { data } = authApi.changePassword(userData);
     return data;
   };
 
-  const logout = () => {
-    setUser(null);
-    setRole("petOwner");
-    localStorage.removeItem("logged user");
-    localStorage.removeItem("token");
+  const logout = async () => {
+    try {
+      const { data } = await authApi.logout();
+      setUser(null);
+      setRole("PET_OWNER");
+      localStorage.removeItem("logged user");
+      localStorage.removeItem("token");
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  // useEffect(() => {
+  //   const loggedUser = localStorage.getItem("logged user");
+  //   if (loggedUser) {
+  //     setRole("PET_OWNER");
+  //     const logggedUserData = {
+  //       photo: "https://i.pravatar.cc/150?img=12",
+  //       username: "hello",
+  //       email: JSON.parse(loggedUser)?.email,
+  //       password: JSON.parse(loggedUser)?.password,
+  //       phone: "+20123456789",
+  //       pets: [
+  //         { name: "Max", species: "Dog" },
+  //         { name: "Luna", species: "Cat" },
+  //       ],
+  //     };
+  //     setUser(logggedUserData);
+  //   }
+  // }, []);
 
   return (
     <AuthContext.Provider
@@ -75,6 +92,8 @@ const AuthProvider = ({ children }) => {
         changePassword,
         role,
         setRole,
+        token,
+        setToken,
       }}
     >
       {children}

@@ -15,11 +15,11 @@ function App() {
 
   const getRoutes = () => {
     switch (role) {
-      case "petOwner":
+      case "PET_OWNER":
         return petOwner;
-      case "serviceProvider":
+      case "SERVICE_PROVIDER":
         return serviceProvider;
-      case "admin":
+      case "ADMIN":
         return admin;
       default:
         return petOwner;
@@ -36,16 +36,20 @@ function App() {
 
   return (
     <>
-      {role === "petOwner" && <Navbar />}
-      {role === "serviceProvider" && <SPNavbar />}
-      {role === "admin" && <AdminNavbar />}
+      {role === "ADMIN" ? (
+        <AdminNavbar />
+      ) : role === "SERVICE_PROVIDER" ? (
+        <SPNavbar />
+      ) : (
+        <Navbar /> 
+      )}
       <Routes>
         {renderRoutes(getRoutes())}
         <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Toaster position="top-center" />
-      {role === "petOwner" ? <Footer /> : <AdminFooter />}
+      {role === "ADMIN" || role === "SERVICE_PROVIDER" ? <AdminFooter/> : <Footer/>}
     </>
   );
 }

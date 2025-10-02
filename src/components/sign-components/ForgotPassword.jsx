@@ -4,15 +4,19 @@ import toast from "react-hot-toast";
 
 const ForgotPassword = ({ open, setOpen }) => {
   const [email, setEmail] = useState(null);
-  const handleForgotPassword = (e) => {
+  const handleForgotPassword = async (e) => {
     e.preventDefault();
-    const forgotPromise = forgotPassword(email);
-    toast.promise(forgotPromise, {
+    try {
+      const data = await toast.promise(forgotPassword(email), {
       loading: "Resseting password... ⏳",
       success: "Reset link sent to your email",
-      error: (err) => err.response?.data?.message || "Reseting password failed ❌",
-    });
-
+        error: (err) => err.response?.data?.message || "Reseting password failed ❌",
+      });
+    } catch (err) {
+      console.error("Reseting Password failed:", err);
+    } finally {
+      setOpen(false);
+    }
   };
   return (
     open && (

@@ -8,28 +8,31 @@ import UseCartItems from "../../hooks/UseCartItems";
 import toast, { Toaster } from "react-hot-toast";
 
 const Product = ({ product }) => {
-  const cartItems = UseCartItems();
-  const { setCartItems } = useContext(ProductsContext);
   const isLogged = UseLoggedUser();
-  const [cartItem, setCartItem] = useState({ ...product, quantity: 1 });
+  const { addToCart } = useContext(ProductsContext);
 
-  function increaseQuantity(id) {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id == id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  }
 
-  function handleAddToCart(id) {
-    !isLogged && toast.error("Login First!");
-    const thisCartItem = cartItems.find((ci) => ci.id == id);
-    if (isLogged) {
-      thisCartItem
-        ? increaseQuantity(id)
-        : setCartItems([...cartItems, cartItem]);
-      toast.success("Added To Cart");
+  // function handleAddToCart(id) {
+  //   if (!isLogged) {
+  //     toast.error("Login First!");
+  //     return;
+  //   }
+
+  //   const thisCartItem = cartItems.find((ci) => ci.id == id);
+
+  //   thisCartItem
+  //     ? increaseQuantity(id)
+  //     : setCartItems([...cartItems, cartItem]);
+  //   toast.success("Added To Cart");
+  // }
+
+  function handleAddToCart(product) {
+    if (!isLogged) {
+      toast.error("Login First!");
+      return;
     }
+
+    addToCart({ productId: product.id, quantity: 1 });
   }
 
   return (
@@ -47,7 +50,9 @@ const Product = ({ product }) => {
           <h3 className="text-lg font-semibold text-[#2F4156] mb-1 cursor-pointer">
             {product?.name}
           </h3>
-          <p className="text-sm text-gray-500 mb-2">{product?.description || ""}</p>
+          <p className="text-sm text-gray-500 mb-2">
+            {product?.description || ""}
+          </p>
         </div>
       </Link>
 
@@ -59,7 +64,7 @@ const Product = ({ product }) => {
         </span>
         <button
           className="cursor-pointer text-[#FD7E14] hover:text-white p-2 rounded-full hover:bg-[#e76c0a] transition-colors"
-          onClick={() => handleAddToCart(product.id)}
+          onClick={() => handleAddToCart(product)}
         >
           <MdAddShoppingCart size={20} />
         </button>

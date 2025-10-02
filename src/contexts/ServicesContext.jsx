@@ -1,9 +1,10 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
+import * as servicesApi from "../APIs/servicesAPI";
 
 const ServicesContext = createContext();
 
 const ServicesProvider = ({ children }) => {
-  const [services, setServices] = useState([
+  /*[
     {
       id: 1,
       name: "Veterinary Visits",
@@ -73,16 +74,43 @@ const ServicesProvider = ({ children }) => {
       rating: 5,
       category: "Healthcare",
     },
-  ]);
+  ] */
+  const [services, setServices] = useState();
+  const [loading, setLoadig] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+  const servicesCount = services?.length || 0;
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      setLoadig(true);
+      try {
+        const { data } = await servicesApi.getAllServices();
+        setServices(data);
+        // console.log("services", data);
+      } catch (error) {
+        // console.log("services error", error.response);
+      } finally {
+        setLoadig(false);
+      }
+    };
+    fetchServices();
+  }, []);
 
   return (
-    <ServicesContext.Provider value={{ services, setServices, selectedService, setSelectedService }}>
+    <ServicesContext.Provider
+      value={{
+        services,
+        setServices,
+        selectedService,
+        setSelectedService,
+        loading,
+        servicesCount,
+      }}
+    >
       {children}
     </ServicesContext.Provider>
   );
 };
 
 export default ServicesProvider;
-export  {ServicesContext};
-
+export { ServicesContext };

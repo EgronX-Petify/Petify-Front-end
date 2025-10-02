@@ -3,17 +3,19 @@ import { AuthContext } from "../../contexts/AuthContext";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
 import toast, { Toaster } from "react-hot-toast";
 import ChangePassword from "./ChangePassword";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { confirmMessage } from "../../utils/confirmMessage";
+import { toastPromise } from "../../utils/toastPromise";
 
 const EditUserInfo = ({ open, setOpen }) => {
-  const user = UseLoggedUser();
-  const { setUser } = useContext(AuthContext);
+  const {userProfile} = useContext(ProfileContext);
   const [changePassOpen, setChangePassOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    username: user.username || "",
-    email: user.email || "",
-    phone: user.phone || "",
-    password: user.password || "",
+    name: userProfile?.name || "",
+    phoneNumber: userProfile?.phoneNumber || "",
+    password: userProfile?.password || "",
+    address: userProfile?.address || "",
   });
 
   const [errors, setErrors] = useState({});
@@ -21,10 +23,7 @@ const EditUserInfo = ({ open, setOpen }) => {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.username.trim()) newErrors.username = "Username is required";
-
-    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
-      newErrors.email = "Invalid email format";
+    if (!formData.name.trim()) newErrors.name = "name is required";
 
     const phoneRegex = /^(\+20\d{10}|0\d{10})$/;
     if (!phoneRegex.test(formData.phone))
@@ -51,27 +50,43 @@ const EditUserInfo = ({ open, setOpen }) => {
 
   function reset() {
     setFormData({
-      username: user.username || "",
-      email: user.email || "",
-      phone: user.phone || "",
-      password: user.password || "",
+      name: userProfile?.name || "",
+      phone: userProfile?.phone || "",
+      password: userProfile?.password || "",
+      address: userProfile?.address || "",
     });
     setErrors("");
     setLoading(false);
     setOpen(false);
   }
 
+  const { updateUser } = useContext(ProfileContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validate();
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
-    setUser((prev) => ({
-      ...prev,
-      ...formData,
-    }));
+
+    const willUpdate = await confirmMessage({
+      text: "Are you sure you want to update your profile?",
+      confirmText: "Yes",
+      cancelText: "Cancel",
+    });
+
+    if (willUpdate) {
+      const payload = {
+        phoneNumber: formData?.phone,
+        name: formData?.name,
+        address: formData?.address,
+      };
+      toastPromise(updateUser(payload), {
+        loading: "Updating Profile... ⏳",
+        success: "Profile updated successfully!",
+        error: (err) =>
+          err.response?.data?.message || "Updating profile failed ❌",
+      });
+    }
     reset();
-    toast.success("Profile updated successfully!");
   };
 
   return (
@@ -84,36 +99,19 @@ const EditUserInfo = ({ open, setOpen }) => {
           </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Username */}
+            {/* name */}
             <div>
               <label className="block text-sm font-medium text-[#2F4156]">
-                Username
+                name
               </label>
               <input
                 type="text"
-                name="username"
-                value={formData.username}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-200 rounded-lg mt-1 placeholder:text-[#2f4156b0] focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
               />
-              <p className="h-4 text-xs text-red-500">
-                {errors.username || ""}
-              </p>
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-[#2F4156]">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-200 rounded-lg mt-1 focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
-              />
-              <p className="h-4 text-xs text-red-500">{errors.email || ""}</p>
+              <p className="h-4 text-xs text-red-500">{errors.name || ""}</p>
             </div>
 
             {/* Phone */}
@@ -122,13 +120,27 @@ const EditUserInfo = ({ open, setOpen }) => {
                 Phone Number
               </label>
               <input
-                type="tel"
+                type="text"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-200 rounded-lg mt-1 focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
               />
               <p className="h-4 text-xs text-red-500">{errors.phone || ""}</p>
+            </div>
+
+            {/* address */}
+            <div>
+              <label className="block text-sm font-medium text-[#2F4156]">
+                Address
+              </label>
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-200 rounded-lg mt-1 focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
+              />
             </div>
 
             {/* Password */}

@@ -23,7 +23,7 @@ const Signup = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const usernameRegex = /^[a-zA-Z0-9_]{3,15}$/;
   const passwordRegex =
-   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   const handleChange = (e) => {
     setFormData({
@@ -76,21 +76,28 @@ const Signup = () => {
   const { signup } = UseAuth();
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setErrors({});
     const validation = validate();
     if (validation) {
-      const signupPromise = signup(formData);
-
-      toast.promise(signupPromise, {
-        loading: "Signing up... ⏳",
-        success: "Signup successfully!",
-        error: (err) => err.response?.data?.message || "Signup failed ❌",
-      });
-
+      const payload = {
+        email: formData?.email,
+        password: formData?.password,
+        role: formData?.role,
+      };
       try {
-        await signupPromise;
-        navigate("/login");
-      } catch (err) {}
+        const data = await toast.promise(signup(payload), {
+          loading: "Signing up... ⏳",
+          success: "Signup successfully!",
+          error: (err) => err.response?.data?.message || "Signup failed ❌",
+        });
+        console.log(data);
+        // navigate("/login");
+      } catch (err) {
+        console.error("signup failed:", err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -247,7 +254,7 @@ const Signup = () => {
                 loading ? "opacity-70 cursor-not-allowed" : ""
               }`}
             >
-              {loading ? "Signing In..." : "Sign In"}
+              {loading ? "Signing Up..." : "Sign Up"}
             </button>
           </form>
 

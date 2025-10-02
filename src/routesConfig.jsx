@@ -2,7 +2,6 @@
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import ResetPassword from "./components/sign-components/ResetPassword";
 import Shop from "./pages/Shop";
 import ViewProduct from "./components/shop-components/ViewProduct";
 import Cart from "./components/shop-components/Cart";
@@ -33,7 +32,6 @@ import { Navigate } from "react-router-dom";
 export const petOwner = [
   { path: "/signup", element: <Signup /> },
   { path: "/login", element: <Login /> },
-  { path: "/reset-password", element: <ResetPassword /> },
   { path: "/", element: <Home /> },
   { path: "/shop", element: <Shop /> },
   { path: "/shop/view-product/:id", element: <ViewProduct /> },
@@ -61,7 +59,6 @@ export const petOwner = [
 export const serviceProvider = [
   { path: "/signup", element: <Signup /> },
   { path: "/login", element: <Login /> },
-  { path: "/reset-password", element: <ResetPassword /> },
   {
     path: "/",
     element: <SPDashboard />,
@@ -79,7 +76,6 @@ export const serviceProvider = [
 export const admin = [
   { path: "/signup", element: <Signup /> },
   { path: "/login", element: <Login /> },
-  { path: "/reset-password", element: <ResetPassword /> },
   {
     path: "/",
     element: <AdminDashboard />,
