@@ -3,20 +3,20 @@ import { AuthContext } from "../../contexts/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 import ChangePassword from "../profile-components/ChangePassword";
 import { SPContext } from "../../contexts/SPContext";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const EditServiceProviderInfo = ({ open, setOpen, serviceProvider }) => {
   const { setServiceProvider } = useContext(SPContext);
+  const { updateUser } = useContext(ProfileContext);
   const [changePassOpen, setChangePassOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    username: serviceProvider.username || "",
-    email: serviceProvider.email || "",
-    phone: serviceProvider.phone || "",
-    address: serviceProvider.address || "",
-    description: serviceProvider.description || "",
-    rate: serviceProvider.rate || 0,
-    password: serviceProvider.password || "",
-    photo: serviceProvider.photo || "",
+    name: serviceProvider?.name || "",
+    phoneNumber: serviceProvider?.phoneNumber || "",
+    address: serviceProvider?.address || "",
+    description: serviceProvider?.description || "",
+    password: serviceProvider?.password || "",
+    photo: serviceProvider?.photo || "",
   });
 
   const [errors, setErrors] = useState({});
@@ -24,14 +24,12 @@ const EditServiceProviderInfo = ({ open, setOpen, serviceProvider }) => {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.username.trim()) newErrors.username = "Username is required";
+    if (!formData.name.trim()) newErrors.name = "name is required";
 
-    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
-      newErrors.email = "Invalid email format";
-
-    const phoneRegex = /^(\+20\d{10}|0\d{10})$/;
-    if (!phoneRegex.test(formData.phone))
-      newErrors.phone = "Phone must be +20XXXXXXXXXX or 0XXXXXXXXXX";
+    const phoneNumberRegex = /^(\+20\d{10}|0\d{10})$/;
+    if (!phoneNumberRegex.test(formData.phoneNumber))
+      newErrors.phoneNumber =
+        "phone Number must be +20XXXXXXXXXX or 0XXXXXXXXXX";
 
     if (!formData.address.trim()) newErrors.address = "Address is required";
     if (!formData.description.trim())
@@ -58,14 +56,14 @@ const EditServiceProviderInfo = ({ open, setOpen, serviceProvider }) => {
 
   function reset() {
     setFormData({
-      username: serviceProvider.username || "",
-      email: serviceProvider.email || "",
-      phone: serviceProvider.phone || "",
-      address: serviceProvider.address || "",
-      description: serviceProvider.description || "",
-      rate: serviceProvider.rate || 0,
-      password: serviceProvider.password || "",
-      photo: serviceProvider.photo || "",
+      name: serviceProvider?.name || "",
+      email: serviceProvider?.email || "",
+      phoneNumber: serviceProvider?.phoneNumber || "",
+      address: serviceProvider?.address || "",
+      description: serviceProvider?.description || "",
+      rate: serviceProvider?.rate || 0,
+      password: serviceProvider?.password || "",
+      photo: serviceProvider?.photo || "",
     });
     setErrors({});
     setLoading(false);
@@ -78,14 +76,22 @@ const EditServiceProviderInfo = ({ open, setOpen, serviceProvider }) => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    // Replace with backend API call
-    setServiceProvider((prev) => ({
-      ...prev,
-      ...formData,
-    }));
+    const payload = {
+      name: serviceProvider?.name || "",
+      phoneNumber: serviceProvider?.phoneNumber || "",
+      address: serviceProvider?.address || "",
+      description: serviceProvider?.description || "",
+      password: serviceProvider?.password || "",
+    };
 
+    try {
+      const { data } = await updateUser(payload);
+      setServiceProvider((prev) => ({ ...prev, ...data }));
+    } catch (error) {
+      console.log("updating user error::", error);
+      toast.error("Failed to update profile");
+    }
     reset();
-    toast.success("Profile updated successfully!");
   };
 
   return (
@@ -100,51 +106,36 @@ const EditServiceProviderInfo = ({ open, setOpen, serviceProvider }) => {
             className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4"
             onSubmit={handleSubmit}
           >
-            {/* Username */}
+            {/* name */}
             <div>
               <label className="block text-sm font-medium text-[#2F4156]">
-                Username
+                name
               </label>
               <input
                 type="text"
-                name="username"
-                value={formData.username}
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-200 rounded-lg mt-1 text-[#2f4156b0] placeholder:text-[#2f4156b0] focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
+              />
+              <p className="h-4 text-xs text-red-500">{errors.name || ""}</p>
+            </div>
+
+            {/* phoneNumber */}
+            <div>
+              <label className="block text-sm font-medium text-[#2F4156]">
+                phoneNumber
+              </label>
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={formData.phoneNumber}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-200 rounded-lg mt-1 text-[#2f4156b0] placeholder:text-[#2f4156b0] focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
               />
               <p className="h-4 text-xs text-red-500">
-                {errors.username || ""}
+                {errors.phoneNumber || ""}
               </p>
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-[#2F4156]">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-200 rounded-lg mt-1 text-[#2f4156b0] placeholder:text-[#2f4156b0] focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
-              />
-              <p className="h-4 text-xs text-red-500">{errors.email || ""}</p>
-            </div>
-
-            {/* Phone */}
-            <div>
-              <label className="block text-sm font-medium text-[#2F4156]">
-                Phone
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-200 rounded-lg mt-1 text-[#2f4156b0] placeholder:text-[#2f4156b0] focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
-              />
-              <p className="h-4 text-xs text-red-500">{errors.phone || ""}</p>
             </div>
 
             {/* Address */}

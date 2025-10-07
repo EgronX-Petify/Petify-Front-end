@@ -20,12 +20,13 @@ import toast from "react-hot-toast";
 import UseSPServices from "../../hooks/UseSPServices";
 import ServiceItem from "./ServiceItem";
 import { SPContext } from "../../contexts/SPContext";
+import LoadingSpinner from "../LoadingSpinner";
 
 const ManageServices = () => {
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const services = UseSPServices();
-  const { setServices } = useContext(SPContext);
+  const { setServices, loading } = useContext(SPContext);
 
   function handleRemoveService(id) {
     swal({
@@ -57,7 +58,14 @@ const ManageServices = () => {
       }
     });
   }
-  return (
+
+  return services?.length === 0 ? (
+    <p className="col-span-full text-center bg-white  min-h-14 py-5 text-xl font-semibold text-[#2F4156] capitalize">
+      No services available
+    </p>
+  ) : loading ? (
+    <LoadingSpinner text="services are loading..." />
+  ) : (
     <div className="bg-[#F8F9FA] p-5 rounded-2xl shadow-md w-full min-h-screen">
       <Return showLabel={true} />
       <h2 className="text-xl text-white font-semibold mb-4 flex items-center gap-2 p-3 rounded-lg bg-[#417481]">

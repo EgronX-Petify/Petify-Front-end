@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ServicesContext } from "../../contexts/ServicesContext";
 
 const ServiceFilters = ({
-  categories,
   prices,
   ratings,
   selectedCategories,
@@ -11,14 +11,17 @@ const ServiceFilters = ({
   onPriceChange,
   onRatingChange,
 }) => {
+  const { categories } = useContext(ServicesContext);
   return (
     <aside className="w-full md:w-2/3 py-5 px-6 bg-gray-50 rounded-lg shadow-lg h-fit">
       {/* Categories */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-2 text-[#2F4156] text-xl">Categories</h3>
-        {categories.map((category) => (
+        <h3 className="font-semibold mb-2 text-[#2F4156] text-xl">
+          Categories
+        </h3>
+        {categories?.map((category, indx) => (
           <label
-            key={category}
+            key={indx}
             className="flex items-center gap-2 mb-2 text-[#2F4156] text-sm"
           >
             <input
@@ -32,10 +35,12 @@ const ServiceFilters = ({
         ))}
       </div>
 
-      {/* Price Ranges */}
+      {/* Price  */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-2 text-[#2F4156] text-xl">Price Range</h3>
-        {prices.map((price) => (
+        <h3 className="font-semibold mb-2 text-[#2F4156] text-xl">
+          Price Range
+        </h3>
+        {prices?.map((price) => (
           <label
             key={price}
             className="flex items-center gap-2 mb-2 text-[#2F4156] text-sm"
@@ -54,7 +59,7 @@ const ServiceFilters = ({
       {/* Ratings */}
       <div>
         <h3 className="font-semibold mb-2 text-[#2F4156] text-xl">Ratings</h3>
-        {ratings.map((rating) => (
+        {ratings?.map((rating) => (
           <label
             key={rating}
             className="flex items-center gap-2 mb-2 text-[#2F4156] text-sm"
@@ -65,7 +70,7 @@ const ServiceFilters = ({
               onChange={() => onRatingChange(rating)}
               className="accent-[#FD7E14]"
             />
-            ⭐ {rating}+ 
+            ⭐ {rating}+
           </label>
         ))}
       </div>

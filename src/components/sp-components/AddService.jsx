@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { SPContext } from "../../contexts/SPContext";
+import { toastPromise } from "../../utils/toastPromise";
 
 function AddService({ open, setOpen }) {
-  const { setServices } = useContext(SPContext);
+  const { createService } = useContext(SPContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -11,6 +12,7 @@ function AddService({ open, setOpen }) {
     description: "",
     notes: "",
     photo: null,
+    category: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -40,6 +42,7 @@ function AddService({ open, setOpen }) {
     if (!formData.description.trim())
       newErrors.description = "Description is required.";
     if (!formData.photo) newErrors.photo = "Photo is required.";
+    if (!formData.category) newErrors.category = "Category is required.";
     return newErrors;
   };
 
@@ -50,6 +53,7 @@ function AddService({ open, setOpen }) {
       price: "",
       description: "",
       notes: "",
+      category: "",
       photo: null,
     });
     setErrors({});
@@ -57,15 +61,19 @@ function AddService({ open, setOpen }) {
   }
 
   // submit handler
-  const handleAddService = (e) => {
+  const handleAddService = async (e) => {
     e.preventDefault();
     const newErrors = validate();
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
-
-    setServices((prev) => [...prev, formData]);
-
-    toast.success("Service Added Successfully!");
+    const payload = {
+      name: formData?.name,
+      description: formData?.description,
+      category: formData?.category,
+      price: Number(formData?.price),
+      notes: formData?.notes,
+    };
+    createService(payload);
     reset();
   };
 
@@ -80,7 +88,7 @@ function AddService({ open, setOpen }) {
 
         <form
           onSubmit={handleAddService}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4"
         >
           {/* Service Name */}
           <div>
@@ -144,9 +152,30 @@ function AddService({ open, setOpen }) {
               className="w-full rounded-lg text-[#2f415677] focus:text-[#2f4156]  bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14] outline-none"
             ></textarea>
           </div>
+          {/* category */}
+          <div>
+            <label className="block text-[#2F4156] font-medium text-sm">
+              Category
+            </label>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full rounded-lg text-[#2f415677] bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14] focus:text-[#2f4156] outline-none"
+            >
+              <option value="">Select Category</option>
+              <option value="VET">Vet</option>
+              <option value="GROOMING">Grooming</option>
+              <option value="TRAINING">Training</option>
+              <option value="WALKING">Walking</option>
+              <option value="BOARDING">Boarding</option>
+              <option value="OTHER">Other</option>
+            </select>
+            <p className="text-red-500 text-xs h-4">{errors.category}</p>
+          </div>
 
           {/* Photo */}
-          <div className="md:col-span-2">
+          <div className="">
             <label className="block text-[#2F4156] font-medium text-sm">
               Photo
             </label>
@@ -155,7 +184,7 @@ function AddService({ open, setOpen }) {
               accept="image/*"
               name="photo"
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg cursor-pointer focus:ring-1 focus:ring-[#FD7E14]"
+              className="w-full rounded-lg text-[#2f415677] bg-white border px-3 py-2 focus:ring-2 focus:ring-[#FD7E14] focus:text-[#2f4156] outline-none"
             />
             <p className="text-red-500 text-xs h-4">{errors.photo}</p>
           </div>

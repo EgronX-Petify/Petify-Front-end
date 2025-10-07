@@ -75,7 +75,7 @@ const ProductsProvider = ({ children }) => {
       // setPets((prev) => [...prev, data]);
       return data;
     } catch (error) {
-      console.log("product Error", error);
+      throw error
     }
   };
 

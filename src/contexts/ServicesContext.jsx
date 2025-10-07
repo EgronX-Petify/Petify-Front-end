@@ -1,5 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import * as servicesApi from "../APIs/servicesAPI";
+import { confirmMessage } from "../utils/confirmMessage";
+import { toastPromise } from "../utils/toastPromise";
 
 const ServicesContext = createContext();
 
@@ -76,6 +78,7 @@ const ServicesProvider = ({ children }) => {
     },
   ] */
   const [services, setServices] = useState();
+  const [categories, setCategories] = useState();
   const [loading, setLoadig] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const servicesCount = services?.length || 0;
@@ -85,16 +88,48 @@ const ServicesProvider = ({ children }) => {
       setLoadig(true);
       try {
         const { data } = await servicesApi.getAllServices();
-        setServices(data);
-        // console.log("services", data);
+        setServices(data.filter((s) => s.category !== "VET"));
       } catch (error) {
-        // console.log("services error", error.response);
+        console.log("services error", error.response);
       } finally {
         setLoadig(false);
       }
     };
     fetchServices();
   }, []);
+
+  useEffect(() => {
+    const fetchServicesCategories = async () => {
+      setLoadig(true);
+      try {
+        const { data } = await servicesApi.getServicesCategory();
+        setCategories(data.filter((c) => c !== "VET"));
+      } catch (error) {
+        console.log("services error", error.response);
+      } finally {
+        setLoadig(false);
+      }
+    };
+    fetchServicesCategories();
+  }, []);
+
+  const bookService = async (payload) => {
+    const willBook = await confirmMessage({
+      text: "Are you sure you want to book?",
+      confirmText: "Yes",
+      cancelText: "Cancel",
+    });
+    if (!willBook) return;
+
+    return await toastPromise(servicesApi.bookService(payload), {
+      loading: "Booking Service... ⏳",
+      success: "Service Booked successfully!",
+      error: (error) =>
+        error.response?.data?.errors?.[0]?.message ||
+        error.response?.data?.message ||
+        "Booking Service Failed ❌",
+    });
+  };
 
   return (
     <ServicesContext.Provider
@@ -105,6 +140,8 @@ const ServicesProvider = ({ children }) => {
         setSelectedService,
         loading,
         servicesCount,
+        categories,
+        bookService,
       }}
     >
       {children}

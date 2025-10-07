@@ -1,37 +1,14 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import * as servicesApi from "../APIs/servicesAPI";
+import * as spApi from "../APIs/userAPI";
+import { toastPromise } from "../utils/toastPromise";
+import toast from "react-hot-toast";
+import { confirmMessage } from "../utils/confirmMessage";
+import { AuthContext } from "./AuthContext";
 
 const SPContext = createContext();
 const SPProvider = ({ children }) => {
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      photo: "https://example.com/grooming.jpg",
-      name: "Grooming",
-      price: 250,
-      rate: 4.5,
-      description:
-        "Full-service grooming including bath, haircut, and nail trim.",
-      notes: "Available for small and medium pets only.",
-    },
-    {
-      id: 2,
-      photo: "https://example.com/vet.jpg",
-      name: "Vet Consultation",
-      price: 500,
-      rate: 4.8,
-      description: "Professional veterinary consultation for pets of all ages.",
-      notes: "Includes basic checkup, no lab tests.",
-    },
-    {
-      id: 3,
-      photo: "https://example.com/training.jpg",
-      name: "Training",
-      price: 300,
-      rate: 4.2,
-      description: "Behavioral and obedience training sessions.",
-      notes: "Requires multiple sessions for best results.",
-    },
-  ]);
+  const [services, setServices] = useState([]);
 
   const [products, setProducts] = useState([
     {
@@ -124,7 +101,15 @@ const SPProvider = ({ children }) => {
     },
   ]);
 
-  const [serviceProvider, setServiceProvider] = useState({
+  const [serviceProvider, setServiceProvider] = useState();
+
+  const [selectedService, setSelectedService] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { role } = useContext(AuthContext);
+
+  /*{
     username: "PetCarePro",
     rate: 4.5,
     description:
@@ -134,11 +119,107 @@ const SPProvider = ({ children }) => {
     address: "123 Main St, Cairo, Egypt",
     phone: "+20123456789",
     email: "petcarepro@example.com",
-  });
+  } */
 
-  const [selectedService, setSelectedService] = useState(null);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  useEffect(() => {
+    if (role !== "SERVICE_PROVIDER") return;
+    const fetchServices = async () => {
+      setLoading(true);
+      try {
+        const { data } = await servicesApi.getAllServices();
+        setServices(data);
+        return data;
+      } catch (error) {
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  useEffect(() => {
+    if (role !== "SERVICE_PROVIDER") return;
+    const fetchSPprofile = async () => {
+      setLoading(true);
+      try {
+        const { data } = await spApi.getUser();
+        setServiceProvider(data);
+        return res;
+      } catch (error) {
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSPprofile();
+  }, []);
+
+  const createService = async (service) => {
+    try {
+      const res = await toastPromise(servicesApi.addService(service), {
+        loading: "Adding Service... ⏳",
+        success: "Service added successfully!",
+        error: (error) =>
+          error.response?.data?.errors?.[0]?.message ||
+          error.response?.data?.message ||
+          "Something went wrong!",
+      });
+      setServices((prev) => [...prev, res.data]);
+    } catch (err) {
+      console.error("Add service error:", err);
+      toast.error("Failed to add service!");
+    }
+  };
+
+  const editService = async (serviceId, service) => {
+    const willUpdate = await confirmMessage({
+      text: `Are you sure you want to update this service?`,
+    });
+
+    if (!willUpdate) return;
+    try {
+      const res = await toastPromise(
+        servicesApi.editService(serviceId, service),
+        {
+          loading: "Updating Service... ⏳",
+          success: "Service updated successfully!",
+          error: (error) =>
+            error.response?.data?.errors?.[0]?.message ||
+            error.response?.data?.message ||
+            "Something went wrong!",
+        }
+      );
+      setServices((prev) =>
+        prev.map((s) => (s.id === serviceId ? { ...s, ...res.data } : s))
+      );
+    } catch (err) {
+      console.error("Update service error:", err);
+      toast.error("Failed to update service!");
+    }
+  };
+
+  const removeService = async (serviceId) => {
+    const willdelete = await confirmMessage({
+      text: `Are you sure you want to remove this service?`,
+    });
+
+    if (!willdelete) return;
+    try {
+      const res = await toastPromise(servicesApi.deleteService(serviceId), {
+        loading: "Removing Service... ⏳",
+        success: "Service removed successfully!",
+        error: (error) =>
+          error.response?.data?.errors?.[0]?.message ||
+          error.response?.data?.message ||
+          "Something went wrong!",
+      });
+      setServices((prev) => prev.filter((s) => s.id !== serviceId));
+    } catch (err) {
+      console.error("delete service error:", err);
+      toast.error("Failed to remove service!");
+    }
+  };
 
   return (
     <SPContext.Provider
@@ -157,6 +238,10 @@ const SPProvider = ({ children }) => {
         setSelectedAppointment,
         serviceProvider,
         setServiceProvider,
+        createService,
+        editService,
+        removeService,
+        loading,
       }}
     >
       {children}

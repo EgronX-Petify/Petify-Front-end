@@ -37,12 +37,12 @@ const PetService = ({ service, setOpen }) => {
           <h3 className="text-lg sm:text-xl font-semibold text-[#2F4156]">
             {service.name}
           </h3>
-          <Rating value={service.rating} />
+          <Rating value={service.rating || 0} />
           <p className="text-[#2f415677] text-sm sm:text-base flex-1">
             {service.description}
           </p>
-          <p className="text-[#2F4156] font-medium text-sm sm:text-base">
-            {service.priceRange}
+          <p className="text-[#FD7E14] font-medium text-sm sm:text-base">
+            {service.price}$
           </p>
         </div>
       </Link>

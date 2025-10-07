@@ -10,7 +10,7 @@ import ChangePassword from "./ChangePassword";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const UserInfo = () => {
-  const { userProfile, loading } = useContext(ProfileContext);
+  const { userProfile, loading, userPets } = useContext(ProfileContext);
   const [open, setOpen] = useState(false);
   const [changePassOpen, setChangePassOpen] = useState(false);
 
@@ -66,8 +66,8 @@ const UserInfo = () => {
         <div className="mt-4">
           <h3 className="font-medium text-[#2F4156]">Pets</h3>
           <ul className="list-disc list-inside text-[#2f4156b0] mt-1 bg-white p-2 rounded-lg text-sm md:text-base">
-            {userProfile?.pets && userProfile?.pets.length > 0 ? (
-              userProfile?.pets.map((pet, index) => (
+            {userPets && userPets.length > 0 ? (
+              userPets.map((pet, index) => (
                 <li key={index}>
                   {pet.name} - {pet.species}
                 </li>

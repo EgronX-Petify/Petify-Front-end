@@ -75,14 +75,14 @@ const Available = () => {
           </p>
         )}
 
-        <div className="flex flex-col-reverse md:flex-row md:w-[80%] gap-3 md:justify-evenly items-center">
+        {/* <div className="flex flex-col-reverse md:flex-row md:w-[80%] gap-3 md:justify-evenly items-center">
           <button
             className="h-fit capitalize flex w-fit px-5 py-4 align-middle rounded-[15px] bg-[#ff383be0] text-[#F5EFED] font-semibold cursor-pointer duration-300 hover:bg-[#ff383b]"
             onClick={() => setEmergencyOpen(true)}
           >
             Emergency
           </button>
-        </div>
+        </div> */}
       </div>
 
       {filteredVets?.length > 0 && (
@@ -108,7 +108,7 @@ const Available = () => {
           </button>
         </div>
       )}
-      <EmergencyCall open={emergencyOpen} setOpen={setEmergencyOpen} />
+      {/* <EmergencyCall open={emergencyOpen} setOpen={setEmergencyOpen} /> */}
     </div>
   );
 };

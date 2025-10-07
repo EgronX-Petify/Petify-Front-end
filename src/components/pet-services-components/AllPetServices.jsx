@@ -14,8 +14,7 @@ const AllPetServices = () => {
   const { loading } = useContext(ServicesContext);
 
   // unique filter options
-  const categories = [...new Set(petServices?.map((s) => s.category))];
-  const prices = [...new Set(petServices?.map((s) => s.priceRange))];
+  const prices = [...new Set(petServices?.map((s) => s.price))];
   const ratings = [5, 4, 3, 2, 1];
 
   const [showFilters, setShowFilters] = useState(false);
@@ -63,7 +62,7 @@ const AllPetServices = () => {
 
     const priceMatch =
       selectedPrices?.length > 0
-        ? selectedPrices?.includes(service.priceRange)
+        ? selectedPrices?.includes(service.price)
         : service;
 
     const ratingMatch =
@@ -96,7 +95,7 @@ const AllPetServices = () => {
   ) : (
     <div className="p-4 md:p-10">
       <div className="flex justify-between items-center mb-4 md:hidden">
-        <h2 className="text-2xl font-bold text-[#2F4156]">Products</h2>
+        <h2 className="text-2xl font-bold text-[#2F4156]">Services</h2>
         <button
           onClick={() => setShowFilters(!showFilters)}
           className="px-4 py-2 bg-[#FD7E14] text-white rounded-lg"
@@ -112,7 +111,6 @@ const AllPetServices = () => {
           } md:block w-full md:w-1/4 transition-all`}
         >
           <ServiceFilters
-            categories={categories}
             prices={prices}
             ratings={ratings}
             selectedCategories={selectedCategories}

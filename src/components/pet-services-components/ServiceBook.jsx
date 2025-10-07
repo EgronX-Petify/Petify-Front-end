@@ -3,13 +3,12 @@ import UseSelectedAppointment from "../../hooks/UseSelectedAppointment";
 import UseAppointments from "../../hooks/UseAppointments";
 import { AppointmentsContext } from "../../contexts/AppointmentsContext";
 import toast from "react-hot-toast";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { ServicesContext } from "../../contexts/ServicesContext";
 
 const ServiceBook = ({ open, setOpen }) => {
-  const userPets = [
-    { id: 1, name: "Bella" },
-    { id: 2, name: "Max" },
-    { id: 3, name: "Luna" },
-  ];
+  const { userPets } = useContext(ProfileContext);
+  const { bookService } = useContext(ServicesContext);
 
   const [formData, setFormData] = useState({
     pet: "",
@@ -27,12 +26,9 @@ const ServiceBook = ({ open, setOpen }) => {
     const { pet, date, time } = formData;
     const newErrors = {};
 
-    // 1. Pet must be chosen
     if (!pet) {
       newErrors.pet = "Please select a pet.";
     }
-
-    // 2. Date validation
     if (!date) {
       newErrors.date = "Please select a date.";
     } else {
@@ -47,13 +43,11 @@ const ServiceBook = ({ open, setOpen }) => {
       }
     }
 
-    // 3. Time validation
     if (!time) {
       newErrors.time = "Please select a time.";
     } else {
       const now = new Date();
       const selectedDateTime = new Date(`${date}T${time}`);
-
       if (
         new Date(date).toDateString() === now.toDateString() &&
         selectedDateTime < now
@@ -63,7 +57,6 @@ const ServiceBook = ({ open, setOpen }) => {
     }
 
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
@@ -75,37 +68,37 @@ const ServiceBook = ({ open, setOpen }) => {
     }));
   };
 
-  const handleFinishBook = () => {
-    if (!validate()) return;
-
-    const newAppointment = {
-      id: Date.now(),
-      ...selectedAppointment,
-      ...formData,
-    };
-    setAppointments((prev) => [...prev, newAppointment]);
+  function reset() {
     setFormData({
       pet: "",
       date: "",
       time: "",
       emergency: false,
     });
-    setOpen(false);
-        toast.success("Service Booked Successfully!");
-    setErrors({});
-  };
-
-  function handleCancel() {
-    setFormData({
-      pet: "",
-      date: "",
-      time: "",
-      emergency: false,
-    });
-
     setOpen(false);
     setErrors({});
   }
+  const handleFinishBook = async () => {
+    if (!validate()) return;
+
+    const payload = {
+      petId: formData.pet.id,
+      serviceId: selectedAppointment.id,
+      requestedTime: "",
+      date: formData.date,
+      time:formData.time,
+    };
+    console.log(payload);
+    // const res = await bookService(payload);
+    // console.log("appt::", res.date);
+    // const newAppointment = {
+    //   ...selectedAppointment,
+    //   ...formData,
+    // };
+    // reset();
+    // setAppointments((prev) => [...prev, newAppointment]);
+  };
+
   // useEffect(() => {
   //   // call api backend
   //   console.log("Appointments updated:", appointments);
@@ -124,12 +117,6 @@ const ServiceBook = ({ open, setOpen }) => {
 
           {/* Content */}
           <div className="p-6 md:p-10 flex flex-col gap-6">
-            <div className="text-[#2F4156] font-semibold">
-              Availability:
-              <span className="ml-1 text-sm text-gray-600 font-light">
-                {selectedAppointment.availability}
-              </span>
-            </div>
             <div className="flex flex-col md:flex-row gap-6">
               {/* Pet */}
               <div className="flex flex-col w-full md:w-fit bg-[#F8F9FA] p-4 rounded-lg shadow-sm h-fit">
@@ -145,7 +132,7 @@ const ServiceBook = ({ open, setOpen }) => {
                   } rounded-lg text-[#2F4156] focus:ring-2 focus:ring-[#FD7E14] focus:border-[#FD7E14] outline-none w-full`}
                 >
                   <option value="">Choose a pet</option>
-                  {userPets.map((pet) => (
+                  {userPets?.map((pet) => (
                     <option key={pet.id} value={pet.name}>
                       {pet.name}
                     </option>
@@ -227,7 +214,7 @@ const ServiceBook = ({ open, setOpen }) => {
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-2">
               <button
                 className="cursor-pointer capitalize w-full md:w-auto px-6 py-3 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition"
-                onClick={() => handleCancel()}
+                onClick={() => reset()}
               >
                 Cancel
               </button>

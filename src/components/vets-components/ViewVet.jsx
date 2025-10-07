@@ -7,7 +7,6 @@ import Rating from "../Rating";
 import LoadingSpinner from "../LoadingSpinner";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
 import toast, { Toaster } from "react-hot-toast";
-import VetBook from "./VetBook";
 
 const ViewVet = () => {
   const isLogged = UseLoggedUser();
@@ -100,7 +99,6 @@ const ViewVet = () => {
         </div>
       )}
       <Toaster position="top-center" reverseOrder={false} />
-      <VetBook open={bookOpen} setOpen={setBookOpen} />
     </div>
   );
 };

@@ -5,19 +5,24 @@ import EditServiceProviderInfo from "./EditServiceProviderInfo";
 import { SPContext } from "../../contexts/SPContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Return from "./Return";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const ServiceProviderProfile = () => {
-  // Example service provider object
-  const { serviceProvider } = useContext(SPContext);
+  const { serviceProvider, loading } = useContext(SPContext);
+
 
   const [open, setOpen] = useState(false);
 
   const [changePassOpen, setChangePassOpen] = useState(false);
 
-  return !serviceProvider ? (
+  return loading ? (
     <div className="w-full mx-auto my-10 rounded-2xl p-6 flex flex-col items-center gap-8 ">
       <LoadingSpinner text="Loading..." />
     </div>
+  ) : !serviceProvider ? (
+    <p className="w-full text-center bg-white  min-h-14 py-5 text-xl font-semibold text-[#2F4156] capitalize">
+      Couldn't fetch User Data
+    </p>
   ) : (
     <div className="max-w-[95%] md:w-[90%] mx-auto flex flex-col ">
       <Return showLabel={true} />
@@ -25,8 +30,8 @@ const ServiceProviderProfile = () => {
         {/* Provider Photo */}
         <div className="w-36 h-36 md:w-[300px] md:h-48 flex-shrink-0">
           <img
-            src={serviceProvider.photo}
-            alt={serviceProvider.username}
+            src={serviceProvider?.images[0] || serviceProvider?.image}
+            alt={serviceProvider?.username}
             className="w-full h-full object-cover rounded-xl shadow-md"
           />
         </div>
@@ -34,33 +39,33 @@ const ServiceProviderProfile = () => {
         {/* Provider Info */}
         <div className="flex-1 w-full">
           <h2 className="capitalize text-xl md:text-2xl font-semibold text-[#2F4156] mb-4 text-center md:text-left">
-            {serviceProvider.username} Profile
+            {serviceProvider?.name} Profile
           </h2>
 
           {/* Basic Info */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[#2f4156b0]">
             <p className="bg-white p-2 rounded-lg text-sm md:text-base">
-              <span className="font-medium text-[#2F4156]">Username:</span>{" "}
-              {serviceProvider.username}
+              <span className="font-medium text-[#2F4156]">Name:</span>{" "}
+              {serviceProvider?.name || "add username"}
             </p>
             <div className="bg-white p-2 rounded-lg text-sm md:text-base ">
-              <Rating value={serviceProvider.rate} />
+              <Rating value={serviceProvider?.rate || 0} />
             </div>
             <p className="bg-white p-2 rounded-lg text-sm md:text-base col-span-1 sm:col-span-2">
               <span className="font-medium text-[#2F4156]">Description:</span>{" "}
-              {serviceProvider.description}
+              {serviceProvider?.description || "add description"}
             </p>
             <p className="bg-white p-2 rounded-lg text-sm md:text-base">
               <span className="font-medium text-[#2F4156]">Address:</span>{" "}
-              {serviceProvider.address}
+              {serviceProvider?.address || "add address"}
             </p>
             <p className="bg-white p-2 rounded-lg text-sm md:text-base">
               <span className="font-medium text-[#2F4156]">Phone:</span>{" "}
-              {serviceProvider.phone}
+              {serviceProvider?.phoneNumber || "add phone number"}
             </p>
             <p className="bg-white p-2 rounded-lg text-sm md:text-base">
               <span className="font-medium text-[#2F4156]">Email:</span>{" "}
-              {serviceProvider.email}
+              {serviceProvider?.email}
             </p>
             <div className="bg-white p-2 rounded-lg flex justify-between items-center text-sm md:text-base">
               <span>

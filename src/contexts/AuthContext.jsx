@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
   });
 
   const [token, setToken] = useState(null);
-  const [role, setRole] = useState(user?.role || "PET_OWNER"); // SWEVICE_PROVIDER, PET_OWNER, ADMIN
+  const [role, setRole] = useState(user?.role || "PET_OWNER");
 
   const signup = async (formData) => {
     try {

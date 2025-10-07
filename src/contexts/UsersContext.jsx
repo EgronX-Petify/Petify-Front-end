@@ -1,7 +1,8 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import * as adminApi from "../APIs/adminAPI";
 import { confirmMessage } from "../utils/confirmMessage";
 import { toastPromise } from "../utils/toastPromise";
+import { AuthContext } from "./AuthContext";
 
 const UsersContext = createContext();
 const UsersProvider = ({ children }) => {
@@ -9,8 +10,10 @@ const UsersProvider = ({ children }) => {
   const [usersCount, setUsersCount] = useState({});
   const [pendingSP, setPendingSP] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { role } = useContext(AuthContext);
 
   useEffect(() => {
+    if (role !== "ADMIN") return;
     const fetchUsers = async () => {
       setLoading(true);
       try {
@@ -27,6 +30,7 @@ const UsersProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (role !== "ADMIN") return;
     const fetchUsersCount = async () => {
       try {
         const { data } = await adminApi.getUsersCount();
@@ -40,6 +44,7 @@ const UsersProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (role !== "ADMIN") return;
     const fetchPendingSP = async () => {
       setLoading(true);
       try {
@@ -65,11 +70,10 @@ const UsersProvider = ({ children }) => {
     if (!willBan) return;
 
     toastPromise(adminApi.banUser(id), {
-      loading: `Banning user ${id}... ⏳`,
+      loading: `Banning user... ⏳`,
       success: "User banned successfully ✅",
       error: (err) => err.response?.data?.message || "Failed to ban user ❌",
     }).then(() => {
-      // تحديث الـ state فوراً
       setUsers((prev) =>
         prev.map((user) =>
           user.id === id ? { ...user, status: "BANNED" } : user

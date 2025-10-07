@@ -2,11 +2,12 @@ import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { SPContext } from "../../contexts/SPContext";
 import UseLoggedUser from "../../hooks/UseLoggedUser";
-import {ProductsContext} from "../../contexts/ProductsContext";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 const AddProduct = ({ open, setOpen }) => {
   const user = UseLoggedUser();
   const { createProduct } = useContext(ProductsContext);
+
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -65,7 +66,6 @@ const AddProduct = ({ open, setOpen }) => {
     if (formData.stock === "" || formData.stock < 0)
       newErrors.stock = "Stock must be 0 or greater";
     if (
-      formData.discount === "" ||
       formData.discount < 0 ||
       formData.discount > 100
     )
@@ -97,13 +97,26 @@ const AddProduct = ({ open, setOpen }) => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    const payload = { ...formData, sellerId: user?.id };
+    const finalPrice =
+      Number(formData.price) -
+      (Number(formData.price) * Number(formData.discount || 0)) / 100;
+
+    const payload = {
+      ...formData,
+      final_Price: finalPrice,
+      sellerId: user?.id,
+    };
     try {
       const { data } = await createProduct(payload);
-      console.log(data);
+      console.log("add product:::", data);
       toast.success("Product added successfully!");
     } catch (error) {
-      console.log(error.response);
+      const errorMessage =
+        error.response?.data?.errors?.[0]?.message ||
+        error.response?.data?.message ||
+        "Something went wrong!";
+      toast.error(errorMessage);
+      console.log("add product error::", error.response);
     }
     reset();
   };

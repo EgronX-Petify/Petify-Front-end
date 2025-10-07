@@ -8,7 +8,7 @@ import { confirmMessage } from "../../utils/confirmMessage";
 import { toastPromise } from "../../utils/toastPromise";
 
 const EditUserInfo = ({ open, setOpen }) => {
-  const {userProfile} = useContext(ProfileContext);
+  const { userProfile, setUserProfile } = useContext(ProfileContext);
   const [changePassOpen, setChangePassOpen] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -26,8 +26,8 @@ const EditUserInfo = ({ open, setOpen }) => {
     if (!formData.name.trim()) newErrors.name = "name is required";
 
     const phoneRegex = /^(\+20\d{10}|0\d{10})$/;
-    if (!phoneRegex.test(formData.phone))
-      newErrors.phone = "Phone must be +20XXXXXXXXXX or 0XXXXXXXXXX";
+    if (!phoneRegex.test(formData.phoneNumber))
+      newErrors.phoneNumber = "Phone must be +20XXXXXXXXXX or 0XXXXXXXXXX";
 
     return newErrors;
   };
@@ -51,7 +51,7 @@ const EditUserInfo = ({ open, setOpen }) => {
   function reset() {
     setFormData({
       name: userProfile?.name || "",
-      phone: userProfile?.phone || "",
+      phoneNumber: userProfile?.phoneNumber || "",
       password: userProfile?.password || "",
       address: userProfile?.address || "",
     });
@@ -66,25 +66,18 @@ const EditUserInfo = ({ open, setOpen }) => {
     const newErrors = validate();
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
+    const payload = {
+      phoneNumber: formData?.phoneNumber,
+      name: formData?.name,
+      address: formData?.address,
+    };
 
-    const willUpdate = await confirmMessage({
-      text: "Are you sure you want to update your profile?",
-      confirmText: "Yes",
-      cancelText: "Cancel",
-    });
-
-    if (willUpdate) {
-      const payload = {
-        phoneNumber: formData?.phone,
-        name: formData?.name,
-        address: formData?.address,
-      };
-      toastPromise(updateUser(payload), {
-        loading: "Updating Profile... ⏳",
-        success: "Profile updated successfully!",
-        error: (err) =>
-          err.response?.data?.message || "Updating profile failed ❌",
-      });
+    try {
+      const { data } = await updateUser(payload);
+      setUserProfile((prev) => ({ ...prev, ...data }));
+    } catch (error) {
+      console.log("updating user error::", error);
+      toast.error("Failed to update profile");
     }
     reset();
   };
@@ -121,12 +114,14 @@ const EditUserInfo = ({ open, setOpen }) => {
               </label>
               <input
                 type="text"
-                name="phone"
-                value={formData.phone}
+                name="phoneNumber"
+                value={formData.phoneNumber}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-200 rounded-lg mt-1 focus:border-gray-400 focus:ring-1 focus:ring-[#FD7E14] focus:outline-none"
               />
-              <p className="h-4 text-xs text-red-500">{errors.phone || ""}</p>
+              <p className="h-4 text-xs text-red-500">
+                {errors.phoneNumber || ""}
+              </p>
             </div>
 
             {/* address */}

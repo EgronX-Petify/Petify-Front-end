@@ -1,4 +1,4 @@
-// routesConfig.js
+
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -70,7 +70,6 @@ export const serviceProvider = [
       { path: "profile", element: <ServiceProviderProfile /> },
     ],
   },
-  // { path: "/sp-profile", element: <ServiceProviderProfile /> },
 ];
 
 export const admin = [
