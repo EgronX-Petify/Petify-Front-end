@@ -91,28 +91,21 @@ const EditProfile = ({ open, setOpen }) => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    const willUpdate = await confirmMessage({
-      text: "Are you sure you want to update your pet profile?",
-      confirmText: "Yes",
-      cancelText: "Cancel",
-    });
+    const payload = {
+      name: formData.name,
+      species: formData.species,
+      breed: formData.breed,
+      gender: formData.gender,
+      dateOfBirth: formData.dateOfBirth,
+    };
 
-    if (willUpdate) {
-      const payload = {
-        name: formData.name,
-        species: formData.species,
-        breed: formData.breed,
-        gender: formData.gender,
-        dateOfBirth: formData.dateOfBirth,
-      };
-      toastPromise(editPet(pet?.id, payload), {
-        loading: "Updating Pet Profile... ⏳",
-        success: "Pet Profile updated successfully!",
-        error: (err) =>
-          err.response?.data?.message || "Updating profile failed ❌",
-      });
+    try {
+      const res = await editPet(pet?.id, payload);
+    } catch (error) {
+      console.log(error.response);
+    } finally {
+      reset();
     }
-    reset();
   };
 
   return (

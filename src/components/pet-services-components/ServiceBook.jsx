@@ -8,7 +8,7 @@ import { ServicesContext } from "../../contexts/ServicesContext";
 
 const ServiceBook = ({ open, setOpen }) => {
   const { userPets } = useContext(ProfileContext);
-  const { bookService } = useContext(ServicesContext);
+  const { bookService } = useContext(AppointmentsContext);
 
   const [formData, setFormData] = useState({
     pet: "",
@@ -81,28 +81,27 @@ const ServiceBook = ({ open, setOpen }) => {
   const handleFinishBook = async () => {
     if (!validate()) return;
 
-    const payload = {
-      petId: formData.pet.id,
-      serviceId: selectedAppointment.id,
-      requestedTime: "",
-      date: formData.date,
-      time:formData.time,
-    };
-    console.log(payload);
-    // const res = await bookService(payload);
-    // console.log("appt::", res.date);
-    // const newAppointment = {
-    //   ...selectedAppointment,
-    //   ...formData,
-    // };
-    // reset();
-    // setAppointments((prev) => [...prev, newAppointment]);
-  };
+    const localDateTime = new Date(`${formData.date}T${formData.time}`);
+    const timezoneOffset = localDateTime.getTimezoneOffset() * 60000;
+    const requestedTime = new Date(
+      localDateTime.getTime() - timezoneOffset
+    ).toISOString();
 
-  // useEffect(() => {
-  //   // call api backend
-  //   console.log("Appointments updated:", appointments);
-  // }, [appointments]);
+    const payload = {
+      petId: formData.pet,
+      serviceId: selectedAppointment.id,
+      requestedTime: requestedTime,
+      notes: formData.emergency ? "Emergency service" : "",
+    };
+    try {
+      const res = await bookService(payload);
+      setAppointments((prev) => [...prev, res.data]);
+    } catch (error) {
+      console.log("can't book");
+    } finally {
+      reset();
+    }
+  };
 
   return (
     open && (
@@ -133,7 +132,7 @@ const ServiceBook = ({ open, setOpen }) => {
                 >
                   <option value="">Choose a pet</option>
                   {userPets?.map((pet) => (
-                    <option key={pet.id} value={pet.name}>
+                    <option key={pet.id} value={pet.id}>
                       {pet.name}
                     </option>
                   ))}

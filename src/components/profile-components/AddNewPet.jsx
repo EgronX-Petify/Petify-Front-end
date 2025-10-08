@@ -97,7 +97,7 @@ function AddNewPet({ open, setOpen }) {
     };
     try {
       const { data } = await createPet(payload);
-      toast.success("Pet Added Successfully!");
+      // toast.success("Pet Added Successfully!");
     } catch (error) {
       console.log(error.response);
     } finally {

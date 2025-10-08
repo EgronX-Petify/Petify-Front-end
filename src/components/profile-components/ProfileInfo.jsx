@@ -9,24 +9,9 @@ import { toastPromise } from "../../utils/toastPromise";
 
 const ProfileInfo = ({ pet }) => {
   const [open, setOpen] = useState(false);
-  const { setSelectedPet, deletePet, uploadPetPhoto, deletePetPhoto } = useContext(UserPetsContext);
+  const { setSelectedPet, deletePet, uploadPetPhoto, deletePetPhoto } =
+    useContext(UserPetsContext);
   const pets = UseUserPets();
-
-  const handleRemovePet = async (id) => {
-    const willDelete = await confirmMessage({
-      text: "Are you sure you want to remove this pet?",
-      confirmText: "Yes",
-      cancelText: "Cancel",
-    });
-
-    if (willDelete) {
-      toastPromise(deletePet(id), {
-        loading: "Deleting Pet ... ⏳",
-        success: "Pet Removed successfully!",
-        error: (err) => err.response?.data?.message || "Removing pet failed ❌",
-      });
-    }
-  };
 
   // ---- Photo Handlers ----
   const handlePhotoChange = async (e) => {
@@ -128,7 +113,9 @@ const ProfileInfo = ({ pet }) => {
           <h3 className="font-medium text-[#2F4156]">Vaccination Dates</h3>
           <ul className="list-disc list-inside text-[#2f4156b0] mt-1 bg-white p-2 rounded-lg text-sm md:text-base">
             {pet?.vaccinations?.length > 0 ? (
-              pet?.vaccinations?.map((date, index) => <li key={index}>{date}</li>)
+              pet?.vaccinations?.map((date, index) => (
+                <li key={index}>{date}</li>
+              ))
             ) : (
               <p className="text-[#2f4156b0] bg-white rounded-lg text-sm md:text-base">
                 No vaccinations dates
@@ -141,7 +128,7 @@ const ProfileInfo = ({ pet }) => {
         <div className="mt-6 flex justify-center gap-3 md:justify-end">
           <button
             className="cursor-pointer px-5 py-2 rounded-lg bg-[#ff383be0] text-white hover:bg-[#ff383b] transition shadow-md"
-            onClick={() => handleRemovePet(pet?.id)}
+            onClick={() => deletePet(pet?.id)}
           >
             Remove Pet
           </button>

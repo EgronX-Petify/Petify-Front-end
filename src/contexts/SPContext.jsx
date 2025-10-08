@@ -65,7 +65,6 @@ const SPProvider = ({ children }) => {
       note: "100% natural and fresh.",
     },
   ]);
-
   const [appointments, setAppointments] = useState([
     {
       id: 1,
@@ -100,26 +99,12 @@ const SPProvider = ({ children }) => {
       done: false,
     },
   ]);
-
   const [serviceProvider, setServiceProvider] = useState();
-
   const [selectedService, setSelectedService] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [loading, setLoading] = useState(false);
   const { role } = useContext(AuthContext);
-
-  /*{
-    username: "PetCarePro",
-    rate: 4.5,
-    description:
-      "Experienced vet and groomer with 10+ years of helping pets stay healthy and happy.",
-    photo:
-      "https://boise.fetchpetcare.com/wp-content/uploads/sites/8/2024/07/pet2.jpg",
-    address: "123 Main St, Cairo, Egypt",
-    phone: "+20123456789",
-    email: "petcarepro@example.com",
-  } */
 
   useEffect(() => {
     if (role !== "SERVICE_PROVIDER") return;
@@ -143,8 +128,8 @@ const SPProvider = ({ children }) => {
     const fetchSPprofile = async () => {
       setLoading(true);
       try {
-        const { data } = await spApi.getUser();
-        setServiceProvider(data);
+        const res = await spApi.getUser();
+        setServiceProvider(res.data);
         return res;
       } catch (error) {
         throw error;

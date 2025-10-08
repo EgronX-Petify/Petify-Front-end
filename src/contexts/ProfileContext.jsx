@@ -1,16 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import * as userApi from "../APIs/userAPI";
 import { confirmMessage } from "../utils/confirmMessage";
-import toast from "react-hot-toast";
 import { toastPromise } from "../utils/toastPromise";
+import { AuthContext } from "./AuthContext";
 
 const ProfileContext = createContext();
 const ProfileProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [userPets, setUserPets] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { role } = useContext(AuthContext);
 
   useEffect(() => {
+    if (role !== "PET_OWNER") return;
     const token = localStorage.getItem("token");
     if (!token) return;
     const getUserData = async () => {
@@ -29,6 +31,7 @@ const ProfileProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (role !== "PET_OWNER") return;
     const token = localStorage.getItem("token");
     if (!token) return;
     const getUserPets = async () => {

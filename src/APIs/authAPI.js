@@ -1,5 +1,3 @@
-// {{base_url}}/api/v1/auth/signup
-
 import api from "./axiosInstance.js";
 
 export const signup = (formData) => api.post("/api/v1/auth/signup", formData);
@@ -10,6 +8,3 @@ export const forgotPassword = (email) =>
   api.post("/api/v1/auth/forgot-password", email);
 export const changePassword = (userData) =>
   api.post("/api/v1/auth/change-password", userData);
-// export const refreshToken = () => api.post("/api/v1/auth/refresh");
-
-//http://localhost:8080/swagger-ui/index.html#/

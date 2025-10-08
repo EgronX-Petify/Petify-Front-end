@@ -1,7 +1,8 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import * as productsApi from "../APIs/shopAPI";
 import * as cartApi from "../APIs/cartAPI";
 import toast from "react-hot-toast";
+import { AuthContext } from "./AuthContext";
 
 const ProductsContext = createContext();
 const ProductsProvider = ({ children }) => {
@@ -11,9 +12,11 @@ const ProductsProvider = ({ children }) => {
   const cartCount =
     cartItems?.reduce((sum, item) => sum + item.quantity, 0) || 0;
   const [loading, setLoading] = useState(false);
+  const { role } = useContext(AuthContext);
   const productsCount = products?.length || 0;
 
   useEffect(() => {
+    if (role !== "PET_OWNER" || role !== "ADMIN") return;
     const fetchProducts = async () => {
       setLoading(true);
       try {
@@ -30,6 +33,7 @@ const ProductsProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (!role !== "PET_OWNER") return;
     const fetchCart = async () => {
       try {
         const { data } = await cartApi.getUserCart();
@@ -75,7 +79,7 @@ const ProductsProvider = ({ children }) => {
       // setPets((prev) => [...prev, data]);
       return data;
     } catch (error) {
-      throw error
+      throw error;
     }
   };
 
@@ -93,7 +97,7 @@ const ProductsProvider = ({ children }) => {
         loading,
         setLoading,
         productsCount,
-        createProduct
+        createProduct,
       }}
     >
       {children}

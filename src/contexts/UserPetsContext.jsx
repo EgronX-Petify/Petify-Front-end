@@ -1,14 +1,18 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import * as userApi from "../APIs/userAPI";
 import toast from "react-hot-toast";
+import { confirmMessage } from "../utils/confirmMessage";
+import { toastPromise } from "../utils/toastPromise";
+import { AuthContext } from "./AuthContext";
 
 const UserPetsContext = createContext();
 const UserPetsProvider = ({ children }) => {
   const [pets, setPets] = useState([]);
-
   const [selectedPet, setSelectedPet] = useState(null);
+  const { role } = useContext(AuthContext);
 
   useEffect(() => {
+    if (role !== "PET_OWNER") return;
     const fetchPets = async () => {
       try {
         const { data } = await userApi.getUserPets();
@@ -19,6 +23,15 @@ const UserPetsProvider = ({ children }) => {
     };
     fetchPets();
   }, []);
+
+  const getPetById = async (petId) => {
+    try {
+      const { data } = await userApi.getPet(petId);
+      return data;
+    } catch (error) {
+      console.log("get pet Error", error);
+    }
+  };
 
   const createPet = async (petData) => {
     try {
@@ -31,23 +44,55 @@ const UserPetsProvider = ({ children }) => {
   };
 
   const editPet = async (petId, petData) => {
+    const willUpdate = await confirmMessage({
+      text: "Are you sure you want to update pet data?",
+      confirmText: "Yes",
+      cancelText: "Cancel",
+    });
+    if (!willUpdate) return;
+
     try {
-      const { data } = await userApi.editPet(petId, petData);
+      const res = await toastPromise(userApi.editPet(petId, petData), {
+        loading: "Updating Pet Info... ⏳",
+        success: "Pet Info Updated Successfully!",
+        error: (error) =>
+          error.response?.data?.errors?.[0]?.message ||
+          error.response?.data?.message ||
+          "Updating Pet Failed ❌",
+      });
+      const updatedPet = res.data;
       setPets((prev) =>
-        prev.map((petItem) => (petItem.id === petId ? data : petItem))
+        prev.map((petItem) => (petItem.id === petId ? updatedPet : petItem))
       );
-      return data;
+
+      return res;
     } catch (error) {
-      console.log("petsError", error);
+      console.error(error);
     }
   };
+
   const deletePet = async (petId) => {
+    const willDelete = await confirmMessage({
+      text: "Are you sure you want to remove this pet?",
+      confirmText: "Yes",
+      cancelText: "Cancel",
+    });
+    if (!willDelete) return;
+
     try {
-      const { data } = await userApi.deletePet(petId);
+      const res = await toastPromise(userApi.deletePet(petId), {
+        loading: "Removing Pet... ⏳",
+        success: "Pet Removed Successfully",
+        error: (error) =>
+          error.response?.data?.errors?.[0]?.message ||
+          error.response?.data?.message ||
+          "Removing Pet Failed ❌",
+      });
       setPets((prev) => prev.filter((petItem) => petItem.id !== petId));
-      return data;
+
+      return res;
     } catch (error) {
-      console.log("petsError", error);
+      console.error(error);
     }
   };
 
@@ -85,6 +130,7 @@ const UserPetsProvider = ({ children }) => {
         editPet,
         deletePet,
         uploadPetPhoto,
+        getPetById,
       }}
     >
       {children}

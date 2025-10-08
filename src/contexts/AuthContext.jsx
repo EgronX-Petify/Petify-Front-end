@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
 import * as authApi from "../APIs/authAPI";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -60,25 +59,6 @@ const AuthProvider = ({ children }) => {
       console.log(error);
     }
   };
-
-  // useEffect(() => {
-  //   const loggedUser = localStorage.getItem("logged user");
-  //   if (loggedUser) {
-  //     setRole("PET_OWNER");
-  //     const logggedUserData = {
-  //       photo: "https://i.pravatar.cc/150?img=12",
-  //       username: "hello",
-  //       email: JSON.parse(loggedUser)?.email,
-  //       password: JSON.parse(loggedUser)?.password,
-  //       phone: "+20123456789",
-  //       pets: [
-  //         { name: "Max", species: "Dog" },
-  //         { name: "Luna", species: "Cat" },
-  //       ],
-  //     };
-  //     setUser(logggedUserData);
-  //   }
-  // }, []);
 
   return (
     <AuthContext.Provider
