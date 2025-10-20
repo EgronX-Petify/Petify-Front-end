@@ -54,4 +54,7 @@ function App() {
   );
 }
 
+/*notes
+update home links before login
+  */
 export default App;
