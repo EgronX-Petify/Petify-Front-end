@@ -1,27 +1,31 @@
 import React from "react";
 import Service from "./Service";
+import shopIcon from "/home-media/pexels-misolo-cosmetic-2588316-4841264.jpg";
+import beginner from "/home-media/pexels-arina-krasnikova-7725619.jpg";
+import vetsIcon from "/home-media/pexels-tahir-x-lf-2153788153-33394308.jpg";
+import servicesIcon from "/home-media/pexels-goochie-poochie-19145890.jpg";
 
 const Services = () => {
   const services = [
     {
       id: "shop",
       name: "Pet Products",
-      photo: "/home-media/pexels-misolo-cosmetic-2588316-4841264.jpg",
+      photo: shopIcon,
     },
     {
       id: "beginner-guide",
       name: "Beginner Guide",
-      photo: "/home-media/pexels-arina-krasnikova-7725619.jpg",
+      photo: beginner,
     },
     {
       id: "vets",
       name: "Book Vet Appointments",
-      photo: "/home-media/pexels-tahir-x-lf-2153788153-33394308.jpg",
+      photo: vetsIcon,
     },
     {
       id: "services",
       name: "Book Service",
-      photo: "/home-media/pexels-goochie-poochie-19145890.jpg",
+      photo: servicesIcon,
     },
   ];
 
