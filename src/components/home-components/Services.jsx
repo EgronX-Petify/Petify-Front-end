@@ -1,27 +1,31 @@
 import React from "react";
 import Service from "./Service";
+import shopService from "../../../public/home-media/pexels-misolo-cosmetic-2588316-4841264.jpg"
+import beginner from "../../../public/home-media/pexels-arina-krasnikova-7725619.jpg"
+import vet from "../../../public/home-media/pexels-tahir-x-lf-2153788153-33394308.jpg"
+import servicesPhot from "../../../public/home-media/pexels-goochie-poochie-19145890.jpg"
 
 const Services = () => {
   const services = [
     {
       id: "shop",
       name: "Pet Products",
-      photo: "/public/home-media/pexels-misolo-cosmetic-2588316-4841264.jpg",
+      photo: shopService,
     },
     {
       id: "beginner-guide",
       name: "Beginner Guide",
-      photo: "/public/home-media/pexels-arina-krasnikova-7725619.jpg",
+      photo: beginner,
     },
     {
       id: "vets",
       name: "Book Vet Appointments",
-      photo: "/public/home-media/pexels-tahir-x-lf-2153788153-33394308.jpg",
+      photo: vet,
     },
     {
       id: "services",
       name: "Book Service",
-      photo: "/public/home-media/pexels-goochie-poochie-19145890.jpg",
+      photo: servicesPhot,
     },
   ];
 
