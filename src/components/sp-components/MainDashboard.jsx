@@ -2,11 +2,9 @@ import React, { useContext } from "react";
 import {
   FaClipboardList,
   FaBoxOpen,
-  FaUserMd,
   FaCalendarCheck,
   FaEdit,
   FaCheckCircle,
-  FaPhone,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import UseSPServices from "../../hooks/UseSPServices";
@@ -75,14 +73,17 @@ const MainDashboard = () => {
             </div>
           </Link>
 
+{services.length > 0 ? 
           <ul className="space-y-2 text-gray-600">
             {services.map((s, id) => (
               <li className="flex justify-between" key={id}>
                 {s.name}
               </li>
             ))}
-          </ul>
-        </div>
+          </ul> : <p className="py-3 px-2 text-gray-500 text-xl">
+              You haven't provided any services yet
+            </p> }
+        </div> 
 
         {/* Appointments */}
         <div className="bg-white p-4 rounded-2xl shadow-md">
@@ -125,14 +126,17 @@ const MainDashboard = () => {
               <FaEdit className="text-[#FD7E14] cursor-pointer text-xl" />
             </div>
           </Link>
+          {products.length > 0 ?
           <ul className="space-y-2 text-gray-600">
-            {products.slice(0, 3).map((product, index) => (
+            {products.slice(0, 3).map((product) => (
               <li className="flex justify-between" key={product.id}>
                 {product.name}
                 <span className="text-sm text-gray-400">{`${product.stock} in stock`}</span>
               </li>
             ))}
-          </ul>
+          </ul> :  <p className="py-3 px-2 text-gray-500 text-xl">
+              You haven't provided any products yet
+            </p>}
         </div>
 
 

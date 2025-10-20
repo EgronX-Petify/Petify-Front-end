@@ -59,18 +59,20 @@ const ManageServices = () => {
     });
   }
 
-  return services?.length === 0 ? (
-    <p className="col-span-full text-center bg-white  min-h-14 py-5 text-xl font-semibold text-[#2F4156] capitalize">
-      No services available
-    </p>
-  ) : loading ? (
-    <LoadingSpinner text="services are loading..." />
-  ) : (
+  return  (
     <div className="bg-[#F8F9FA] p-5 rounded-2xl shadow-md w-full min-h-screen">
       <Return showLabel={true} />
       <h2 className="text-xl text-white font-semibold mb-4 flex items-center gap-2 p-3 rounded-lg bg-[#417481]">
         <FaClipboardList className="text-white" /> My Services
       </h2>
+      {  loading ? (
+    <LoadingSpinner text="services are loading..." />
+  ) :
+      services?.length === 0 ? (
+    <p className="col-span-full text-center bg-white  min-h-14 py-5 text-xl font-semibold text-[#2F4156] capitalize">
+      No services available
+    </p>
+  ) :(
       <ul className="space-y-2 text-gray-600">
         {services.map((service) => (
           <ServiceItem
@@ -80,9 +82,10 @@ const ManageServices = () => {
             handleRemoveService={handleRemoveService}
           />
         ))}
-      </ul>
+      </ul>)}
       <div className="flex justify-center mt-10">
         <button
+        disabled={loading}
           className="font-semibold text-lg capitalize cursor-pointer bg-[#417481b3] text-white px-5 py-3 rounded-md flex items-center gap-1 hover:bg-[#417481]"
           onClick={() => setAddOpen(true)}
         >

@@ -79,7 +79,8 @@ const Signup = () => {
     setLoading(true);
     setErrors({});
     const validation = validate();
-    if (validation) {
+    if(!validate()) return;
+
       const payload = {
         email: formData?.email,
         password: formData?.password,
@@ -91,14 +92,13 @@ const Signup = () => {
           success: "Signup successfully!",
           error: (err) => err.response?.data?.message || "Signup failed ❌",
         });
-        console.log(data);
-        // navigate("/login");
+        navigate("/login");
       } catch (err) {
         console.error("signup failed:", err);
       } finally {
         setLoading(false);
       }
-    }
+    
   };
 
   return (

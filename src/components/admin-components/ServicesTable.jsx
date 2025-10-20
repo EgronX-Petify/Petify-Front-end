@@ -1,17 +1,13 @@
 import React, { useContext } from "react";
 import UseServices from "../../hooks/UseServices";
 import { ServicesContext } from "../../contexts/ServicesContext";
+import LoadingSpinner from "../LoadingSpinner";
 import Rating from "../Rating";
 import toast from "react-hot-toast";
 
-const dummyServices = [
-  { id: 1, title: "Vet Consultation", rate: 4.8 },
-  { id: 2, title: "Pet Grooming", rate: 4.5 },
-];
-
 const ServicesTable = () => {
   const services = UseServices();
-  const { setServices } = useContext(ServicesContext);
+  const { setServices, loading } = useContext(ServicesContext);
   const handleRemove = (id) => {
     swal({
       text: "Are you sure you want to remove this product?",
@@ -34,7 +30,7 @@ const ServicesTable = () => {
       dangerMode: true,
     }).then((willRemove) => {
       if (willRemove) {
-        setServices(services.filter((s) => s.id !== id));
+        setServices(services?.filter((s) => s.id !== id));
         toast("Removed", {
           icon: "✅",
           duration: "300",
@@ -43,18 +39,21 @@ const ServicesTable = () => {
     });
   };
 
+  console.log("services::" ,services);
+
   return (
     <div className="bg-white p-4 rounded-xl shadow-md">
       <h2 className="text-xl font-semibold text-[#2F4156] mb-4">
         Services Management
       </h2>
-      {!services.length ? (
-        <p className="text-xl font-semibold text-[#2F4156] capitalize">
-          no services
+      {loading? <LoadingSpinner text="Loading Services..." /> :
+      !services?.length ? (
+        <p className="text-[#2F415677] capitalize">
+          No Services Found
         </p>
       ) : (
         <div className="grid gap-4">
-          {services.map((service) => (
+          {services?.map((service) => (
             <div
               key={service.id}
               className="flex justify-between items-center bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-200"
