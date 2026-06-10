@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import * as userApi from "../APIs/userAPI";
-import { confirmMessage } from "../utils/confirmMessage";
-import { toastPromise } from "../utils/toastPromise";
+// import * as userApi from "../APIs/userAPI";
+import * as userApi from "@/mockAPIs/mockAuthAPI";
+import * as petsApi from "@/mockAPIs/mockPetsAPI";
+import { confirmMessage } from "@/utils/confirmMessage";
+import { toastPromise } from "@/utils/toastPromise";
 import { AuthContext } from "./AuthContext";
 
 const ProfileContext = createContext();
@@ -37,7 +39,7 @@ const ProfileProvider = ({ children }) => {
     const getUserPets = async () => {
       try {
         setLoading(true);
-        const response = await userApi.getUserPets();
+        const response = await petsApi.getUserPets();
         setUserPets(response.data);
         return response.data;
       } catch (err) {
@@ -56,7 +58,7 @@ const ProfileProvider = ({ children }) => {
       cancelText: "Cancel",
     });
     if (!willUpdate) return;
-    return await toastPromise(userApi.updateUser(payload), {
+    const response = await toastPromise(userApi.updateUser(payload), {
       loading: "Updating Profile... ⏳",
       success: "Profile updated successfully!",
       error: (error) =>
@@ -64,6 +66,8 @@ const ProfileProvider = ({ children }) => {
         error.response?.data?.message ||
         "Updating profile failed ❌",
     });
+    setUserProfile(response.data);
+    return response;
   };
 
   return (
